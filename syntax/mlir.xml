@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language
+  name="MLIR"
+  section="Sources"
+  extensions="*.mlir"
+  version="1"
+  kateversion="5.0"
+  priority="5"
+  author="Louis Ledoux"
+  license="MIT">
+
+  <highlighting>
+    <contexts>
+      <context name="Normal" attribute="Normal Text" lineEndContext="#stay">
+        <DetectSpaces/>
+
+        <RegExpr attribute="Comment" context="#stay" String="//.*$"/>
+        <Detect2Chars attribute="Comment" context="BlockComment" char="/" char1="*"/>
+
+        <DetectChar attribute="String" context="String" char="&quot;"/>
+
+        <RegExpr attribute="Attribute" context="#stay" String="#[A-Za-z_][A-Za-z0-9_.$-]*"/>
+        <RegExpr attribute="Data Type" context="#stay" String="![A-Za-z_][A-Za-z0-9_.$-]*(\.[A-Za-z_][A-Za-z0-9_.$-]*)*"/>
+
+        <RegExpr attribute="Function" context="#stay" String="@[-A-Za-z0-9_.$]+"/>
+        <RegExpr attribute="Variable" context="#stay" String="%[-A-Za-z0-9_.$]+"/>
+        <RegExpr attribute="Attribute" context="#stay" String="\^[-A-Za-z0-9_.$]+"/>
+
+        <RegExpr attribute="Function" context="#stay" String="\b[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_.$-]*\b"/>
+
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <keyword attribute="Data Type" context="#stay" String="types"/>
+        <keyword attribute="Constant" context="#stay" String="constants"/>
+
+        <RegExpr attribute="Float" context="#stay" String="\b[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?\b"/>
+        <RegExpr attribute="DecVal" context="#stay" String="\b0x[0-9A-Fa-f]+\b"/>
+        <RegExpr attribute="DecVal" context="#stay" String="\b0b[01]+\b"/>
+        <RegExpr attribute="DecVal" context="#stay" String="\b[0-9]+\b"/>
+
+        <AnyChar attribute="Operator" context="#stay" String="{}()&lt;&gt;;:,\[\]=+-*/"/>
+      </context>
+
+      <context name="String" attribute="String" lineEndContext="#stay">
+        <DetectChar attribute="String" context="#pop" char="&quot;"/>
+        <HlCStringChar attribute="Char"/>
+      </context>
+
+      <context name="BlockComment" attribute="Comment" lineEndContext="#stay">
+        <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/"/>
+      </context>
+    </contexts>
+
+    <itemDatas>
+      <itemData name="Normal Text" defStyleNum="dsNormal"/>
+      <itemData name="Keyword" defStyleNum="dsKeyword"/>
+      <itemData name="Data Type" defStyleNum="dsDataType"/>
+      <itemData name="Variable" defStyleNum="dsVariable"/>
+      <itemData name="Function" defStyleNum="dsFunction"/>
+      <itemData name="Attribute" defStyleNum="dsAttribute"/>
+      <itemData name="Constant" defStyleNum="dsConstant"/>
+      <itemData name="DecVal" defStyleNum="dsDecVal"/>
+      <itemData name="Float" defStyleNum="dsFloat"/>
+      <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="Char" defStyleNum="dsChar"/>
+      <itemData name="Comment" defStyleNum="dsComment"/>
+      <itemData name="Operator" defStyleNum="dsOperator"/>
+    </itemDatas>
+
+    <list name="keywords">
+      <item>module</item>
+      <item>func</item>
+      <item>return</item>
+      <item>let</item>
+      <item>affine</item>
+      <item>scf</item>
+      <item>if</item>
+      <item>else</item>
+      <item>for</item>
+      <item>while</item>
+      <item>yield</item>
+      <item>call</item>
+      <item>hw</item>
+      <item>comb</item>
+    </list>
+
+    <list name="types">
+      <item>memref</item>
+      <item>tensor</item>
+      <item>vector</item>
+      <item>index</item>
+      <item>complex</item>
+      <item>i1</item>
+      <item>i8</item>
+      <item>i16</item>
+      <item>i32</item>
+      <item>i64</item>
+      <item>f16</item>
+      <item>f32</item>
+      <item>f64</item>
+    </list>
+
+    <list name="constants">
+      <item>true</item>
+      <item>false</item>
+      <item>null</item>
+      <item>ugt</item>
+      <item>uge</item>
+      <item>ult</item>
+      <item>ule</item>
+      <item>sgt</item>
+      <item>sge</item>
+      <item>slt</item>
+      <item>sle</item>
+      <item>eq</item>
+      <item>ne</item>
+      <item>bin</item>
+    </list>
+  </highlighting>
+</language>

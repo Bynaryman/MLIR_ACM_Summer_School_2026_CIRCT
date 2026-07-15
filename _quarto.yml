@@ -1,0 +1,7 @@
+project:
+  type: default
+  output-dir: dist
+  render:
+    - mlir-circt-summer-school.qmd
+  resources:
+    - assets/images/background.png

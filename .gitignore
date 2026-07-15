@@ -1,0 +1,22 @@
+# Quarto cache and generated output
+/.quarto/
+/dist/
+*.quarto_ipynb*
+*_files/
+
+# Local temporary files
+/tmp/
+
+# Python environments and caches
+/venv/
+/.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Editor and operating-system files
+.DS_Store
+*~
+*.swp
+
+**/*.quarto_ipynb

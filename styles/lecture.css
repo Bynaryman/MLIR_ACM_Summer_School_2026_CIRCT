@@ -1,0 +1,76 @@
+/* Clean Reveal.js course style. */
+
+.reveal {
+  font-size: 39px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  text-transform: none;
+}
+
+.reveal .title-slide,
+.reveal section.section-title {
+  text-align: center;
+}
+
+.reveal .title-slide h1,
+.reveal section.section-title h1 {
+  font-size: 2.35em;
+}
+
+.reveal section:not(.title-slide):not(.section-title) {
+  text-align: left;
+}
+
+/* Keep regular slide headings at the top and center only their body content. */
+@media screen {
+  .reveal .slides section.slide.level2 {
+    height: 100%;
+  }
+
+  .reveal .slides section.slide.level2.present {
+    display: grid !important;
+    grid-template-rows: max-content minmax(0, 1fr);
+  }
+
+  .reveal section.slide.level2 > h2:first-child {
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .reveal section.slide.level2 > .slide-body {
+    align-self: center;
+    width: 100%;
+    min-width: 0;
+    max-height: 100%;
+  }
+}
+
+.reveal p,
+.reveal li {
+  line-height: 1.28;
+}
+
+.reveal .callout {
+  font-size: 0.9em;
+  background: #ffffff;
+  border-radius: 0.45rem;
+  box-shadow: 0 0.14rem 0.42rem rgb(15 23 42 / 14%);
+}
+
+.reveal .callout.callout-style-default > .callout-header,
+.reveal .callout.callout-style-default > .callout-body,
+.reveal .callout .callout-header,
+.reveal .callout .callout-body-container {
+  background: #ffffff;
+}
+
+.reveal div.callout.callout-style-default div.callout-title {
+  opacity: 1;
+}
+
+.reveal .columns {
+  gap: 1.1em;
+}

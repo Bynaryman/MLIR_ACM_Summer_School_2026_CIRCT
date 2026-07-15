@@ -1,0 +1,479 @@
+---
+title: "MLIR Use Cases with CIRCT and Digital Design"
+subtitle: "A Focus on Arithmetic"
+author: "Louis Ledoux"
+date: today
+
+jupyter: python3
+
+filters:
+  - filters/slide-layout.lua
+
+highlight-style: github
+syntax-definitions:
+  - syntax/mlir.xml
+  - syntax/python.xml
+
+format:
+  revealjs:
+    output-file: reveal.html
+    theme: simple
+    css:
+      - styles/lecture.css
+      - styles/code.css
+      - styles/code-mlir.css
+      - styles/code-python.css
+    slide-level: 2
+    navigation-mode: vertical
+
+    transition: slide
+    background-transition: fade
+    auto-animate: true
+    auto-animate-easing: ease-in-out
+    auto-animate-duration: 0.55
+
+    controls: true
+    controls-layout: bottom-right
+    menu: false
+    progress: true
+    slide-number: h/v
+
+    width: 1600
+    height: 900
+    margin: 0.055
+    center: false
+    center-title-slide: true
+    auto-stretch: false
+    parallax-background-image: assets/images/background.png
+    parallax-background-size: "3200px 1800px"
+    code-copy: true
+    code-overflow: scroll
+    code-block-height: 620px
+
+execute:
+  echo: true
+  warning: false
+  error: false
+  daemon: false
+---
+
+```{python}
+#| label: setup
+#| include: false
+
+import textwrap
+
+import circt
+from circt import ir
+from circt.dialects import arith, func
+from circt.passmanager import PassManager
+
+
+PASS_PIPELINE = "builtin.module(map-arith-to-comb)"
+
+
+def register_dialects(context):
+    circt.register_dialects(context)
+    context.append_dialect_registry(arith.get_dialect_registry())
+    context.append_dialect_registry(func.get_dialect_registry())
+    context.load_all_available_dialects()
+
+
+def build_integer_module():
+    module = ir.Module.create()
+
+    i1 = ir.IntegerType.get_signless(1)
+    i8 = ir.IntegerType.get_signless(8)
+    function_type = ir.FunctionType.get([i8, i8, i1], [i8])
+
+    with ir.InsertionPoint(module.body):
+        datapath = func.FuncOp("int_datapath", function_type)
+        entry = datapath.add_entry_block()
+
+        with ir.InsertionPoint(entry):
+            a, b, select = entry.arguments
+
+            sum_ = arith.addi(a, b)
+            product = arith.muli(sum_, a)
+            zero = arith.constant(i8, 0)
+
+            product_is_positive = arith.cmpi(
+                arith.CmpIPredicate.ugt,
+                product,
+                zero,
+            )
+
+            best = arith.select(
+                product_is_positive,
+                product,
+                sum_,
+            )
+
+            result = arith.select(
+                select,
+                best,
+                b,
+            )
+
+            func.return_([result])
+
+    return module
+
+
+FLOAT_EXAMPLE = """
+module {
+  func.func @float_datapath(%a: f32, %b: f32) -> f32 {
+    %product = arith.mulf %a, %b : f32
+    return %product : f32
+  }
+}
+"""
+
+
+def fenced(language, body):
+    print(f"```{language}")
+    print(textwrap.dedent(str(body)).strip())
+    print("```")
+
+
+def diagnostic(error, maximum_lines=16):
+    lines = str(error).strip().splitlines()
+
+    if len(lines) <= maximum_lines:
+        return "\n".join(lines)
+
+    return "\n".join(lines[:maximum_lines] + ["…"])
+```
+
+# Motivation {.section-title .center}
+
+## Why MLIR for digital design? {auto-animate=true}
+
+::: {.columns}
+::: {.column width="48%"}
+### Software compiler view
+
+```mlir
+func.func @kernel(%a: i8, %b: i8) -> i8 {
+  %sum = arith.addi %a, %b : i8
+  return %sum : i8
+}
+```
+:::
+
+::: {.column width="48%"}
+### Hardware compiler view
+
+```mlir
+hw.module @Kernel(in %a: i8, in %b: i8, out y: i8) {
+  %sum = comb.add %a, %b : i8
+  hw.output %sum : i8
+}
+```
+:::
+:::
+
+## Course objective {auto-animate=true}
+
+::: {.callout-important}
+Use MLIR and CIRCT to understand how arithmetic operations move from a generic
+compiler representation to a hardware-oriented representation.
+:::
+
+::: {.incremental}
+- Build a small datapath with the CIRCT Python bindings.
+- Apply a simple arithmetic-to-combinational lowering.
+- Observe why integer operations lower but floating-point operations do not.
+- Turn the limitation into a hands-on compiler exercise.
+:::
+
+# MLIR and CIRCT {.section-title .center}
+
+## Dialects as layers {auto-animate=true}
+
+```mlir
+builtin.module
+  └── func.func
+        ├── arith.addi
+        ├── arith.muli
+        ├── arith.cmpi
+        └── arith.select
+```
+
+## Lowering target {auto-animate=true}
+
+```mlir
+builtin.module
+  └── func.func
+        ├── comb.add
+        ├── comb.mul
+        ├── comb.icmp
+        └── comb.mux
+```
+
+## Pass used in this session {auto-animate=true}
+
+```text
+builtin.module(map-arith-to-comb)
+```
+
+::: {.callout-note}
+The pass maps selected `arith` operations to `comb` operations. It is useful for
+small examples and tests, not as a complete HLS flow.
+:::
+
+# A first executable cell {.section-title .center}
+
+## Python cell
+
+```{python}
+#| label: hello
+#| output-location: fragment
+#| code-line-numbers: "|1"
+
+print("hello from Quarto and Jupyter")
+```
+
+# Integer datapath {.section-title .center}
+
+## Builder: module and signature {auto-animate=true}
+
+```{.python code-line-numbers="1-9" data-id="integer-builder"}
+def build_integer_module():
+    module = ir.Module.create()
+
+    i1 = ir.IntegerType.get_signless(1)
+    i8 = ir.IntegerType.get_signless(8)
+    function_type = ir.FunctionType.get([i8, i8, i1], [i8])
+
+    with ir.InsertionPoint(module.body):
+        datapath = func.FuncOp("int_datapath", function_type)
+        entry = datapath.add_entry_block()
+```
+
+## Builder: entry block {auto-animate=true}
+
+```{.python code-line-numbers="8-18" data-id="integer-builder"}
+def build_integer_module():
+    module = ir.Module.create()
+
+    i1 = ir.IntegerType.get_signless(1)
+    i8 = ir.IntegerType.get_signless(8)
+    function_type = ir.FunctionType.get([i8, i8, i1], [i8])
+
+    with ir.InsertionPoint(module.body):
+        datapath = func.FuncOp("int_datapath", function_type)
+        entry = datapath.add_entry_block()
+
+        with ir.InsertionPoint(entry):
+            a, b, select = entry.arguments
+
+            sum_ = arith.addi(a, b)
+            product = arith.muli(sum_, a)
+            zero = arith.constant(i8, 0)
+```
+
+## Builder: integer comparison {auto-animate=true}
+
+```{.python code-line-numbers="15-27" data-id="integer-builder"}
+        with ir.InsertionPoint(entry):
+            a, b, select = entry.arguments
+
+            sum_ = arith.addi(a, b)
+            product = arith.muli(sum_, a)
+            zero = arith.constant(i8, 0)
+
+            product_is_positive = arith.cmpi(
+                arith.CmpIPredicate.ugt,
+                product,
+                zero,
+            )
+
+            best = arith.select(
+                product_is_positive,
+                product,
+                sum_,
+            )
+```
+
+## Builder: final selection {auto-animate=true}
+
+```{.python code-line-numbers="24-38" data-id="integer-builder"}
+            best = arith.select(
+                product_is_positive,
+                product,
+                sum_,
+            )
+
+            result = arith.select(
+                select,
+                best,
+                b,
+            )
+
+            func.return_([result])
+
+    return module
+```
+
+# Integer lowering {.section-title .center}
+
+## Run the lowering {auto-animate=true}
+
+```{python}
+#| label: integer-lowering-run
+#| output: false
+#| code-line-numbers: "|1-3|5-6|8"
+
+with ir.Context() as context, ir.Location.unknown():
+    register_dialects(context)
+    integer_module = build_integer_module()
+
+    pass_manager = PassManager.parse(PASS_PIPELINE)
+    pass_manager.run(integer_module.operation)
+
+    lowered_integer_module = str(integer_module)
+```
+
+## Resulting IR {auto-animate=true}
+
+```{python}
+#| label: integer-lowering-result
+#| echo: false
+#| output: asis
+
+fenced("mlir", lowered_integer_module)
+```
+
+## Key observation
+
+::: {.incremental}
+- The source contains `arith.addi`, `arith.muli`, `arith.cmpi`, and `arith.select`.
+- The result contains `comb.add`, `comb.mul`, `comb.icmp`, and `comb.mux`.
+- The lowering preserves the function boundary and the integer types.
+:::
+
+# Floating-point case {.section-title .center}
+
+## Input IR {auto-animate=true}
+
+```mlir
+module {
+  func.func @float_datapath(%a: f32, %b: f32) -> f32 {
+    %product = arith.mulf %a, %b : f32
+    return %product : f32
+  }
+}
+```
+
+## Run the same pass {auto-animate=true}
+
+```{python}
+#| label: float-lowering-run
+#| output: false
+#| code-line-numbers: "|1-3|5-6|8-15"
+
+with ir.Context() as context, ir.Location.unknown():
+    register_dialects(context)
+    floating_point_module = ir.Module.parse(FLOAT_EXAMPLE)
+
+    pass_manager = PassManager.parse(PASS_PIPELINE)
+
+    try:
+        pass_manager.run(floating_point_module.operation)
+    except Exception as error:
+        floating_point_result = diagnostic(error)
+    else:
+        floating_point_result = (
+            "The pass completed without reporting an error.\n\n"
+            + str(floating_point_module)
+        )
+```
+
+## Diagnostic {auto-animate=true}
+
+```{python}
+#| label: float-lowering-result
+#| echo: false
+#| output: asis
+
+fenced("text", floating_point_result)
+```
+
+## Why this becomes an exercise
+
+::: {.callout-warning}
+The demonstrated pass intentionally handles only a subset of arithmetic
+lowering. Floating-point operations require an explicit representation and a
+clear lowering policy.
+:::
+
+# Hands-on {.section-title .center}
+
+## Task
+
+::: {.callout-important}
+### Implement floating-point arithmetic lowering
+
+Extend the arithmetic-to-combinational lowering for selected floating-point
+operations.
+:::
+
+::: {.incremental}
+1. Identify the unsupported `arith` floating-point operations.
+2. Decide the target representation.
+3. Preserve operand and result types.
+4. Emit a precise diagnostic for unsupported cases.
+5. Add tests for success and failure.
+:::
+
+## Starting point {auto-animate=true}
+
+```python
+def lower_floating_point_operation(operation):
+    """Lower a supported floating-point arithmetic operation."""
+
+    if operation.name == "arith.mulf":
+        # Inspect the operands and result type.
+        # Construct the target CIRCT operation.
+        # Replace the original arith operation.
+        ...
+
+    raise NotImplementedError(
+        f"unsupported operation: {operation.name}"
+    )
+```
+
+## Test case {auto-animate=true}
+
+```mlir
+module {
+  func.func @float_datapath(%a: f32, %b: f32) -> f32 {
+    %product = arith.mulf %a, %b : f32
+    return %product : f32
+  }
+}
+```
+
+## Expected behavior {auto-animate=true}
+
+```python
+pass_manager = PassManager.parse(
+    "builtin.module(map-arith-to-comb)"
+)
+
+pass_manager.run(floating_point_module.operation)
+
+print(floating_point_module)
+```
+
+# Closing {.section-title .center}
+
+## Takeaway
+
+::: {.incremental}
+- MLIR makes arithmetic explicit before hardware lowering.
+- CIRCT provides hardware-oriented dialects such as `comb`.
+- Small lowering passes are useful for understanding compiler structure.
+- Unsupported operations are not only failures; they define the next compiler task.
+:::

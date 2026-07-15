@@ -1,0 +1,39 @@
+/* MLIR palette for token classes emitted by mlir.xml. */
+
+.reveal code.sourceCode.mlir .kw {
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.mlir .dt {
+  color: #b45309;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.mlir .va {
+  color: #2563eb;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode.mlir .fu {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.mlir .at {
+  color: #be123c;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode.mlir :is(.dv, .fl) {
+  color: #b45309;
+}
+
+.reveal code.sourceCode.mlir .co {
+  color: #64748b;
+  font-style: italic;
+}
+
+.reveal code.sourceCode.mlir .st {
+  color: #166534;
+}

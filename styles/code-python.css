@@ -1,0 +1,62 @@
+/* Python palette for token classes emitted by python.xml. */
+
+.reveal code.sourceCode.python .kw {
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.python .cf {
+  color: #be123c;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.python .im {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.python .fu {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.python .va {
+  color: #1d4ed8;
+}
+
+.reveal code.sourceCode.python .bu {
+  color: #0369a1;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode.python .dt {
+  color: #b45309;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode.python .cn {
+  color: #c026d3;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode.python :is(.st, .ch, .ss, .vs) {
+  color: #15803d;
+}
+
+.reveal code.sourceCode.python :is(.dv, .fl, .bn) {
+  color: #b45309;
+}
+
+.reveal code.sourceCode.python .op {
+  color: #475569;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode.python :is(.at, .an) {
+  color: #c026d3;
+}
+
+.reveal code.sourceCode.python :is(.co, .cv, .do) {
+  color: #64748b;
+  font-style: italic;
+}
