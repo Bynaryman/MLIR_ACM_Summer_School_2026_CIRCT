@@ -29,10 +29,6 @@ The deck has two render profiles:
 |-- tmp/                           # Scratch and test output; ignored
 ```
 
-`assets/images/ATTRIBUTIONS.md` records the source and license of each external
-image. The PDF and Markdown files under `references/program/` are reference
-material, not presentation build inputs.
-
 ## Slide infrastructure
 
 ### Quarto configuration
