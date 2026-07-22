@@ -23,12 +23,10 @@ The deck has two render profiles:
 |-- syntax/mlir.xml                # MLIR syntax-highlighting grammar
 |-- filters/slide-layout.lua       # Slide title/body layout filter
 |-- scripts/render-course-decks.sh # Builds both deck editions
-|-- tutorial/                      # CIRCT tour, AIG analysis, pass exercise
-|-- references/program/            # Summer-school program source material
+|-- tutorial/                      # CIRCT tour, AIG analysis, ARITHmetic pass exercise
 |-- .github/workflows/             # GHCR image publication
 |-- dist/                          # Generated slides; ignored
 |-- tmp/                           # Scratch and test output; ignored
-`-- venv/                          # Optional local Python environment; ignored
 ```
 
 `assets/images/ATTRIBUTIONS.md` records the source and license of each external
@@ -69,28 +67,11 @@ turns those categories into token classes; `styles/code-mlir.css` colors them.
 body. This lets `styles/lecture.css` keep the heading at the top while centering
 the body vertically. It does not modify title slides or section-title slides.
 
-## Python environment
-
-`venv/` was created for earlier executable Quarto experiments using Jupyter and
-the CIRCT Python bindings. It currently contains `circt==1.152.0`, IPython, and
-Jupyter.
-
-The current deck does not execute Python, so `venv/` is not required to render
-the slides. The C++ exercise also does not use it: its Docker image contains
-CIRCT `1.147.0` and the required CMake toolchain. The AIG and exhaustive-test
-scripts use the container's system Python, not this virtual environment. The
-environment is local, ignored by Git, and can be deleted if those earlier
-Python experiments are no longer needed.
-
-Activate it only when working on Python/CIRCT experiments:
-
-```bash
-source venv/bin/activate
-```
-
 ## Build the slides
 
-Build both editions:
+The slides are made with quarto, an open source technical publishing system for creating beautiful articles, websites, blogs, books, slides, and more.
+
+Build students and teacher editions:
 
 ```bash
 ./scripts/render-course-decks.sh
@@ -126,28 +107,3 @@ docker run -it mlir-summer-school-2026-circt
 ```
 
 The exercise structure and commands are documented in `tutorial/README.md`.
-
-## Git and generated files
-
-Yes, from the repository root you can stage the current work with:
-
-```bash
-git add .
-```
-
-The ignore rules exclude:
-
-- `.quarto/` and `dist/`;
-- `tmp/`;
-- `venv/` and `.venv/`;
-- Python caches and Quarto notebook intermediates;
-- `tutorial/build/`, generated MLIR/SystemVerilog, and compile commands;
-- common editor and operating-system files.
-
-`git add .` also stages deletions of obsolete tracked files, which is intended
-for the current cleanup. Inspect the exact staged result before committing:
-
-```bash
-git status --short
-git diff --cached --stat
-```

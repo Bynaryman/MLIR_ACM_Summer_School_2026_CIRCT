@@ -36,6 +36,7 @@
   - similar handson, do roundtrips between verilog and irs, see they are the same, the fma of int, the mult of int
   - obtain some early ppa metrics with the analysis like in sam tuto
   - While they do exercise, i can show once we have the verilog given by firtool or circt-synth/translate how to make a chip, place the verilog in my ORFS hierarchy and run a make, make promotion for OpenRoad, LibreLane, TinyTapeout, the chip i made in gf0p2 with only mlir that has been tapedout
+  - ideas for more exercise, the squarer case
 
 ## Let's multiply
 
