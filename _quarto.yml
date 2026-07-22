@@ -4,4 +4,9 @@ project:
   render:
     - mlir-circt-summer-school.qmd
   resources:
-    - assets/images/background.png
+    - assets/images/*
+
+profile:
+  default: student
+  group:
+    - [student, instructor]

@@ -1,0 +1,48 @@
+name: Publish CIRCT tutorial container
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tutorial/**"
+      - ".github/workflows/publish-circt-container.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create image metadata
+        id: metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/bynaryman/mlir-summer-school-2026-circt
+          tags: |
+            type=raw,value=latest
+            type=sha
+
+      - name: Build and publish the image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./tutorial
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

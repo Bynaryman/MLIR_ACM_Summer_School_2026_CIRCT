@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+WORK = ROOT / "build" / "e4m3-exhaustive"
+PAIR_COUNT = 256 * 256
+
+
+def run(command, **kwargs):
+    print("+", " ".join(str(part) for part in command), flush=True)
+    return subprocess.run(command, cwd=ROOT, check=True, **kwargs)
+
+
+def generate_reference_vectors():
+    lhs = bytes(value for value in range(256) for _ in range(256))
+    rhs = bytes(range(256)) * 256
+    reference_ir = f"""module {{
+  func.func @reference() -> vector<{PAIR_COUNT}xi8> {{
+    %lhs = arith.constant dense<\"0x{lhs.hex()}\"> : vector<{PAIR_COUNT}xi8>
+    %rhs = arith.constant dense<\"0x{rhs.hex()}\"> : vector<{PAIR_COUNT}xi8>
+    %lhsf = arith.bitcast %lhs : vector<{PAIR_COUNT}xi8> to vector<{PAIR_COUNT}xf8E4M3FN>
+    %rhsf = arith.bitcast %rhs : vector<{PAIR_COUNT}xi8> to vector<{PAIR_COUNT}xf8E4M3FN>
+    %product = arith.mulf %lhsf, %rhsf : vector<{PAIR_COUNT}xf8E4M3FN>
+    %bits = arith.bitcast %product : vector<{PAIR_COUNT}xf8E4M3FN> to vector<{PAIR_COUNT}xi8>
+    return %bits : vector<{PAIR_COUNT}xi8>
+  }}
+}}
+"""
+
+    folded = run(
+        [
+            "mlir-opt",
+            "--canonicalize",
+            "--mlir-print-elementsattrs-with-hex-if-larger=1",
+        ],
+        input=reference_ir,
+        text=True,
+        capture_output=True,
+    ).stdout
+
+    constants = re.findall(r'dense<"0x([0-9A-Fa-f]+)"', folded)
+    if len(constants) != 1 or len(constants[0]) != PAIR_COUNT * 2:
+        raise RuntimeError("MLIR did not fold the exhaustive reference vector")
+    expected = bytes.fromhex(constants[0])
+
+    known_results = {
+        (0x38, 0x38): 0x38,
+        (0x3C, 0x3C): 0x41,
+        (0xB8, 0x38): 0xB8,
+    }
+    for (lhs_value, rhs_value), result in known_results.items():
+        index = lhs_value * 256 + rhs_value
+        if expected[index] != result:
+            raise RuntimeError("unexpected byte order in MLIR reference vector")
+
+    vectors = WORK / "vectors.hex"
+    with vectors.open("w") as output:
+        for index, expected_value in enumerate(expected):
+            lhs_value, rhs_value = divmod(index, 256)
+            output.write(f"{lhs_value:02x} {rhs_value:02x} {expected_value:02x}\n")
+    return vectors
+
+
+def main():
+    optimizer = ROOT / "build" / "bin" / "circt-tutorial-opt"
+    if not optimizer.exists():
+        print("error: run ./scripts/build.sh first", file=sys.stderr)
+        return 2
+
+    WORK.mkdir(parents=True, exist_ok=True)
+    vectors = generate_reference_vectors()
+    lowered = WORK / "e4m3fn-mul.lowered.mlir"
+    verilog = WORK / "e4m3fn-mul.sv"
+    simulator = WORK / "e4m3fn-test"
+
+    run(
+        [
+            optimizer,
+            "examples/e4m3fn-mul.mlir",
+            "--lower-e4m3fn-to-comb",
+            "--canonicalize",
+            "-o",
+            lowered,
+        ]
+    )
+    run(["firtool", lowered, "-o", verilog])
+    run(
+        [
+            "iverilog",
+            "-g2012",
+            "-s",
+            "e4m3fn_exhaustive_tb",
+            "-o",
+            simulator,
+            verilog,
+            "test/e4m3fn-exhaustive-tb.sv",
+        ]
+    )
+
+    print(f"Testing all {PAIR_COUNT:,} input pairs", flush=True)
+    completed = subprocess.run(
+        ["vvp", simulator, f"+VECTORS={vectors}"], cwd=ROOT, check=False
+    )
+    return completed.returncode
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,247 @@
+/* Stable layouts for the CIRCT lowering and datapath diagrams. */
+
+.reveal .session-time {
+  margin-top: 0.9em;
+  color: #425466;
+  font-size: 0.52em;
+  font-weight: 650;
+}
+
+.reveal .narrative-question {
+  margin: 0.7em auto 0;
+  max-width: 25ch;
+  color: #16212b;
+  font-size: 1.12em;
+  font-weight: 650;
+  text-align: center;
+}
+
+.reveal .lowering-flow,
+.reveal .hls-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25em;
+  align-items: stretch;
+  width: 100%;
+}
+
+.reveal .flow-level {
+  position: relative;
+  display: flex;
+  min-height: 5.2em;
+  padding: 0.65em;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid #b8c3cc;
+  background: #ffffff;
+  color: #17212b;
+  text-align: center;
+}
+
+.reveal .flow-level:not(:last-child)::after {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -0.95em;
+  width: 0.65em;
+  height: 0.65em;
+  border-top: 0.13em solid #52616e;
+  border-right: 0.13em solid #52616e;
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.reveal .flow-level strong {
+  display: block;
+  margin-bottom: 0.24em;
+}
+
+.reveal .flow-level p {
+  margin: 0.12em 0;
+}
+
+.reveal .flow-level.source {
+  border-color: #3385a6;
+  background: #e8f6fa;
+}
+
+.reveal .flow-level.transform {
+  border-color: #b36b32;
+  background: #fff2e5;
+}
+
+.reveal .flow-level.hardware {
+  border-color: #3f8a61;
+  background: #e9f7ef;
+}
+
+.reveal .flow-level.output {
+  border-color: #8262a8;
+  background: #f3edfa;
+}
+
+.reveal .bit-layout {
+  display: grid;
+  grid-template-columns: 1fr 4fr 3fr;
+  width: min(100%, 26em);
+  margin: 0.8em auto;
+  border: 2px solid #33424f;
+  background: #ffffff;
+}
+
+.reveal .bit-field {
+  min-width: 0;
+  padding: 0.58em 0.35em;
+  border-right: 2px solid #33424f;
+  text-align: center;
+}
+
+.reveal .bit-field:last-child {
+  border-right: 0;
+}
+
+.reveal .bit-field.sign {
+  background: #fce8e6;
+}
+
+.reveal .bit-field.exponent {
+  background: #e8f2fb;
+}
+
+.reveal .bit-field.fraction {
+  background: #edf7e9;
+}
+
+.reveal .bit-field small {
+  display: block;
+  margin-top: 0.2em;
+  color: #52616e;
+  font-size: 0.58em;
+}
+
+.reveal .circuit-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.78em;
+  width: 100%;
+  margin: 0 auto 0.65em;
+}
+
+.reveal .circuit-stage {
+  position: relative;
+  display: flex;
+  min-height: 4.35em;
+  padding: 0.48em 0.34em;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #b8c3cc;
+  background: rgb(255 255 255 / 92%);
+  color: #425466;
+  font-size: 0.75em;
+  font-weight: 650;
+  text-align: center;
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+    color 0.35s ease, transform 0.35s ease;
+}
+
+.reveal .circuit-stage:not(:last-child)::after {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -0.66em;
+  width: 0.48em;
+  height: 0.48em;
+  border-top: 0.11em solid #52616e;
+  border-right: 0.11em solid #52616e;
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.reveal .circuit-stage.is-done {
+  border-color: #5f7d69;
+  background: #edf7e9;
+  color: #244c32;
+}
+
+.reveal .circuit-stage.is-active {
+  border-color: #b05c2e;
+  background: #fff0df;
+  color: #713616;
+  transform: translateY(-0.12em);
+}
+
+.reveal .circuit-stage:nth-child(1).is-active {
+  border-color: #3385a6;
+  background: #e8f6fa;
+  color: #17536b;
+}
+
+.reveal .circuit-stage:nth-child(3).is-active {
+  border-color: #3f8a61;
+  background: #e9f7ef;
+  color: #245b3b;
+}
+
+.reveal .circuit-stage:nth-child(4).is-active {
+  border-color: #a67816;
+  background: #fff6d8;
+  color: #674905;
+}
+
+.reveal .circuit-stage:nth-child(5).is-active {
+  border-color: #8262a8;
+  background: #f3edfa;
+  color: #52386f;
+}
+
+.reveal .exercise-clock {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.45em;
+  width: 100%;
+  margin-top: 0.65em;
+  font-size: 0.65em;
+  text-align: center;
+}
+
+.reveal .exercise-clock > div {
+  padding-top: 0.45em;
+  border-top: 0.18em solid #9ca9b3;
+}
+
+.reveal .exercise-clock strong {
+  display: block;
+}
+
+.reveal .scope-line {
+  display: grid;
+  grid-template-columns: 7em minmax(0, 1fr);
+  gap: 0.7em;
+  align-items: baseline;
+  margin: 0.42em 0;
+}
+
+.reveal .scope-line strong {
+  color: #263746;
+}
+
+.reveal .solution-code pre {
+  max-height: 19em;
+}
+
+@media (max-width: 900px) {
+  .reveal .lowering-flow,
+  .reveal .hls-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reveal .flow-level::after {
+    display: none;
+  }
+
+  .reveal .circuit-flow {
+    grid-template-columns: repeat(5, minmax(7.5em, 1fr));
+    overflow-x: auto;
+  }
+}
