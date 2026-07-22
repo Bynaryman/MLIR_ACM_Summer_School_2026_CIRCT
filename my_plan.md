@@ -36,10 +36,16 @@
   - similar handson, do roundtrips between verilog and irs, see they are the same, the fma of int, the mult of int
   - obtain some early ppa metrics with the analysis like in sam tuto
   - While they do exercise, i can show once we have the verilog given by firtool or circt-synth/translate how to make a chip, place the verilog in my ORFS hierarchy and run a make, make promotion for OpenRoad, LibreLane, TinyTapeout, the chip i made in gf0p2 with only mlir that has been tapedout
-  - ideas for more exercise, the squarer case
+  - ideas for more exercise:
+    - the squarer case, application specific arith cite florent, same pattern matching but check operands is same
+    - graph fusing, explain rounding, normalizing is costly deferred rounding can improve accuracy (avoid roundoff error)
+    - sums and sums of products, can yield more optimized circuits
 
 ## Let's multiply
 
   - Santiago de Compostela ... https://www.biblegateway.com/passage/?search=Genesis%201%3A27-29&version=KJ21
   - where this case can com from ? AI, tensor kernels
 	- can you do a LUT ? is it worth ?
+
+## HLS with MLIR + CIRCT
+  - my presentation from eurollvm adapted to this format

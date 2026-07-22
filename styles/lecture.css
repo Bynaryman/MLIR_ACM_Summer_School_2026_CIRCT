@@ -4,6 +4,10 @@
   font-size: 39px;
 }
 
+.reveal.has-parallax-background .backgrounds {
+  background-repeat: no-repeat !important;
+}
+
 .reveal h1,
 .reveal h2,
 .reveal h3 {

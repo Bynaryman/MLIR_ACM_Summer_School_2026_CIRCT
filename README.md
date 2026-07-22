@@ -1,10 +1,12 @@
 # MLIR/CIRCT Summer School 2026
 
 This repository keeps the developing course material and the CIRCT programming
-exercise in one place. The content is still being designed. `my_plan.md` is the
-source for what the talk should say; the Quarto deck is the current prototype.
+exercise in one place. `my_plan.md` is the source for what the talk should say;
+the canonical Quarto deck is being rebuilt from it one section at a time. The
+previous full prototype remains in `mlir-circt-summer-school-old.qmd` as a
+reference for content and layouts, but Quarto does not render it.
 
-The deck has two render profiles:
+The project retains two render profiles for the later exercises:
 
 - `student`: exercises without the solution appendix;
 - `instructor`: exercises with links to uncounted solution slides.
@@ -13,7 +15,8 @@ The deck has two render profiles:
 
 ```text
 .
-|-- mlir-circt-summer-school.qmd   # Slide source
+|-- mlir-circt-summer-school.qmd   # Canonical, incremental slide source
+|-- mlir-circt-summer-school-old.qmd # Archived prototype; not rendered
 |-- my_plan.md                     # Personal content and speaking ideas
 |-- _quarto.yml                    # Shared Quarto project configuration
 |-- _quarto-student.yml            # Student output directory

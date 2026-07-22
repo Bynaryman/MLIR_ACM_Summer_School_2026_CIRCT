@@ -1,5 +1,107 @@
 /* Course-specific layouts for the MLIR/CIRCT Summer School deck. */
 
+.reveal #title-slide {
+  display: grid !important;
+  grid-template-columns: 5em minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto auto 1fr;
+  column-gap: 1.05em;
+  align-items: center;
+  height: 100%;
+  text-align: left;
+}
+
+.reveal #title-slide::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 1 / -1;
+  width: 4.35em;
+  height: 6.2em;
+  justify-self: center;
+  background-image:
+    url("../assets/images/logos/inr_logo_blanc.png"),
+    url("../assets/images/logos/logo_insa_white.png"),
+    url("../assets/images/logos/citi_lab_logo_white.png"),
+    url("../assets/images/logos/ANR-logo-2021-blanc.png");
+  background-position:
+    center 11.75%,
+    center 37.25%,
+    center 62.75%,
+    center 88.25%;
+  background-repeat: no-repeat;
+  background-size: 70% auto, 76% auto, 52% auto, 78% auto;
+  filter: brightness(0);
+}
+
+.reveal #title-slide .title {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  font-size: 1.9em;
+  line-height: 1.08;
+  text-align: left;
+}
+
+.reveal #title-slide .subtitle {
+  grid-column: 2;
+  grid-row: 3;
+  margin: 0.5em 0 0;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.reveal #title-slide .quarto-title-authors {
+  grid-column: 2;
+  grid-row: 4;
+  margin-top: 0.8em;
+  justify-self: start;
+}
+
+.reveal #title-slide .quarto-title-author-name {
+  font-size: 0.82em;
+}
+
+.reveal h1 code,
+.reveal h2 code,
+.reveal .course-toc code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1em;
+}
+
+.reveal .course-toc {
+  width: min(100%, 26em);
+  margin: 0 auto;
+}
+
+.reveal .course-toc ol {
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+.reveal .course-toc li {
+  margin: 0.45em 0;
+  padding-left: 0.25em;
+  color: #263746;
+  font-size: 0.82em;
+}
+
+.reveal .course-toc li::marker {
+  font-family: var(--r-code-font);
+  font-weight: 700;
+}
+
+.reveal .course-toc a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.reveal .course-toc a:hover,
+.reveal .course-toc a:focus-visible {
+  text-decoration: underline;
+}
+
 .reveal .deck-kicker {
   margin: 0 0 0.35em;
   color: #0f766e;
@@ -438,18 +540,17 @@
 
 .reveal .whoami-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.55fr);
-  gap: 1.1em;
-  align-items: stretch;
-  width: min(100%, 33em);
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.45fr);
+  gap: 1.5em;
+  align-items: center;
+  width: min(100%, 31em);
   margin: 0 auto;
 }
 
 .reveal .whoami-portrait {
-  min-height: 13.1em;
+  min-height: 0;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-left: 0.18em solid #3385a6;
-  background: #17212b;
 }
 
 .reveal .whoami-portrait p,
@@ -469,49 +570,42 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
+  gap: 0.65em;
   justify-content: center;
 }
 
-.reveal .identity-line {
-  padding-bottom: 0.48em;
-  border-bottom: 1px solid #cbd4db;
-  color: #52616e;
-  font-size: 0.68em;
-}
-
-.reveal .identity-line strong {
-  display: block;
-  margin-bottom: 0.12em;
-  color: #17212b;
-  font-size: 1.85em;
-}
-
-.reveal .identity-thread {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.42em;
-  margin: 0.7em 0;
-}
-
-.reveal .identity-thread > div {
-  min-width: 0;
-  padding: 0.5em;
-  border-top: 0.13em solid #3385a6;
-  background: rgb(255 255 255 / 96%);
-  font-size: 0.57em;
-}
-
-.reveal .identity-thread > div:nth-child(2) {
-  border-top-color: #b36b32;
-}
-
-.reveal .identity-thread > div:nth-child(3) {
-  border-top-color: #3f8a61;
-}
-
-.reveal .whoami-copy > p:last-child {
+.reveal .whoami-copy p {
   margin: 0;
-  font-size: 0.72em;
+}
+
+.reveal .whoami-role {
+  color: #40505c;
+  font-size: 0.7em;
+  line-height: 1.42;
+}
+
+.reveal .whoami-focus {
+  color: #17212b;
+  font-size: 1.02em;
+  line-height: 1.24;
+}
+
+.reveal .whoami-topics {
+  color: #34434f;
+  font-size: 0.67em;
+  line-height: 1.35;
+}
+
+.reveal .whoami-perspective {
+  color: #263746;
+  font-size: 0.69em;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.reveal .whoami-outside {
+  color: #596874;
+  font-size: 0.6em;
 }
 
 .reveal .edition-banner {

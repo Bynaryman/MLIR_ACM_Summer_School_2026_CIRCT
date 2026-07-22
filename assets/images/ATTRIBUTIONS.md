@@ -26,6 +26,9 @@
 ## EuroLLVM 2026 workshop title
 
 - Local file: `eurollvm-2026-title.png`
+- Original title assets: `logos/inr_logo_blanc.png`,
+  `logos/logo_insa_white.png`, `logos/citi_lab_logo_white.png`, and
+  `logos/ANR-logo-2021-blanc.png`
 - Description: title preview for *Progressive Arithmetic Lowering from Tensor
   Kernels to Synthesizable Datapaths*
 - Authors: Louis Ledoux, Pierre Cochard, and Florent de Dinechin
