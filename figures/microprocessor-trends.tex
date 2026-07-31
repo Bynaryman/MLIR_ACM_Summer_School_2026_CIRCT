@@ -1,0 +1,231 @@
+\documentclass[12pt,tikz,border=2pt]{standalone}
+
+\usepackage{newtxtext,newtxmath}
+\usepackage{pgfplots}
+\usetikzlibrary{arrows.meta}
+\pgfplotsset{compat=1.18}
+
+\definecolor{trendOrange}{HTML}{9C4F08}
+\definecolor{trendGreen}{HTML}{236447}
+\definecolor{trendRed}{HTML}{7A3040}
+\definecolor{trendBlack}{HTML}{25282A}
+\definecolor{trendCpu}{HTML}{5C3B53}
+\definecolor{trendMemory}{HTML}{756B54}
+\definecolor{trendGrid}{HTML}{D8D5CF}
+\definecolor{trendText}{HTML}{292724}
+
+\pgfplotsset{
+  slide axis/.style={
+    axis line style={draw=trendText, line width=0.65pt},
+    tick style={draw=trendText, line width=0.55pt},
+    tick label style={font=\footnotesize, text=trendText},
+    label style={font=\small, text=trendText},
+    grid=major,
+    grid style={draw=trendGrid, line width=0.4pt},
+    axis background/.style={fill=none},
+    unbounded coords=jump,
+  },
+}
+
+\tikzset{
+  direct label/.style={font=\footnotesize, anchor=west, inner sep=1pt},
+  event label/.style={font=\footnotesize, align=left, inner sep=1.5pt,
+    fill=white, fill opacity=0.92, text opacity=1},
+}
+
+\begin{document}
+\begin{tikzpicture}
+
+\begin{axis}[
+  slide axis,
+  name=processor,
+  at={(0,2.55cm)},
+  anchor=south west,
+  width=15.8cm,
+  height=4.1cm,
+  xmin=1970,
+  xmax=2027,
+  ymin=0.3,
+  ymax=1.5e8,
+  ymode=log,
+  xtick={1970,1980,1990,2000,2010,2020,2026},
+  ytick={1,1e2,1e4,1e6,1e8},
+  ylabel={native units (log)},
+  legend style={
+    at={(0,1.03)},
+    anchor=south west,
+    legend columns=4,
+    draw=none,
+    fill=none,
+    font=\footnotesize,
+    /tikz/every even column/.append style={column sep=9pt},
+  },
+  clip=false,
+]
+  % Local regions mark distinct transitions rather than one universal date.
+  \path[fill=trendRed!8, draw=none]
+    (axis cs:2002.5,45) rectangle (axis cs:2006.2,190);
+  \path[fill=trendBlack!7, draw=none]
+    (axis cs:2005.0,0.55) rectangle (axis cs:2009.2,9);
+
+  \addplot[
+    color=trendOrange,
+    mark=triangle*,
+    mark size=2.15pt,
+    line width=1.25pt,
+    restrict x to domain=1970:2022,
+  ] table[x index=0,y index=1]
+    {data/microprocessor-trends/processor-summary.dat};
+  \addlegendentry{transistor count}
+
+  \addplot[
+    color=trendGreen,
+    mark=square*,
+    mark size=1.95pt,
+    line width=1.25pt,
+    restrict x to domain=1970:2022,
+  ] table[x index=0,y index=2]
+    {data/microprocessor-trends/processor-summary.dat};
+  \addlegendentry{base frequency}
+  \addplot[
+    forget plot,
+    color=trendGreen,
+    densely dashed,
+    mark=square,
+    mark size=2.5pt,
+    mark options={line width=0.9pt, fill=white},
+    line width=1.1pt,
+    restrict x to domain=2023:2027,
+  ] table[x index=0,y index=2]
+    {data/microprocessor-trends/processor-summary.dat};
+
+  \addplot[
+    color=trendRed,
+    mark=triangle*,
+    mark options={rotate=180},
+    mark size=2.1pt,
+    line width=1.25pt,
+    restrict x to domain=1970:2022,
+  ] table[x index=0,y index=3]
+    {data/microprocessor-trends/processor-summary.dat};
+  \addlegendentry{typical power}
+  \addplot[
+    forget plot,
+    color=trendRed,
+    densely dashed,
+    mark=triangle,
+    mark options={rotate=180, line width=0.9pt, fill=white},
+    mark size=2.55pt,
+    line width=1.1pt,
+    restrict x to domain=2023:2027,
+  ] table[x index=0,y index=3]
+    {data/microprocessor-trends/processor-summary.dat};
+
+  \addplot[
+    color=trendBlack,
+    mark=diamond*,
+    mark size=1.95pt,
+    line width=1.25pt,
+    restrict x to domain=1970:2022,
+  ] table[x index=0,y index=4]
+    {data/microprocessor-trends/processor-summary.dat};
+  \addlegendentry{cores / threads}
+  \addplot[
+    forget plot,
+    color=trendBlack,
+    densely dashed,
+    mark=diamond,
+    mark size=2.45pt,
+    mark options={line width=0.9pt, fill=white},
+    line width=1.1pt,
+    restrict x to domain=2023:2027,
+  ] table[x index=0,y index=4]
+    {data/microprocessor-trends/processor-summary.dat};
+
+  \draw[trendGreen, line width=1.0pt]
+    (axis cs:2004.0,7200) -- (axis cs:2025.0,7200);
+  \draw[trendGreen, line width=1.0pt]
+    (axis cs:2004.0,6100) -- (axis cs:2004.0,8500);
+
+  \node[font=\footnotesize, text=trendRed, anchor=north]
+    at (rel axis cs:0.24,-0.17) {Dennard scaling ends $\rightarrow$ power wall};
+  \node[font=\footnotesize, text=trendGreen, anchor=north]
+    at (rel axis cs:0.58,-0.17) {frequency scaling stalls};
+  \node[font=\footnotesize, text=trendBlack, anchor=north]
+    at (rel axis cs:0.85,-0.17) {multicore response};
+
+\end{axis}
+
+\begin{axis}[
+  slide axis,
+  name=memory,
+  at={(0,0)},
+  anchor=south west,
+  width=15.8cm,
+  height=3.0cm,
+  xmin=1998,
+  xmax=2027,
+  ymin=0.72,
+  ymax=72,
+  ymode=log,
+  xtick={2000,2005,2010,2015,2020,2026},
+  ytick={1,10},
+  xlabel={year},
+  ylabel={relative to 1999},
+  ylabel style={font=\footnotesize},
+  clip=false,
+]
+  \addplot[
+    fill=trendRed!11,
+    draw=none,
+  ] coordinates {
+    (1999,1.00)
+    (2003,4.91)
+    (2007,9.53)
+    (2014,28.16)
+    (2017,34.98)
+    (2020,42.11)
+    (2021,45.62)
+    (2021,1.30)
+    (2017,1.30)
+    (1999,1.00)
+  } \closedcycle;
+
+  \addplot[
+    color=trendCpu,
+    mark=*,
+    mark size=2.0pt,
+    line width=1.3pt,
+  ] table {data/microprocessor-trends/cpu-relative.dat};
+
+  \addplot[
+    color=trendMemory,
+    mark=square*,
+    mark size=2.0pt,
+    line width=1.3pt,
+  ] table {data/microprocessor-trends/dram-bandwidth-relative.dat};
+
+  \addplot[
+    color=trendBlack,
+    mark=triangle*,
+    mark size=1.95pt,
+    line width=1.15pt,
+  ] table {data/microprocessor-trends/dram-latency-relative.dat};
+  \addplot[
+    color=trendBlack,
+    densely dashed,
+    line width=1.0pt,
+  ] coordinates {(2017,1.3) (2026,1.3)};
+
+  \node[font=\large\itshape, text=trendRed, anchor=center]
+    at (axis cs:2010.5,4.7) {memory wall};
+  \node[event label, text=trendCpu, anchor=north west]
+    at (axis cs:2016.0,37) {single-thread};
+  \node[direct label, text=trendMemory]
+    at (axis cs:2027.5,22) {DRAM bandwidth};
+  \node[direct label, text=trendBlack]
+    at (axis cs:2027.5,1.3) {DRAM latency};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

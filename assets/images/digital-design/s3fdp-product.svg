@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 12 281.05 126" role="img" aria-labelledby="title desc">
+  <title id="title">S3FDP product stage</title>
+  <desc id="desc">Zoom on the decode, exponent addition, and exact significand multiplication stage.</desc>
+  <rect x="76" y="38" width="194" height="88" fill="#d1782d" opacity=".13"/>
+  <image href="s3fdp-reference.svg" x="0" y="0" width="281.05" height="413.01"/>
+</svg>

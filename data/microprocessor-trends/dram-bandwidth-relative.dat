@@ -1,0 +1,8 @@
+# Year  maximum mainstream module bandwidth relative to DDR-400 (3.2 GB/s)
+# Values are based on the JEDEC-generation ranges in Hanindhito et al. Part II.
+1998  1.000
+2003  2.667
+2007  5.333
+2014  8.000
+2020  22.000
+2026  22.000

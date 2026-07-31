@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="270" viewBox="0 0 1200 270" role="img" aria-labelledby="title desc">
+  <title id="title">Positive E4M3FN values around zero</title>
+  <desc id="desc">A number line showing zero, seven positive subnormal values, and the first nine positive normal values.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#20262c"/>
+    </marker>
+  </defs>
+
+  <text x="600" y="30" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#20262c">positive values near zero · one step = 2<tspan baseline-shift="super" font-size="15">-9</tspan></text>
+  <line x1="70" y1="115" x2="1135" y2="115" stroke="#20262c" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <g fill="#b7791f" stroke="#b7791f">
+    <circle cx="132.5" cy="115" r="7"/><circle cx="195" cy="115" r="7"/>
+    <circle cx="257.5" cy="115" r="7"/><circle cx="320" cy="115" r="7"/>
+    <circle cx="382.5" cy="115" r="7"/><circle cx="445" cy="115" r="7"/>
+    <circle cx="507.5" cy="115" r="7"/>
+    <line x1="132.5" y1="164" x2="507.5" y2="164" stroke-width="4"/>
+    <line x1="132.5" y1="156" x2="132.5" y2="172" stroke-width="3"/>
+    <line x1="507.5" y1="156" x2="507.5" y2="172" stroke-width="3"/>
+  </g>
+
+  <g fill="#0f766e" stroke="#0f766e">
+    <circle cx="570" cy="115" r="7"/><circle cx="632.5" cy="115" r="7"/>
+    <circle cx="695" cy="115" r="7"/><circle cx="757.5" cy="115" r="7"/>
+    <circle cx="820" cy="115" r="7"/><circle cx="882.5" cy="115" r="7"/>
+    <circle cx="945" cy="115" r="7"/><circle cx="1007.5" cy="115" r="7"/>
+    <circle cx="1070" cy="115" r="7"/>
+    <line x1="570" y1="164" x2="1070" y2="164" stroke-width="4"/>
+    <line x1="570" y1="156" x2="570" y2="172" stroke-width="3"/>
+    <line x1="1070" y1="156" x2="1070" y2="172" stroke-width="3"/>
+  </g>
+
+  <circle cx="70" cy="115" r="7" fill="#20262c"/>
+  <g font-family="Inter, Arial, sans-serif" font-size="18" fill="#20262c">
+    <text x="70" y="90" text-anchor="middle">0</text>
+    <text x="132.5" y="90" text-anchor="middle">2<tspan baseline-shift="super" font-size="12">-9</tspan></text>
+    <text x="507.5" y="90" text-anchor="middle">7 × 2<tspan baseline-shift="super" font-size="12">-9</tspan></text>
+    <text x="570" y="90" text-anchor="middle">2<tspan baseline-shift="super" font-size="12">-6</tspan></text>
+    <text x="1070" y="90" text-anchor="middle">2<tspan baseline-shift="super" font-size="12">-5</tspan></text>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <text x="320" y="205" font-size="22" font-weight="700" fill="#b7791f">subnormal</text>
+    <text x="320" y="231" font-size="17" fill="#20262c">e = 0000 · m = 001 … 111</text>
+    <text x="820" y="205" font-size="22" font-weight="700" fill="#0f766e">normal</text>
+    <text x="820" y="231" font-size="17" fill="#20262c">e = 0001 · hidden leading 1</text>
+  </g>
+</svg>

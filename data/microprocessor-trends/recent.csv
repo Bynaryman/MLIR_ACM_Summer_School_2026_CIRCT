@@ -1,0 +1,6 @@
+year,product,base_frequency_mhz,power_w,logical_threads,source
+2024.67,Intel Xeon 6980P,2000,500,256,https://www.intel.com/content/www/us/en/products/sku/240777/intel-xeon-6980p-processor-504m-cache-2-00-ghz/specifications.html
+2024.78,AMD EPYC 9965,2250,500,384,https://www.amd.com/en/products/processors/server/epyc/9005-series.html
+2025.56,AMD Ryzen Threadripper PRO 9995WX,2500,350,192,https://www.amd.com/en/products/processors/workstations/ryzen-threadripper/9000-wx-series/amd-ryzen-threadripper-pro-9995wx.html
+2026.38,Intel Xeon 6990E+,2200,450,288,https://www.intel.com/content/www/us/en/products/sku/246074/intel-xeon-6990e-processor-576m-cache-2-20-ghz/specifications.html
+2026.56,AMD EPYC 9996,2550,600,512,https://www.amd.com/en/products/processors/server/epyc/9006-series.html

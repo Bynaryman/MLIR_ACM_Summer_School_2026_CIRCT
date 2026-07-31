@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 263 255 144" role="img" aria-labelledby="title desc">
+  <title id="title">S3FDP carry-save accumulation stage</title>
+  <desc id="desc">Zoom on the carry-save accumulator built from repeated ripple-carry cells and state registers.</desc>
+  <rect x="46" y="272" width="224" height="126" fill="#695097" opacity=".13"/>
+  <image href="s3fdp-reference.svg" x="0" y="0" width="281.05" height="413.01"/>
+</svg>

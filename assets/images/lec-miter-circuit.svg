@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620"
+     viewBox="0 0 1200 620" role="img"
+     aria-labelledby="title description">
+  <title id="title">A circuit-equivalence miter drawn as branching pipes</title>
+  <desc id="description">
+    Shared inputs split into an original circuit and an optimized circuit.
+    Their outputs meet at an XOR comparison joint whose output indicates a
+    difference.
+  </desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#52616e"/>
+    </marker>
+  </defs>
+
+  <!-- Dark rims under pale pipes keep the split and merge readable. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 45 310 H 155 C 220 310 210 170 285 170 H 760
+             C 830 170 840 255 885 285"
+          stroke="#52616e" stroke-width="58"/>
+    <path d="M 45 310 H 155 C 220 310 210 450 285 450 H 760
+             C 830 450 840 365 885 335"
+          stroke="#52616e" stroke-width="58"/>
+    <path d="M 45 310 H 155 C 220 310 210 170 285 170 H 760
+             C 830 170 840 255 885 285"
+          stroke="#e4ebef" stroke-width="44"/>
+    <path d="M 45 310 H 155 C 220 310 210 450 285 450 H 760
+             C 830 450 840 365 885 335"
+          stroke="#e4ebef" stroke-width="44"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <text x="6" y="235" font-size="27" font-weight="650" fill="#425466">
+      shared inputs
+    </text>
+
+    <rect x="285" y="103" width="455" height="134" rx="8"
+          fill="#ffffff" stroke="#0f766e" stroke-width="5"/>
+    <text x="318" y="145" font-size="25" font-weight="650" fill="#52616e">
+      circuit 1 - original
+    </text>
+    <text x="318" y="199" font-family="IBM Plex Mono, Consolas, monospace"
+          font-size="35" font-weight="700" fill="#17212b">
+      ex1_fma.mlir
+    </text>
+
+    <rect x="285" y="383" width="455" height="134" rx="8"
+          fill="#ffffff" stroke="#0f766e" stroke-width="5"/>
+    <text x="318" y="425" font-size="25" font-weight="650" fill="#52616e">
+      circuit 2 - optimized
+    </text>
+    <text x="318" y="479" font-family="IBM Plex Mono, Consolas, monospace"
+          font-size="31" font-weight="700" fill="#17212b">
+      ex2_fma_optimized.mlir
+    </text>
+
+    <circle cx="940" cy="310" r="68" fill="#fff6d8"
+            stroke="#a67816" stroke-width="6"/>
+    <text x="940" y="324" text-anchor="middle" font-size="38"
+          font-weight="800" fill="#674905">XOR</text>
+
+    <path d="M 1008 310 H 1148" fill="none" stroke="#52616e"
+          stroke-width="12" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <text x="1075" y="240" text-anchor="middle" font-size="27"
+          font-weight="650" fill="#425466">difference?</text>
+
+    <text x="600" y="590" text-anchor="middle" font-size="31"
+          font-weight="650" fill="#17212b">
+      Same inputs; corresponding outputs meet at the comparison joint.
+    </text>
+  </g>
+</svg>

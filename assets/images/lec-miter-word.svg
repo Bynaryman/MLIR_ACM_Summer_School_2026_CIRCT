@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620"
+     viewBox="0 0 1200 620" role="img"
+     aria-labelledby="title description">
+  <title id="title">An ordinary pipe mitre joint</title>
+  <desc id="description">
+    Two pipes cut at 45 degrees and joined at 90 degrees, illustrating the
+    ordinary word miter in US English and mitre in British English.
+  </desc>
+
+  <image href="mitre-joint-pipe.png" x="360" y="8" width="480" height="395"
+         preserveAspectRatio="xMidYMid meet"/>
+
+  <text x="600" y="475" text-anchor="middle"
+        font-family="Inter, Arial, sans-serif" font-size="45" fill="#17212b">
+    <tspan fill="#0f766e" font-weight="700">miter</tspan>
+    <tspan> (US English) / </tspan>
+    <tspan fill="#0f766e" font-weight="700">mitre</tspan>
+    <tspan> (British English)</tspan>
+  </text>
+  <text x="600" y="530" text-anchor="middle"
+        font-family="Inter, Arial, sans-serif" font-size="34" fill="#425466">
+    Two pieces meet at an angled joint.
+  </text>
+  <a href="https://commons.wikimedia.org/wiki/File:Mitre_joint_pipe.png">
+    <text x="600" y="590" text-anchor="middle"
+          font-family="Inter, Arial, sans-serif" font-size="21" fill="#335f78">
+      VanBuren, Wikimedia Commons - public domain
+    </text>
+  </a>
+</svg>

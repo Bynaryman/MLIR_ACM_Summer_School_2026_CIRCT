@@ -1,0 +1,14 @@
+# Representative medians from the historical samples, plus current public specifications.
+# year  transistors_k  base_frequency_mhz  typical_power_w  logical_threads
+1972   2.93       0.61    0.43    1
+1980   29.16      5.05    1.72    1
+1990   1207.90    29.09   3.12    1
+2000   21970.32   509.37  33.08   1
+2004   115856.77  1860.76 93.19   1
+2008   394510.68  2641.65 85.82   3
+2012   2100000    3000    130     16
+2016   5700000    2450    140     40
+2020   23200000   2700    205     56
+2021   56000000   nan     nan     nan
+2024   nan        2125    500     320
+2026   nan        2375    525     400

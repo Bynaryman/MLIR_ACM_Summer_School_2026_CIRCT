@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 112 281.05 170" role="img" aria-labelledby="title desc">
+  <title id="title">S3FDP alignment stage</title>
+  <desc id="desc">Zoom on shift generation, barrel shifting, padding, and alignment into the accumulator.</desc>
+  <rect x="55" y="120" width="218" height="151" fill="#238d83" opacity=".13"/>
+  <image href="s3fdp-reference.svg" x="0" y="0" width="281.05" height="413.01"/>
+</svg>

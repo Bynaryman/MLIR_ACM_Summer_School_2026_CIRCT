@@ -1,0 +1,9 @@
+# Year  single-thread performance relative to the 1999 median
+# Representative medians from specint.dat around each milestone year.
+1999  1.00
+2003  4.91
+2007  9.53
+2014  28.16
+2017  34.98
+2020  42.11
+2021  45.62
