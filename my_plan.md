@@ -9,6 +9,10 @@
 
 ## Refresher on digital design
 
+ - solve problem with electron flows
+ -   - already the case with compil software, but someone has to build lower parts
+ -   - hardware freedom notion
+ -   - like my paris holigrail, there are compilation software optim, but when we build the machine, other opportunities open
  - Reminders verilog vhdl fsm comb seq
  - Mutli-Stage prism, multi IR
    - the input / upstream IR is verilog and or vhdl, they are interchganble, they are description language like html
@@ -22,6 +26,8 @@
    - modules, wires, seq, comb logic, fsm, etc..
 	 - examples in sv / verilog versus schematic
  - HLS and core generator, what is that ? compilation approach to hardware
+ - le goldbot.org for HW people
+ - https://godbolt.org/
 
 
 ## MLIR possible ? Yes, CIRCT !
