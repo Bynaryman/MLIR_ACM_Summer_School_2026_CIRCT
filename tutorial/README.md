@@ -241,7 +241,7 @@ such as `--lower-cf-to-handshake`, but no direct generic conversion from
 The output should contain:
 
 ```mlir
-%product = comb.mul %lhs, %rhs : i8
+%0 = comb.mul %in0, %in1 : i8
 ```
 
 `scripts/run.sh` deliberately uses two tool invocations and leaves both stages

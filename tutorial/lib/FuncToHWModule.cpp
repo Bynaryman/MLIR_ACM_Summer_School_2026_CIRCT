@@ -50,7 +50,7 @@ public:
         StringAttr name =
             function.getArgAttrOfType<StringAttr>(index, "hw.name");
         if (!name)
-          name = makePortName("arg", index);
+          name = makePortName("in", index);
         inputs.push_back(
             {{name, argument.getType(),
               circt::hw::ModulePort::Direction::Input},
@@ -63,7 +63,7 @@ public:
         StringAttr name =
             function.getResultAttrOfType<StringAttr>(index, "hw.name");
         if (!name)
-          name = makePortName("result", index);
+          name = makePortName("out", index);
         outputs.push_back(
             {{name, type, circt::hw::ModulePort::Direction::Output},
              static_cast<size_t>(index), function.getResultAttrDict(index),

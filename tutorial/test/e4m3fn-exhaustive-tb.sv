@@ -14,11 +14,7 @@ module e4m3fn_exhaustive_tb;
   integer errors;
   reg [1023:0] vector_path;
 
-  e4m3fn_mul dut (
-    .lhs(lhs),
-    .rhs(rhs),
-    .result(result)
-  );
+  e4m3fn_mul dut (lhs, rhs, result);
 
   initial begin
     if (!$value$plusargs("VECTORS=%s", vector_path))

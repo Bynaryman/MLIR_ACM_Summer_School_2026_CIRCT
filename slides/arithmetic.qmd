@@ -1,62 +1,38 @@
-## Exercise 6: one function, one hardware objective {#arithmetic-objective}
+## Exercise 6: start from generic MLIR {#arithmetic-objective}
 
-:::: {.columns}
-::: {.column width="48%"}
-**Input: arithmetic function**
+```bash
+cat examples/ex6_arith_muli.mlir
+```
 
 ```mlir
-func.func @ex6_integer_mul(
-    %lhs : i8 {hw.name = "lhs"},
-    %rhs : i8 {hw.name = "rhs"})
-    -> (i8 {hw.name = "product"}) {
-  %product = arith.muli %lhs, %rhs : i8
-  return %product : i8
+module {
+  func.func @ex6_integer_mul(
+      %lhs : i8,
+      %rhs : i8) -> i8 {
+    %product = arith.muli %lhs, %rhs : i8
+    return %product : i8
+  }
 }
 ```
+
+::: {.fragment}
+**Objective:** choose the simplest hardware architecture for this computation:
+one combinational module, ready for SystemVerilog emission and logic synthesis.
 :::
 
-::: {.column width="4%"}
-$$\Longrightarrow$$
-:::
+## Exercise 6: find the missing passes - 3 min {#arithmetic-exercise-6}
 
-::: {.column width="48%"}
-**Objective: combinational module**
+To reach that objective, two things must change:
 
-```mlir
-hw.module @ex6_integer_mul(
-    in %lhs : i8,
-    in %rhs : i8,
-    out product : i8) {
-  %product = comb.mul %lhs, %rhs : i8
-  hw.output %product : i8
-}
-```
-:::
-::::
+- `func.func` and `return` must become a hardware module boundary.
+- `arith.muli` must become a combinational multiplier.
 
-The analogies are visible, but they are not equivalent transformations:
-
-| MLIR source | Hardware analogue | What is missing? |
-|---|---|---|
-| `func.func` / `return` | `hw.module` / `hw.output` | module and interface policy |
-| `arith.muli` | `comb.mul` | a supported operation mapping |
-
-`func` and `arith` are upstream MLIR dialects. `hw` and `comb` express the
-CIRCT hardware objective.
-
-## Exercise 6: ask the pass registry - 3 min {#arithmetic-exercise-6}
-
-Can upstream `circt-opt` implement both arrows?
+Does upstream `circt-opt` provide both transformations?
 
 ```bash
 circt-opt --help | grep -i arith
 circt-opt --help | grep -i func
 ```
-
-Find:
-
-1. A pass connecting generic arithmetic to combinational hardware.
-2. A pass directly converting `func.func` to `hw.module`.
 
 :::: {.columns .fragment}
 ::: {.column width="50%"}
@@ -81,7 +57,7 @@ No direct generic `func.func` → `hw.module` pass.
 :::
 ::::
 
-## Exercise 6: two arrows, two tools {#arithmetic-integer-pipeline}
+## Exercise 6: two transformations, two tools {#arithmetic-integer-pipeline}
 
 :::: {.columns}
 ::: {.column width="57%"}
@@ -93,6 +69,7 @@ circt-tutorial-opt examples/ex6_arith_muli.mlir \
   -o build/ex6_hw_arith.mlir
 ```
 
+::: {.fragment data-fragment-index="0"}
 **2. CIRCT mapping: supported integer arithmetic becomes `comb`**
 
 ```bash
@@ -101,16 +78,17 @@ circt-opt build/ex6_hw_arith.mlir \
   -o build/ex6_hw_comb.mlir
 ```
 :::
+:::
 
 ::: {.column width="43%"}
-::: {.fragment}
+::: {.fragment data-fragment-index="1"}
 ```mlir
 hw.module @ex6_integer_mul(
-    in %lhs : i8,
-    in %rhs : i8,
-    out product : i8) {
-  %product = comb.mul %lhs, %rhs : i8
-  hw.output %product : i8
+    in %in0 : i8,
+    in %in1 : i8,
+    out out0 : i8) {
+  %0 = comb.mul %in0, %in1 : i8
+  hw.output %0 : i8
 }
 ```
 :::
