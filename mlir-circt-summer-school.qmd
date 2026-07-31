@@ -1,7 +1,14 @@
 ---
 title: "Digital Design with MLIR and CIRCT"
-subtitle: "From hardware IRs to application-specific arithmetic"
-author: "Louis Ledoux"
+subtitle: "From hardware IRs to application-specific arithmetic<br><span class='title-event'>ACM Europe School on MLIR 2026 · A Coruña</span>"
+author:
+  - name: "Louis Ledoux"
+    affiliations:
+      - name: "INSA Lyon · Inria, Emeraude"
+      - name: "University of Rennes · IRISA · Inria"
+date: "2026-08-10"
+date-format: "D MMMM YYYY"
+bibliography: references.bib
 
 filters:
   - filters/slide-layout.lua
@@ -18,11 +25,17 @@ format:
       - styles/lecture.css
       - styles/diagrams.css
       - styles/course.css
+      - styles/motivation.css
       - styles/multiplier.css
+      - styles/hls.css
       - styles/code.css
       - styles/code-mlir.css
     slide-level: 2
     navigation-mode: vertical
+    view: slide
+    scroll-view:
+      activate: false
+      activation-width: 1
 
     transition: slide
     background-transition: fade
@@ -30,7 +43,7 @@ format:
     auto-animate-easing: ease-in-out
     auto-animate-duration: 0.55
 
-    controls: true
+    controls: false
     controls-layout: bottom-right
     menu:
       side: left
@@ -38,7 +51,7 @@ format:
       numbers: true
     jump-to-slide: true
     progress: true
-    slide-number: h/v
+    slide-number: c/t
 
     width: 1600
     height: 900
@@ -47,7 +60,7 @@ format:
     center-title-slide: true
     auto-stretch: false
     parallax-background-image: assets/images/background.png
-    parallax-background-size: "3200px 1800px"
+    parallax-background-size: "4096px 2160px"
     code-copy: true
     code-overflow: scroll
     code-block-height: 620px
@@ -57,14 +70,19 @@ format:
 
 ::: {.course-toc}
 1. [A hardware designer's perspective](#about)
-2. [Digital design: from programs to circuits](#digital-design)
-3. [MLIR and CIRCT](#circt)
-4. [Hands-on CIRCT tools](#circt-tools)
-5. [Application-specific arithmetic](#arithmetic)
-6. [MLIR-based HLS](#hls)
+2. [From problems to electron flow](#motivation)
+3. [Digital design primer: bits, logic, and state](#digital-design)
+4. [MLIR and CIRCT](#circt)
+5. [Hands-on CIRCT tools](#circt-tools)
+6. [Application-specific arithmetic](#arithmetic)
+7. [MLIR-based HLS](#hls)
 :::
 
-# `$ whoami` {#about .section-title .center}
+# `$ whoami` {#about .section-title .center .whoami-intro}
+
+::: {.whoami-joke-line .fragment}
+[Not an MLIR expert]{.marker} ... `:')`
+:::
 
 ## Louis Ledoux {#whoami}
 
@@ -74,73 +92,40 @@ format:
 :::
 
 ::: {.whoami-copy}
-::: {.whoami-role}
-Postdoctoral researcher at INSA Lyon and Inria, Emeraude<br>
-Incoming Associate Professor at the University of Rennes, IRISA and Inria
-:::
-
-::: {.whoami-focus}
-I work where **arithmetic**, **digital design**, and **compiler IRs** meet.
-:::
-
-::: {.whoami-topics}
-Small floating-point formats · circuit generators · systolic arrays ·
-FPGA/ASIC/HLS
-:::
-
-::: {.whoami-perspective}
-My perspective here is not compiler theory: it is using MLIR and CIRCT to build
-circuits.
-:::
-
-::: {.whoami-outside}
-Outside research: embedded audio, Eurorack, and installation art.
-:::
+<ul class="whoami-list">
+  <li class="fragment" data-fragment-index="0">Postdoctoral researcher at INSA Lyon and Inria, Emeraude.</li>
+  <li class="fragment" data-fragment-index="1">I design <span class="marker">arithmetic circuits</span> and circuit generators with MLIR and CIRCT.</li>
+  <li class="fragment" data-fragment-index="2">Incoming Associate Professor at University of Rennes, IRISA and Inria, working on <span class="marker">systolic arrays</span> and <span class="marker">small floating-point formats</span>.</li>
+  <li class="fragment" data-fragment-index="3">Outside work: embedded audio, Eurorack, installation art, and the dog in the photograph.</li>
+</ul>
 :::
 :::
 
-::: {.notes}
-Do not read a CV. Explain the point of view for the session: arithmetic and
-digital design first, compiler infrastructure as the means to construct and
-transform circuits. The photograph can carry the personal anecdote.
-:::
+# From problems to electron flow {#motivation .section-title .center}
 
-# From programs to circuits {#digital-design .section-title .center}
+{{< include slides/motivation.qmd >}}
 
-## Digital design, briefly {#digital-design-seed}
+# Digital design primer {#digital-design .section-title .center}
 
-- RTL and hardware description languages
-- Combinational versus sequential behavior
-- Synthesis, placement, and the multi-stage design flow
+{{< include slides/digital-design.qmd >}}
 
-# MLIR for hardware {#circt .section-title .center}
+# CIRCT: MLIR toward hardware {#circt .section-title .center}
 
-## Why CIRCT? {#circt-seed}
-
-- Hardware concepts represented as dialects
-- Modules, values, combinational logic, state, and control
-- Progressive lowering from intent to RTL
+{{< include slides/circt.qmd >}}
 
 # CIRCT in practice {#circt-tools .section-title .center}
 
-## Toolchain checkpoint {#circt-tools-seed}
-
-- Import and inspect a small design
-- Run transformations and synthesis
-- Compare structure, metrics, and equivalence
+{{< include slides/circt-tools.qmd >}}
 
 # Arithmetic becomes hardware {#arithmetic .section-title .center}
 
-## One E4M3 multiplier {#arithmetic-seed}
-
-- Match floating-point arithmetic in MLIR
-- Build the equivalent CIRCT `comb` network
-- Decode, multiply, normalize, round, and pack
+{{< include slides/arithmetic.qmd >}}
 
 # HLS with MLIR and CIRCT {#hls .section-title .center}
 
-## Scheduling and pipelines {#hls-seed}
+{{< include slides/hls-eurollvm.qmd >}}
 
-- Move from one operator to a scheduled datapath
-- Make latency, resources, and control explicit
-- Connect the exercise to the EuroLLVM HLS material
+## References {#references .smaller}
+
+::: {#refs}
+:::
