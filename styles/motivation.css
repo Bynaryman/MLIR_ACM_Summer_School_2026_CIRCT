@@ -1,0 +1,88 @@
+.reveal #motivation-hardware-freedom .column:first-child {
+  text-align: center;
+}
+
+.reveal .fragment.instant-fragment,
+.reveal .fragment.instant-fragment.visible {
+  transition: none !important;
+  animation: none !important;
+}
+
+.reveal .motivation-layer-states,
+.reveal .motivation-layer-copy {
+  display: grid !important;
+  height: 625px;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+}
+
+.reveal .motivation-layer-states > p {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  grid-area: 1 / 1;
+  place-items: center;
+}
+
+.reveal .motivation-layer-states > p > img,
+.reveal .motivation-layer-copy > .motivation-layer-copy-state {
+  grid-area: 1 / 1;
+}
+
+.reveal .motivation-layer-states img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.reveal .motivation-layer-copy-state {
+  width: 100%;
+  text-align: left;
+}
+
+.reveal .motivation-state-label {
+  margin-bottom: 0.55em;
+  color: #24313a;
+  font-size: 0.82em;
+  font-weight: 750;
+}
+
+.reveal .motivation-layer-copy-state ul {
+  margin-top: 0.45em;
+}
+
+.reveal .motivation-impact {
+  margin: 0.3em 0 0.65em;
+  color: var(--course-accent);
+  font-size: 0.9em;
+  font-weight: 750;
+  line-height: 1.12;
+}
+
+.reveal .motivation-impact span {
+  display: block;
+}
+
+.reveal .motivation-impact .motivation-impact-arrow {
+  margin: 0.1em 0;
+  color: #52616e;
+}
+
+.reveal #motivation-e4m3-format .bit-layout {
+  margin-top: 0.2em;
+}
+
+.reveal #motivation-e4m3-format ul,
+.reveal #motivation-explicit-choices ol {
+  width: min(100%, 34em);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.reveal #arithmetic-normal-path img {
+  max-height: 430px;
+  object-fit: contain;
+}

@@ -82,6 +82,7 @@
 }
 
 .reveal .bit-layout {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 4fr 3fr;
   width: min(100%, 26em);

@@ -1,12 +1,19 @@
 /* Shared presentation and sizing for all code blocks. */
 
 .reveal div.sourceCode {
+  box-sizing: border-box;
   width: 100%;
   overflow: hidden;
   border: 1px solid #d8dee9;
   border-radius: 0.45rem;
   box-shadow: 0 0.14rem 0.42rem rgb(15 23 42 / 14%);
   background: #ffffff;
+}
+
+/* Quarto gives direct column children horizontal margins; auto width keeps
+   those margins inside the column instead of extending a 100% box past it. */
+.reveal .columns > .column > div.sourceCode {
+  width: auto;
 }
 
 .reveal div.sourceCode pre.sourceCode,

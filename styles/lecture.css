@@ -1,11 +1,26 @@
 /* Clean Reveal.js course style. */
 
 .reveal {
+  --course-accent: #0f766e;
+  --course-accent-rgb: 15 118 110;
   font-size: 39px;
 }
 
-.reveal.has-parallax-background .backgrounds {
-  background-repeat: no-repeat !important;
+.reveal strong {
+  color: var(--course-accent);
+}
+
+.reveal :is(.marker, mark) {
+  padding: 0 0.08em;
+  color: var(--course-accent);
+  font-style: normal;
+  font-weight: 850;
+  background: linear-gradient(
+    transparent 44%,
+    rgb(var(--course-accent-rgb) / 24%) 44%
+  );
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .reveal h1,

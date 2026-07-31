@@ -30,6 +30,7 @@
         <RegExpr attribute="Function" context="#stay" String="\b[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_.$-]*\b"/>
 
         <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <RegExpr attribute="Data Type" context="#stay" String="\b[su]?i[1-9][0-9]*\b"/>
         <keyword attribute="Data Type" context="#stay" String="types"/>
         <keyword attribute="Constant" context="#stay" String="constants"/>
 

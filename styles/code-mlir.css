@@ -16,7 +16,7 @@
 }
 
 .reveal code.sourceCode.mlir .fu {
-  color: #0f766e;
+  color: var(--course-accent);
   font-weight: 700;
 }
 

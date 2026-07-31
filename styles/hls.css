@@ -1,0 +1,1307 @@
+/* Faithful Quarto port of the EuroLLVM 2026 Touying university theme. */
+
+.reveal {
+  --eurollvm-primary: #4a0f2f;
+  --eurollvm-secondary: #7a1f44;
+  --eurollvm-tertiary: #e76b75;
+  --eurollvm-paper: #ffffff;
+  --eurollvm-ink: #0b0b0b;
+  --eurollvm-muted: #6f6f6f;
+  --eurollvm-code: #f7f7f2;
+  --eurollvm-highlight: #fff4d6;
+}
+
+.reveal .slides section.eurollvm-slide,
+.reveal .slides section.eurollvm-section-slide,
+.reveal .slides section.eurollvm-title-slide {
+  box-sizing: border-box;
+  color: var(--eurollvm-ink);
+  background: transparent;
+  box-shadow: none;
+  font-family: "Libertinus Serif", "New Computer Modern", Georgia, serif;
+}
+
+.reveal .slides section.eurollvm-slide.present {
+  display: grid !important;
+  grid-template-rows: max-content minmax(0, 1fr);
+  height: 100%;
+  padding: 0 0.45em 0.12em;
+  position: relative;
+}
+
+.reveal section.eurollvm-slide > h2:first-child {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0.08em 0 0.18em;
+  border: 0;
+  color: #17212b;
+  font-family: var(--r-heading-font);
+  font-size: 1.16em;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.reveal section.eurollvm-slide > h2:first-child::after {
+  content: none;
+}
+
+.reveal .slides section.slide.level2.eurollvm-slide > .slide-body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-height: none;
+  align-self: stretch !important;
+  position: relative;
+}
+
+.reveal section.eurollvm-slide::before {
+  display: none;
+}
+
+.reveal section.eurollvm-slide::after {
+  display: none;
+}
+
+.reveal section.eurollvm-slide > .slide-body::before {
+  display: none;
+}
+
+.reveal section.eurollvm-slide > .slide-body::after {
+  display: none;
+}
+
+.reveal section.eurollvm-untitled > h2:first-child {
+  display: none;
+}
+
+.reveal .slides section.eurollvm-untitled.present {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+/* Section divider slides. */
+.reveal .slides section.eurollvm-section-slide.present {
+  display: grid !important;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 11%;
+  align-content: center;
+  justify-items: start;
+}
+
+.reveal section.eurollvm-section-slide > h2:first-child {
+  width: min(100%, 24em);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #17212b;
+  font-family: var(--r-heading-font);
+  font-size: 1.45em;
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.reveal section.eurollvm-section-slide > h2:first-child::before {
+  display: block;
+  margin-bottom: 0.7em;
+  color: var(--course-accent);
+  content: "MLIR-based HLS · case study";
+  font-size: 0.32em;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.reveal section.eurollvm-section-slide > h2:first-child::after {
+  display: block;
+  width: 2.8em;
+  height: 3px;
+  margin-top: 0.55em;
+  background: var(--course-accent);
+  content: "";
+}
+
+/* EuroLLVM title slide. */
+.reveal .slides section.eurollvm-title-slide.present {
+  display: block !important;
+  height: 100%;
+  padding: 0;
+}
+
+.reveal section.eurollvm-title-slide > h2:first-child {
+  display: none;
+}
+
+.reveal section.eurollvm-title-slide > .slide-body {
+  height: 100%;
+}
+
+.reveal .eurollvm-title-layout {
+  display: grid;
+  grid-template-columns: 7.55em 0.14em minmax(0, 1fr);
+  grid-template-rows: auto 1.55em auto;
+  column-gap: 0.7em;
+  width: 84%;
+  height: 630px;
+  margin: 185px auto 0;
+  align-items: start;
+}
+
+.reveal .eurollvm-title-logos {
+  display: grid;
+  grid-column: 1;
+  grid-row: 1;
+  gap: 0.4em;
+  align-content: center;
+}
+
+.reveal .eurollvm-title-logos p {
+  display: flex;
+  width: 100%;
+  height: 2.45em;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  background: var(--eurollvm-primary);
+}
+
+.reveal .eurollvm-title-logos img {
+  width: auto;
+  max-width: 82%;
+  height: auto;
+  max-height: 1.55em;
+  margin: 0;
+  object-fit: contain;
+}
+
+.reveal .eurollvm-title-rule {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  width: 100%;
+  height: 580px;
+  background: var(--eurollvm-primary);
+}
+
+.reveal .eurollvm-title-copy {
+  display: contents;
+}
+
+.reveal .eurollvm-title-name {
+  grid-column: 3;
+  grid-row: 1;
+  max-width: 11.8em;
+  color: var(--eurollvm-primary);
+  font-size: 1.95em;
+  font-weight: 700;
+  line-height: 1.16;
+  transform: translateY(-0.6em);
+}
+
+.reveal .eurollvm-title-event {
+  grid-column: 3;
+  grid-row: 3;
+  color: var(--eurollvm-primary);
+  font-size: 0.85em;
+  line-height: 1.35;
+  transform: translateY(-2.7em);
+}
+
+.reveal .eurollvm-title-authors {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+  color: var(--eurollvm-ink);
+  font-size: 0.82em;
+  line-height: 1.35;
+  text-align: right;
+  transform: translateY(-0.55em);
+}
+
+/* Shared layouts. */
+.reveal .eurollvm-grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  gap: 0.7em;
+  align-items: center;
+}
+
+.reveal .eurollvm-two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  gap: 1.05em;
+  align-items: center;
+}
+
+.reveal .eurollvm-separated > .eurollvm-column + .eurollvm-column {
+  min-height: 8em;
+  padding-left: 1.05em;
+  border-left: 2px solid var(--eurollvm-primary);
+}
+
+.reveal .eurollvm-column {
+  min-width: 0;
+}
+
+.reveal .eurollvm-subhead {
+  margin: 0 0 0.45em;
+  color: var(--eurollvm-primary);
+  font-family: "Libertinus Serif", Georgia, serif;
+  font-size: 0.82em;
+  font-weight: 700;
+}
+
+.reveal .eurollvm-column p,
+.reveal .eurollvm-column li,
+.reveal .eurollvm-backend-intro {
+  font-size: 0.78em;
+  line-height: 1.23;
+}
+
+.reveal .eurollvm-column ul,
+.reveal .eurollvm-column ol {
+  margin: 0.15em 0 0;
+}
+
+.reveal .eurollvm-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+}
+
+.reveal .eurollvm-figure {
+  color: var(--eurollvm-ink);
+  font-size: 0.68em;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.reveal .eurollvm-figure p {
+  margin: 0.2em 0 0;
+}
+
+.reveal .eurollvm-figure img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Codez-like blocks and badges. */
+.reveal .eurollvm-code-card {
+  min-width: 0;
+  padding-top: 0.08em;
+  position: relative;
+  anchor-scope: --eurollvm-code-tag;
+  border: 1.5px solid var(--eurollvm-primary);
+  border-radius: 5px;
+  background: var(--eurollvm-code);
+}
+
+.reveal .eurollvm-code-card::before,
+.reveal .eurollvm-code-card::after {
+  position: absolute;
+  z-index: 5;
+  top: -0.78em;
+  box-sizing: border-box;
+  height: 1.45em;
+  padding: 0.17em 0.46em;
+  border: 1px solid var(--eurollvm-primary);
+  font-family: "DejaVu Sans Mono", monospace;
+  font-size: 0.5em;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reveal .eurollvm-code-card::before {
+  left: 0.32em;
+  anchor-name: --eurollvm-code-tag;
+  border-radius: 5px 0 0 5px;
+  background: var(--eurollvm-primary);
+  color: #ffffff;
+  content: attr(data-tag);
+}
+
+.reveal .eurollvm-code-card::after {
+  left: 6.7em;
+  left: anchor(--eurollvm-code-tag right);
+  border-radius: 0 5px 5px 0;
+  background: var(--eurollvm-code);
+  color: var(--eurollvm-primary);
+  content: attr(data-lang);
+}
+
+.reveal .eurollvm-code-card pre,
+.reveal .eurollvm-code-card div.sourceCode {
+  width: 100%;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.reveal .eurollvm-code-card pre {
+  font-size: 0.65em;
+}
+
+.reveal .eurollvm-code-card pre.numberSource {
+  width: 100%;
+  margin-left: 0 !important;
+  padding-left: 0;
+}
+
+.reveal .eurollvm-code-card pre.numberSource code > span {
+  left: 0;
+}
+
+.reveal .eurollvm-code-card pre.numberSource code > span > a:first-child::before {
+  display: none;
+  content: none;
+}
+
+.reveal .eurollvm-code-card pre code {
+  box-sizing: border-box;
+  max-height: none;
+  padding: 0.58em 0.64em 0.48em;
+  background: transparent;
+  font-family: "DejaVu Sans Mono", monospace;
+  font-size: 0.65em;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.reveal .eurollvm-code-card > p:first-child {
+  margin: 0.24em 0.6em 0;
+  font-family: "DejaVu Sans Mono", monospace;
+  font-size: 0.4em;
+  font-weight: 700;
+}
+
+/* Motivation. */
+.reveal .motivation-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 0.9em;
+  padding-top: 0.8em;
+  align-items: start;
+}
+
+.reveal .motivation-code pre code {
+  font-size: 0.76em;
+  line-height: 1.18;
+}
+
+.reveal .motivation-photo img {
+  max-height: 630px;
+}
+
+.reveal .eurollvm-code-annotation {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid var(--eurollvm-secondary);
+  border-radius: 2px;
+  color: var(--eurollvm-primary);
+  font-size: 0.52em;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.reveal .eurollvm-code-annotation::after {
+  position: absolute;
+  top: -1.8em;
+  right: 0;
+  content: attr(data-label);
+  white-space: nowrap;
+}
+
+.reveal .eurollvm-code-annotation.linear {
+  top: 67%;
+  right: 4%;
+  left: 14%;
+  height: 12%;
+}
+
+.reveal .eurollvm-code-annotation.swiglu {
+  top: 86%;
+  left: 14%;
+  width: 46%;
+  height: 12%;
+}
+
+.reveal .eurollvm-code-annotation.swiglu::after {
+  top: 50%;
+  right: auto;
+  left: calc(100% + 0.6em);
+  transform: translateY(-50%);
+}
+
+.reveal .eurollvm-audio-left {
+  min-width: 0;
+}
+
+.reveal .audio-code pre code {
+  font-size: 0.68em;
+  line-height: 1.24;
+}
+
+.reveal .eurollvm-softclip {
+  width: 54%;
+  margin: 0.45em 0 0 0.7em;
+}
+
+.reveal #hls-motivation-audio .motivation-photo {
+  height: 100%;
+}
+
+.reveal #hls-motivation-audio .motivation-photo img {
+  max-height: 680px;
+}
+
+/* Typst-generated diagrams and state stacks. */
+.reveal .eurollvm-diagram-stack,
+.reveal .eurollvm-full-diagram {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.reveal .eurollvm-full-diagram {
+  overflow: hidden;
+}
+
+.reveal .audio-wafer-stack,
+.reveal .eurollvm-diagram-stack,
+.reveal .eurollvm-harico-pass-states {
+  display: grid !important;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+}
+
+.reveal .audio-wafer-stack > p,
+.reveal .eurollvm-diagram-stack > p {
+  display: grid;
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  place-items: center;
+}
+
+.reveal .audio-wafer-stack > p > img,
+.reveal .eurollvm-diagram-stack > p > img,
+.reveal .eurollvm-harico-pass-states > div {
+  grid-area: 1 / 1;
+}
+
+.reveal .eurollvm-diagram-stack img,
+.reveal .eurollvm-full-diagram img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.reveal #hls-overall-levels .slide-body {
+  padding-top: 0.15em;
+}
+
+.reveal #hls-frontends .eurollvm-stage,
+.reveal #hls-backends .eurollvm-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.reveal #hls-frontends .eurollvm-two-columns,
+.reveal #hls-backends .eurollvm-two-columns {
+  width: 86%;
+  margin: 0 auto;
+}
+
+.reveal #hls-frontends .eurollvm-column p,
+.reveal #hls-frontends .eurollvm-column li,
+.reveal #hls-backends .eurollvm-column p,
+.reveal #hls-backends .eurollvm-column li,
+.reveal #hls-backends .eurollvm-backend-intro {
+  font-size: 0.9em;
+}
+
+.reveal .eurollvm-backend-intro {
+  width: 86%;
+  margin: 0 auto 0.45em;
+}
+
+/* Overlay states. */
+.reveal .eurollvm-overlay {
+  display: flex;
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 0 0 10000px rgb(255 255 255 / 72%);
+}
+
+.reveal .eurollvm-overlay-message {
+  max-width: 82%;
+  padding: 0.34em 0.55em;
+  border: 2px solid var(--eurollvm-secondary);
+  border-radius: 6px;
+  background: var(--eurollvm-highlight);
+  color: var(--eurollvm-primary);
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.18;
+  text-align: center;
+}
+
+/* Polynomial slide. */
+.reveal .polynomial-grid {
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  gap: 0.75em;
+  padding-top: 0.55em;
+  align-items: start;
+}
+
+.reveal .eurollvm-polynomial-copy {
+  min-width: 0;
+  font-size: 0.64em;
+}
+
+.reveal .eurollvm-polynomial-copy > ul {
+  margin: 0.08em 0 0.2em;
+}
+
+.reveal .eurollvm-poly-plots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.15em;
+  margin: 0.15em 0;
+}
+
+.reveal .eurollvm-poly-plots img {
+  height: 105px;
+}
+
+.reveal .eurollvm-poly-plots .eurollvm-figure {
+  font-size: 0.72em;
+}
+
+.reveal .eurollvm-example-box {
+  padding: 0.45em 0.55em;
+  border: 1px solid #d9b067;
+  background: #fff7e8;
+  font-size: 0.76em;
+}
+
+.reveal .eurollvm-example-box p {
+  margin: 0.12em 0;
+}
+
+.reveal .eurollvm-example-box code {
+  color: var(--eurollvm-ink);
+  font-size: 0.67em;
+  overflow-wrap: anywhere;
+}
+
+.reveal .eurollvm-example-box .math.display {
+  margin: 0.12em 0;
+  font-size: 0.57em;
+}
+
+.reveal .poster-figure img {
+  height: 430px;
+}
+
+/* Llama recap slide. */
+.reveal .eurollvm-rendered-ir {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0.2em 0.1em 0.35em;
+  align-items: center;
+  justify-content: center;
+}
+
+.reveal .eurollvm-rendered-ir p {
+  width: 100%;
+  margin: 0;
+}
+
+.reveal .eurollvm-rendered-ir img {
+  display: block;
+  width: 98%;
+  max-height: 700px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.reveal .eurollvm-recap-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.92fr) minmax(0, 1.28fr);
+  gap: 0.55em;
+  height: calc(100% - 1.2em);
+  padding-top: 0.2em;
+  align-items: center;
+}
+
+.reveal .eurollvm-recap-grid .eurollvm-code-card pre code {
+  font-size: 0.58em;
+  line-height: 1.1;
+}
+
+.reveal .eurollvm-recap-middle {
+  display: grid;
+  gap: 0.65em;
+}
+
+.reveal .recap-fixed pre code {
+  font-size: 0.58em !important;
+}
+
+.reveal .eurollvm-pass-strip {
+  position: absolute;
+  right: 0;
+  bottom: 5.4em;
+  left: 0;
+  font-family: "DejaVu Sans Mono", monospace;
+  font-size: 0.31em;
+  text-align: center;
+}
+
+/* Gap states. */
+.reveal .eurollvm-gap-render-states {
+  display: grid !important;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  background: transparent;
+}
+
+.reveal .eurollvm-gap-render-states > p {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  grid-area: 1 / 1;
+  place-items: center;
+}
+
+.reveal .eurollvm-gap-render-states img {
+  display: block;
+  width: 100%;
+  max-height: 700px;
+  margin: 0 auto;
+  grid-area: 1 / 1;
+  object-fit: contain;
+}
+
+/* Literature and cost-estimation slides. */
+.reveal .literature-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 0.85em;
+  padding: 0.35em 0.55em 1.6em;
+  align-items: start;
+}
+
+.reveal .eurollvm-documentation-box {
+  padding: 0.55em;
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  background: #f6f6f6;
+  font-size: 0.78em;
+}
+
+.reveal .eurollvm-documentation-box .eurollvm-subhead {
+  margin: 0 0 0.5em;
+  color: var(--eurollvm-primary);
+  font-size: 1em;
+}
+
+.reveal .eurollvm-citation-strip {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.18em;
+  left: 0.5em;
+  padding-top: 0.22em;
+  border-top: 1.5px solid var(--eurollvm-secondary);
+  font-size: 0.39em;
+}
+
+.reveal .comb-cost-grid {
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  gap: 0.8em;
+}
+
+.reveal .comb-cost-copy > ul > li {
+  font-size: 0.78em;
+}
+
+.reveal .comb-cost-copy {
+  font-size: 1em;
+  line-height: 1.2;
+}
+
+.reveal .comb-cost-copy li {
+  margin: 0.15em 0;
+}
+
+.reveal .eurollvm-comb-stack {
+  display: grid;
+  gap: 0.42em;
+  justify-items: center;
+}
+
+.reveal .eurollvm-comb-stack .eurollvm-code-card {
+  width: 88%;
+}
+
+.reveal .eurollvm-comb-stack .eurollvm-code-card pre code {
+  font-size: 0.7em;
+  line-height: 1.08;
+}
+
+.reveal .eurollvm-comb-stack .sv-card {
+  width: 51%;
+}
+
+/* HAriCo. */
+.reveal .harico-intro-grid {
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 0;
+  padding-top: 0.35em;
+  align-items: start;
+}
+
+.reveal #hls-harico .eurollvm-column {
+  padding: 0.65em 0 0 0.15em;
+  font-size: 0.94em;
+  line-height: 1.22;
+}
+
+.reveal #hls-harico .eurollvm-column > ul > li {
+  font-size: 1.08em;
+  line-height: 1.22;
+}
+
+.reveal #hls-harico .eurollvm-column > ul > li li {
+  font-size: 1em;
+}
+
+.reveal .harico-overview img {
+  width: 88%;
+  max-width: 100%;
+  max-height: 680px;
+  transform: none;
+}
+
+.reveal #hls-scf-loop .eurollvm-full-diagram img {
+  display: block;
+  width: auto;
+  height: 800px;
+  max-width: 90%;
+  max-height: 92%;
+  margin: 0 auto;
+  transform: none;
+}
+
+/* Native version of the three materialization strategy boxes. */
+.reveal .eurollvm-strategy-layout {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 0.68fr) minmax(0, 1.32fr);
+  gap: 0.48em;
+  height: 100%;
+  padding: 0.75em 0.45em 0.5em;
+  align-items: stretch;
+}
+
+.reveal .eurollvm-strategy-left {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 0.48em;
+}
+
+.reveal .eurollvm-strategy-panel {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  padding: 0.68em 0.52em 0.3em;
+  position: relative;
+  border: 1px solid #31513f;
+  background: #f7f7f2;
+  color: var(--eurollvm-ink);
+  font-size: 0.72em;
+  line-height: 1.2;
+}
+
+.reveal .eurollvm-strategy-panel ul {
+  margin: 0.08em 0 0;
+  padding-left: 1.05em;
+  list-style-position: outside;
+  list-style-type: disc;
+}
+
+.reveal .eurollvm-strategy-panel li {
+  margin: 0.16em 0;
+}
+
+.reveal .eurollvm-strategy-heading {
+  display: flex;
+  position: absolute;
+  top: -0.55em;
+  left: 0.35em;
+  align-items: center;
+  color: #ffffff;
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.reveal .eurollvm-strategy-heading > span:last-child {
+  padding: 0.22em 0.42em;
+  background: #062c19;
+}
+
+.reveal .strategy-number {
+  min-width: 1.25em;
+  padding: 0.22em 0.32em;
+  margin-right: 0.14em;
+  background: #b3a0ff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.reveal .strategy-fused .strategy-number {
+  background: #5c4591;
+}
+
+.reveal .strategy-specialized .strategy-number {
+  background: #4802b9;
+}
+
+.reveal .strategy-fused .math.display {
+  margin: 0.28em 0 0;
+  font-size: 0.72em;
+  text-align: center;
+}
+
+.reveal .eurollvm-specialized-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: 0.35em;
+  height: 100%;
+  min-height: 0;
+  align-items: center;
+}
+
+.reveal .eurollvm-specialized-copy img {
+  display: block;
+  width: 90%;
+  max-height: 285px;
+  margin: 0.18em auto 0;
+  object-fit: contain;
+}
+
+.reveal .eurollvm-specialized-schematic,
+.reveal .eurollvm-specialized-schematic p {
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .eurollvm-specialized-schematic img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reveal .eurollvm-harico-pass-states {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.reveal .eurollvm-harico-pass-state {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.reveal .eurollvm-harico-pass-layout {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1.58fr);
+  gap: 0.45em;
+  height: calc(100% - 1.55em);
+  padding: 0.75em 0.05em 0.1em;
+  align-items: center;
+}
+
+.reveal .pass-strategy {
+  align-self: center;
+  font-size: 0.54em;
+}
+
+.reveal .pass-strategy img {
+  display: block;
+  width: auto;
+  max-width: 90%;
+  height: 215px;
+  margin: 0.25em auto 0;
+  object-fit: contain;
+}
+
+.reveal .eurollvm-harico-flow,
+.reveal .eurollvm-harico-flow p {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+}
+
+.reveal .eurollvm-harico-flow img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reveal .eurollvm-command {
+  position: absolute;
+  right: 0;
+  bottom: 0.22em;
+  left: 0;
+  width: 100%;
+  min-height: 1.1em;
+  border-top: 1px solid var(--eurollvm-ink);
+  font-family: "DejaVu Sans Mono", monospace;
+  font-size: 0.45em;
+  line-height: 1.18;
+}
+
+.reveal .eurollvm-command {
+  padding-top: 0.25em;
+  text-align: left;
+}
+
+.reveal .eurollvm-command code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--eurollvm-ink);
+  font-size: 1em;
+}
+
+.reveal .eurollvm-command .functional {
+  color: #02a52b;
+}
+
+.reveal .eurollvm-command .performance {
+  color: #c22727;
+}
+
+/* API slides. */
+.reveal .eurollvm-api-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1.15fr);
+  gap: 0.75em;
+  height: 100%;
+  padding: 0.4em 1.2em 0.2em 0.2em;
+  align-items: center;
+}
+
+.reveal .api-code pre code {
+  font-size: 0.88em;
+  line-height: 1.16;
+}
+
+.reveal .eurollvm-api-labels {
+  display: grid;
+  grid-template-rows: 1.1fr 1.55fr 1.15fr 1.3fr;
+  height: 75%;
+  align-items: center;
+  color: var(--eurollvm-primary);
+  font-size: 0.43em;
+  font-weight: 700;
+}
+
+.reveal .eurollvm-api-labels span {
+  position: relative;
+}
+
+.reveal .eurollvm-api-labels span::before {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.35em);
+  width: 2.6em;
+  border-top: 1px solid var(--eurollvm-secondary);
+  content: "";
+}
+
+.reveal .python-labels {
+  grid-template-rows: 0.6fr 2.1fr 1.1fr 1.4fr;
+}
+
+/* Result images and metrics. */
+.reveal .eurollvm-result-figure {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.66em;
+  text-align: center;
+}
+
+.reveal .eurollvm-result-figure p {
+  margin: 0.25em 0 0;
+}
+
+.reveal .eurollvm-result-figure > p:first-child {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.reveal .eurollvm-result-figure img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.reveal .wafer-result img {
+  width: 44.7%;
+  max-width: none;
+  max-height: none;
+  transform: rotate(90deg);
+}
+
+.reveal .gds-result img {
+  width: 90%;
+  max-height: 96%;
+}
+
+.reveal .reticle-result img {
+  width: 70%;
+  max-height: 96%;
+}
+
+.reveal .results-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 1em;
+  padding: 0.2em 0.35em;
+}
+
+.reveal .eurollvm-metric-block {
+  font-size: 0.63em;
+}
+
+.reveal .eurollvm-metric-block > p:first-child {
+  margin-bottom: 0.25em;
+}
+
+.reveal .eurollvm-metric-block table {
+  width: 100%;
+  border-top: 1px solid var(--eurollvm-primary);
+  border-bottom: 1px solid var(--eurollvm-primary);
+  font-size: 0.95em;
+}
+
+.reveal .eurollvm-metric-block th,
+.reveal .eurollvm-metric-block td {
+  padding: 0.28em 0.22em;
+  border: 0;
+}
+
+.reveal .routing-result img {
+  height: 700px;
+}
+
+.reveal .fpga-result img {
+  height: 700px;
+  transform: rotate(90deg);
+}
+
+/* PPA workload slides. */
+.reveal .eurollvm-workload {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 0.7em;
+  height: 100%;
+  padding: 0.65em 0.25em 0.15em;
+  align-items: start;
+}
+
+.reveal .eurollvm-workload .eurollvm-code-card pre code {
+  font-size: 0.54em;
+  line-height: 1.16;
+  white-space: pre-wrap;
+}
+
+.reveal .workload-plot img {
+  width: 100%;
+  max-height: 500px;
+}
+
+.reveal .workload-plot p {
+  margin-top: -0.1em;
+  font-size: 0.94em;
+}
+
+/* Closing and bibliography. */
+.reveal .upstream-result img {
+  width: 80%;
+  max-height: 86%;
+}
+
+.reveal .eurollvm-conclusion {
+  display: block !important;
+  position: absolute;
+  top: 48%;
+  left: 1.2%;
+  width: 92%;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.3;
+  transform: translateY(-50%);
+}
+
+.reveal .eurollvm-conclusion > li.fragment:not(.visible),
+.reveal .eurollvm-conclusion-citations.fragment:not(.visible) {
+  display: none;
+}
+
+.reveal .eurollvm-conclusion li {
+  margin: 0.12em 0;
+}
+
+.reveal .eurollvm-conclusion-citations {
+  position: absolute;
+  right: 0.6em;
+  bottom: 0.2em;
+  left: 0.6em;
+  padding-top: 0.2em;
+  border-top: 1px solid var(--eurollvm-secondary);
+  font-size: 0.55em;
+  line-height: 1.2;
+}
+
+.reveal .eurollvm-center-statement,
+.reveal .eurollvm-thank-you {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--eurollvm-primary);
+  font-size: 1.02em;
+  text-align: center;
+}
+
+.reveal .eurollvm-thank-you {
+  flex-direction: column;
+  font-size: 1.08em;
+}
+
+.reveal .eurollvm-thank-you p {
+  margin: 0.2em;
+}
+
+.reveal .eurollvm-bibliography-list {
+  width: 95%;
+  margin: 0.5em auto 0;
+  font-size: 0.57em;
+  line-height: 1.25;
+}
+
+.reveal .eurollvm-bibliography-list li {
+  margin: 0.38em 0;
+}
+
+/* Native appendix reports; the source screenshots were tables. */
+.reveal .eurollvm-native-report {
+  display: flex;
+  width: 92%;
+  height: 100%;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.5em;
+}
+
+.reveal .eurollvm-native-report.appendix-precheck {
+  width: 58%;
+}
+
+.reveal .eurollvm-report-title {
+  margin-bottom: 0.35em;
+  padding-bottom: 0.24em;
+  border-bottom: 1px solid #4b5563;
+  font-size: 1.35em;
+  font-weight: 700;
+}
+
+.reveal .eurollvm-native-report table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+
+.reveal .eurollvm-native-report th,
+.reveal .eurollvm-native-report td {
+  padding: 0.26em 0.5em;
+  border: 1px solid #4b5563;
+}
+
+.reveal .eurollvm-native-report tbody tr:nth-child(even) {
+  background: #e2e8f0;
+}
+
+.reveal .eurollvm-native-report code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0645ad;
+  font-size: 0.93em;
+  text-decoration: underline;
+}
+
+.reveal .eurollvm-report-caption {
+  margin-top: 0.65em;
+  font-family: "Libertinus Serif", Georgia, serif;
+  font-size: 0.92em;
+  text-align: center;
+}
+
+.reveal .precheck-pass {
+  display: inline-grid;
+  width: 1.05em;
+  height: 1.05em;
+  border-radius: 2px;
+  place-items: center;
+  background: #53a653;
+  color: #ffffff;
+  font-size: 0.9em;
+  font-weight: 700;
+  line-height: 1;
+}
