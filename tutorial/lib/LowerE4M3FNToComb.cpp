@@ -128,7 +128,7 @@ public:
 
 } // namespace
 
-void registerPasses() {
+void registerLowerE4M3FNToCombPass() {
   static PassRegistration<LowerE4M3FNToCombPass> registration;
   (void)registration;
 }

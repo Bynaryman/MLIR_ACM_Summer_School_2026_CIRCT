@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cmake --build build
-build/bin/circt-tutorial-opt examples/e4m3fn-mul.mlir \
-  --lower-e4m3fn-to-comb \
+build/bin/circt-tutorial-opt examples/ex6_arith_muli.mlir \
+  --tutorial-func-to-hw \
+  --map-arith-to-comb \
   --canonicalize

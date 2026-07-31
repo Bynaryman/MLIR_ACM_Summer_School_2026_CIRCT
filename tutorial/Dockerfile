@@ -11,10 +11,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     git \
     iverilog \
+    less \
     lld \
     nano \
     ninja-build \
     python3 \
+    ripgrep \
     vim \
     wget \
     z3 \

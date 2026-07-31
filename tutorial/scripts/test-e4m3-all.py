@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import re
 import subprocess
 import sys
@@ -7,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WORK = ROOT / "build" / "e4m3-exhaustive"
+WORK = ROOT / "build" / "ex7_e4m3_exhaustive"
 PAIR_COUNT = 256 * 256
 
 
@@ -66,22 +67,18 @@ def generate_reference_vectors():
     return vectors
 
 
-def main():
+def build_pass_verilog():
     optimizer = ROOT / "build" / "bin" / "circt-tutorial-opt"
     if not optimizer.exists():
-        print("error: run ./scripts/build.sh first", file=sys.stderr)
-        return 2
+        raise RuntimeError("run ./scripts/build.sh before testing the pass")
 
-    WORK.mkdir(parents=True, exist_ok=True)
-    vectors = generate_reference_vectors()
-    lowered = WORK / "e4m3fn-mul.lowered.mlir"
-    verilog = WORK / "e4m3fn-mul.sv"
-    simulator = WORK / "e4m3fn-test"
-
+    lowered = WORK / "ex7_e4m3fn_mul_lowered.mlir"
+    verilog = WORK / "ex7_e4m3fn_mul_from_pass.sv"
     run(
         [
             optimizer,
-            "examples/e4m3fn-mul.mlir",
+            "examples/ex7_e4m3fn_mul.mlir",
+            "--tutorial-func-to-hw",
             "--lower-e4m3fn-to-comb",
             "--canonicalize",
             "-o",
@@ -89,6 +86,30 @@ def main():
         ]
     )
     run(["firtool", lowered, "-o", verilog])
+    return verilog
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Exhaustively test an E4M3FN multiplier against MLIR"
+    )
+    parser.add_argument(
+        "--pass",
+        dest="test_pass",
+        action="store_true",
+        help="test the custom lowering pass instead of the provided RTL",
+    )
+    args = parser.parse_args()
+
+    WORK.mkdir(parents=True, exist_ok=True)
+    vectors = generate_reference_vectors()
+    verilog = (
+        build_pass_verilog()
+        if args.test_pass
+        else ROOT / "examples" / "ex7_e4m3fn_mul_reference.sv"
+    )
+    simulator = WORK / "ex7_e4m3fn_test"
+
     run(
         [
             "iverilog",
@@ -99,7 +120,9 @@ def main():
             simulator,
             verilog,
             "test/e4m3fn-exhaustive-tb.sv",
-        ]
+        ],
+        capture_output=True,
+        text=True,
     )
 
     print(f"Testing all {PAIR_COUNT:,} input pairs", flush=True)

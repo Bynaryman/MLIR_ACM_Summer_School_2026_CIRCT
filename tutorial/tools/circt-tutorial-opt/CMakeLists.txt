@@ -13,7 +13,9 @@ target_link_libraries(circt-tutorial-opt
   TutorialTransforms
   CIRCTComb
   CIRCTHW
+  CIRCTTransforms
   MLIRArithDialect
+  MLIRFuncDialect
   MLIRIR
   MLIROptLib
   MLIRParser
