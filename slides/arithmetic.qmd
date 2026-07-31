@@ -266,10 +266,10 @@ patterns.add(
     arith.BitcastOp, lower_e4m3_mul)
 ```
 :::
-:::
-::::
 
 **Scope:** normal, finite, non-zero operands; normal result; no rounding yet.
+:::
+::::
 
 ## Together: route the sign {#arithmetic-sign-path}
 
