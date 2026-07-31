@@ -225,122 +225,173 @@ The sign bit mirrors these points onto the negative axis.
 Less precision buys a smaller representation and more operations per watt;
 the exact rounding and exceptional-value rules remain part of the contract.
 
-## Exercise 7: replace the floating-point DAG {#arithmetic-pass-goal}
+## Exercise 7: first draw the datapath {#arithmetic-pass-goal}
 
-:::: {.columns}
-::: {.column width="54%"}
+::: {.e4m3-objective-source}
 ```mlir
-func.func @e4m3fn_mul(%a : f8E4M3FN, %b : f8E4M3FN)
-    -> f8E4M3FN {
-  %r = arith.mulf %a, %b : f8E4M3FN
-  return %r : f8E4M3FN
-}
+%r = arith.mulf %a, %b : f8E4M3FN
 ```
-
-The source states the numerical computation, not its wire encoding.
 :::
 
-::: {.column width="46%"}
-![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-alt="Word-level DAG of the sign, exponent, and significand paths for E4M3 multiplication" width="100%"}
-
-The custom pass converts `f8E4M3FN` values to their `i8` encoding and replaces
-`arith.mulf` with an `i8` `comb` datapath.
-:::
-::::
-
-Then `--tutorial-func-to-hw` handles only the function boundary.
-
-## E4M3 multiplication exposes three paths {#arithmetic-multiply-paths}
-
-| Path | Normal operands |
-|---|---|
-| sign | $s_r = s_a \oplus s_b$ |
-| exponent | $e_r = e_a + e_b - 7$, then adjust after normalization |
-| significand | $(1.m_a) \times (1.m_b)$: four bits by four bits |
-
-::: {.fragment}
-For example, `0x3C × 0x3C` is $1.5 \times 1.5 = 2.25$, encoded as `0x41`.
+::: {.e4m3-objective-line}
+The operation states **what** to compute. In hardware, we first choose **how the data will flow**.
 :::
 
-Normalization and rounding bring the raw eight-bit significand product back
-to three stored fraction bits.
+::: {.e4m3-datapath-frame .e4m3-objective-schematic}
+![](assets/images/digital-design/e4m3-normal-multiplier.svg#objective){.e4m3-datapath fig-alt="Normal-path E4M3 multiplier datapath"}
+:::
 
-## The normal path is already a circuit {#arithmetic-normal-path}
+::: {.e4m3-figure-caption}
+Normal-path E4M3 multiplier, adapted from [@ledoux2024thesis, Fig. 3.9].
+:::
 
-:::: {.columns}
-::: {.column width="49%"}
+::: {.e4m3-scope-line}
+**First checkpoint:** normal, finite, non-zero operands; normal result; no rounding yet.
+:::
+
+## Checkpoint 1: materialize the hidden one {#arithmetic-hidden-one}
+
+::: {.e4m3-build-layout}
+::: {.e4m3-datapath-frame}
+![](assets/images/digital-design/e4m3-normal-multiplier.svg#hidden){.e4m3-datapath fig-alt="E4M3 multiplier with the hidden-one stage highlighted"}
+:::
+
+::: {.e4m3-step-copy}
+For a normal E4M3 number, the stored field `mmm` represents the significand
+$1.mmm_2$. The leading `1` is implicit in memory but must become a wire.
+
 ```mlir
-%sa = comb.extract %lhs from 7 : (i8) -> i1
-%sb = comb.extract %rhs from 7 : (i8) -> i1
-%sign = comb.xor %sa, %sb : i1
-
-%fa = comb.extract %lhs from 0 : (i8) -> i3
-%fb = comb.extract %rhs from 0 : (i8) -> i3
+%fa = comb.extract %a from 0 : (i8) -> i3
+%fb = comb.extract %b from 0 : (i8) -> i3
+%one = hw.constant 1 : i1
 %ma4 = comb.concat %one, %fa : i1, i3
 %mb4 = comb.concat %one, %fb : i1, i3
-%ma = comb.concat %zero4, %ma4 : i4, i4
-%mb = comb.concat %zero4, %mb4 : i4, i4
-%raw = comb.mul %ma, %mb : i8
+```
+
+`0x3C` stores `100`, so its effective significand is `1.100₂ = 1.5`.
+:::
+:::
+
+## Exercise 7A: preserve the full product - 5 min {#arithmetic-exercise-7a}
+
+::: {.e4m3-build-layout}
+::: {.e4m3-datapath-frame}
+![](assets/images/digital-design/e4m3-normal-multiplier.svg#multiply-view){.e4m3-datapath fig-alt="E4M3 multiplier with the significand multiplication stage highlighted"}
+:::
+
+::: {.e4m3-step-copy}
+`comb.mul` produces the same width as its operands. A four-by-four-bit
+significand multiplication needs **eight result bits**.
+
+Complete the zero extension and produce `%raw : i8` in
+`buildE4M3FNMultiplier`.
+
+::: {.fragment}
+```mlir
+%zero4 = hw.constant 0 : i4
+%ma8 = comb.concat %zero4, %ma4 : i4, i4
+%mb8 = comb.concat %zero4, %mb4 : i4, i4
+%raw = comb.mul %ma8, %mb8 : i8
 ```
 :::
-
-::: {.column width="51%"}
-![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-alt="Word-level schematic of the sign, exponent, and significand paths for normal E4M3 operands" width="100%"}
 :::
-::::
+:::
 
-## Normal arithmetic is only the first checkpoint {#arithmetic-special-cases}
+## Checkpoint 2: one bit selects the normalization {#arithmetic-normalization-bit}
 
-| Case | Required action |
+::: {.e4m3-build-layout}
+::: {.e4m3-datapath-frame}
+![](assets/images/digital-design/e4m3-normal-multiplier.svg#normalize-view){.e4m3-datapath fig-alt="E4M3 multiplier with the normalization and exponent-adjust stages highlighted"}
+:::
+
+::: {.e4m3-step-copy}
+Normal significands are in $[1,2)$, so their product is in $[1,4)$.
+
+::: {.e4m3-normal-table}
+| `%raw[7]` | Normalized significand | Exponent |
+|---:|---|---:|
+| `0` | use `%raw[6:3]` | `+ 0` |
+| `1` | use `%raw[7:4]` | `+ 1` |
+:::
+
+::: {.e4m3-equation}
+`1.100₂ × 1.100₂ = 10.010000₂`
+:::
+
+For `0x3C × 0x3C`, the leading bit lands in `%raw[7]`: shift once and
+increment the exponent to obtain `0x41` ($2.25$).
+:::
+:::
+
+## Exercise 7B: one bit controls two paths - 7 min {#arithmetic-exercise-7b}
+
+::: {.e4m3-build-layout}
+::: {.e4m3-datapath-frame}
+![](assets/images/digital-design/e4m3-normal-multiplier.svg#normalize-view){.e4m3-datapath fig-alt="E4M3 multiplier with the normalization and exponent-adjust stages highlighted"}
+:::
+
+::: {.e4m3-step-copy}
+Use `%norm = %raw[7]` to select the four normalized significand bits and to
+increment the exponent path.
+
+::: {.fragment}
+```mlir
+%norm = comb.extract %raw from 7 : (i8) -> i1
+%direct = comb.extract %raw from 3 : (i8) -> i4
+%shifted = comb.extract %raw from 4 : (i8) -> i4
+%mant = comb.mux %norm, %shifted, %direct : i4
+%norm5 = comb.concat %zero4, %norm : i4, i1
+%adjusted = comb.add %base, %norm5 : i5
+```
+:::
+:::
+:::
+
+## Complete the first normal-path circuit {#arithmetic-normal-path}
+
+::: {.e4m3-build-layout}
+::: {.e4m3-datapath-frame}
+![](assets/images/digital-design/e4m3-normal-multiplier.svg#complete){.e4m3-datapath fig-alt="Completed normal-path E4M3 multiplier with the result packing highlighted"}
+:::
+
+::: {.e4m3-step-copy}
+The remaining sign, exponent, and packing logic is supplied with the first
+solution checkpoint.
+
+```mlir
+%sign = comb.xor %sa, %sb : i1
+%sum = comb.add %ea5, %eb5 : i5
+%bias = hw.constant 7 : i5
+%base = comb.sub %sum, %bias : i5
+
+%frac = comb.extract %mant from 0 : (i4) -> i3
+%exp = comb.extract %adjusted from 0 : (i5) -> i4
+%result = comb.concat %sign, %exp, %frac : i1, i4, i3
+```
+
+The custom pass owns `f8E4M3FN → i8`; `--tutorial-func-to-hw` only converts
+the function boundary afterward.
+:::
+:::
+
+## This checkpoint is intentionally incomplete {#arithmetic-special-cases}
+
+| Excluded case | Hardware still required |
 |---|---|
-| zero | return signed zero |
-| subnormal input | use a significand without the hidden leading one |
-| subnormal result | shift into the gradual-underflow range |
-| discarded bits | round to nearest, ties to even |
-| overflow | return the signed E4M3FN NaN encoding |
-| NaN | return an E4M3FN NaN encoding |
+| discarded product bits | round to nearest, ties to even |
+| zero or subnormal input | the hidden bit is not always `1` |
+| subnormal result | gradual-underflow shift and rounding |
+| exponent overflow | E4M3FN overflow behavior |
+| NaN input | detect and return the NaN encoding |
 
-The supplied SystemVerilog reference implements this complete contract.
-
-## The floating-point lowering owns the type change {#arithmetic-pass-shape}
-
-```cpp
-typeConverter.addConversion(
-    [context](Float8E4M3FNType) -> Type {
-  return IntegerType::get(context, 8);
-});
-
-class LowerE4M3FNMulPattern
-    : public OpConversionPattern<arith::MulFOp> {
-  LogicalResult matchAndRewrite(
-      arith::MulFOp mul, OpAdaptor operands,
-      ConversionPatternRewriter &rewriter) const override {
-    Value bits = buildE4M3FNMultiplier(
-        rewriter, mul.getLoc(), operands.getLhs(), operands.getRhs());
-    rewriter.replaceOp(mul, bits);
-  }
-};
-```
-
-The conversion framework updates the function signature, block arguments, and
-return together. The later function-to-module pass does not change types.
-
-## Exercise 7: lower E4M3 multiplication - 30 min {#arithmetic-exercise-7}
-
-Edit `lib/LowerE4M3FNToComb.cpp` and use
-`examples/ex7_e4m3fn_mul.mlir`.
-
-1. **Normal path:** extract fields, restore hidden bits, multiply, normalize,
-   and pack.
-2. **Full format:** add rounding, zero, subnormal, overflow, and NaN handling.
-3. **Verify:** compare every input pair against MLIR.
+The normal-path circuit should compile, but the exhaustive checker is expected
+to expose these missing cases:
 
 ```bash
 ./scripts/test-e4m3-all.py --pass
 ```
 
-The complete hardware reference is
-`examples/ex7_e4m3fn_mul_reference.sv`.
+The complete reference is `examples/ex7_e4m3fn_mul_reference.sv`.
 
 ## If time: specialize a squarer {#arithmetic-square-extension}
 

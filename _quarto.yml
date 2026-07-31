@@ -4,7 +4,7 @@ project:
   render:
     - mlir-circt-summer-school.qmd
   resources:
-    - assets/images/*
+    - assets/images/**
 
 profile:
   default: student

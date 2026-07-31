@@ -1,200 +1,118 @@
-/* Incremental E4M3 multiplier used by the v2 solution workbench. */
+/* Incremental E4M3 normal-path multiplier. */
 
-.reveal .solution-workbench {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  gap: 0.75em;
-  align-items: stretch;
+.reveal .e4m3-objective-source {
+  width: min(46em, 100%);
+  margin: 0 auto 0.45em;
+}
+
+.reveal .e4m3-objective-source pre code {
+  font-size: 0.65em;
+  line-height: 1.28;
+  padding: 0.58em 0.75em;
+}
+
+.reveal .e4m3-objective-line {
+  margin: 0.2em 0 0.35em;
+  color: #34434d;
+  font-size: 0.78em;
+  text-align: center;
+}
+
+.reveal .e4m3-datapath-frame {
   width: 100%;
-  min-height: 13.2em;
-}
-
-.reveal .datapath-panel {
-  display: flex;
   min-width: 0;
-  align-items: center;
-  border: 1px solid #cbd4db;
-  background: rgb(255 255 255 / 96%);
 }
 
-.reveal .multiplier-svg {
-  width: 100%;
-  height: auto;
-  max-height: 13em;
-  overflow: visible;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.reveal .multiplier-svg .base-wire,
-.reveal .multiplier-svg .stage-wire {
-  fill: none;
-  stroke: #75838e;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 3;
-}
-
-.reveal .multiplier-svg .stage-wire.unpack {
-  stroke: #3385a6;
-}
-
-.reveal .multiplier-svg .stage-wire.prepare {
-  stroke: #b36b32;
-}
-
-.reveal .multiplier-svg .stage-wire.multiply {
-  stroke: #3f8a61;
-}
-
-.reveal .multiplier-svg .stage-wire.normalize {
-  stroke: #a67816;
-}
-
-.reveal .multiplier-svg .stage-wire.pack {
-  stroke: #8262a8;
-}
-
-.reveal .multiplier-svg .port {
-  fill: #263746;
-}
-
-.reveal .multiplier-svg .node {
-  stroke-width: 3;
-}
-
-.reveal .multiplier-svg .node.unpack {
-  fill: #e8f6fa;
-  stroke: #3385a6;
-}
-
-.reveal .multiplier-svg .node.prepare {
-  fill: #fff2e5;
-  stroke: #b36b32;
-}
-
-.reveal .multiplier-svg .node.multiply {
-  fill: #e9f7ef;
-  stroke: #3f8a61;
-}
-
-.reveal .multiplier-svg .node.normalize {
-  fill: #fff6d8;
-  stroke: #a67816;
-}
-
-.reveal .multiplier-svg .node.pack {
-  fill: #f3edfa;
-  stroke: #8262a8;
-}
-
-.reveal .multiplier-svg .node-label {
-  fill: #17212b;
-  font-size: 21px;
-  font-weight: 750;
-  text-anchor: middle;
-}
-
-.reveal .multiplier-svg .node-detail {
-  fill: #52616e;
-  font-size: 16px;
-  font-weight: 550;
-  text-anchor: middle;
-}
-
-.reveal .multiplier-svg .port-label {
-  fill: #263746;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.reveal .multiplier-svg .stage-tag {
-  font-size: 15px;
-  font-weight: 750;
-  text-anchor: middle;
-  text-transform: uppercase;
-}
-
-.reveal .multiplier-svg .stage-tag.unpack {
-  fill: #17536b;
-}
-
-.reveal .multiplier-svg .stage-tag.prepare {
-  fill: #713616;
-}
-
-.reveal .multiplier-svg .stage-tag.multiply {
-  fill: #245b3b;
-}
-
-.reveal .multiplier-svg .stage-tag.normalize {
-  fill: #674905;
-}
-
-.reveal .multiplier-svg .stage-tag.pack {
-  fill: #52386f;
-}
-
-.reveal .solution-code-panel {
-  position: relative;
-  display: grid;
-  min-width: 0;
-  min-height: 13.2em;
-  padding-top: 1.2em;
-  border-top: 0.16em solid #8262a8;
-  grid-template-areas: "code";
-  align-items: center;
-}
-
-.reveal .solution-code-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: #52616e;
-  font-size: 0.5em;
-  font-weight: 750;
-  text-transform: uppercase;
-}
-
-.reveal .solution-code-step {
-  grid-area: code;
-  min-width: 0;
-  align-self: center;
-}
-
-.reveal .solution-code-step div.sourceCode {
+.reveal .e4m3-datapath-frame p {
   margin: 0;
 }
 
-.reveal .solution-code-step pre code {
-  font-size: 0.64em;
-  line-height: 1.3;
-  padding: 0.65em 0.72em;
-}
-
-.reveal .solution-code-step .stage-name {
+.reveal .e4m3-datapath-frame img.e4m3-datapath {
   display: block;
-  margin-bottom: 0.35em;
-  color: #263746;
-  font-size: 0.64em;
-  font-weight: 750;
+  width: 100%;
+  height: auto;
+  max-height: 12.2em;
+  margin: 0 auto;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
-.reveal .solution-code-panel .fragment.current-visible:not(.current-fragment) {
-  display: none;
+.reveal .e4m3-objective-schematic img.e4m3-datapath {
+  max-height: 8.6em;
 }
 
-.reveal .solution-code-panel .fragment.current-visible.current-fragment {
-  display: block;
+.reveal .e4m3-figure-caption {
+  margin: 0.12em 0 0;
+  color: #63717a;
+  font-size: 0.47em;
+  text-align: center;
 }
 
-.reveal .solution-waiting {
-  grid-area: code;
-  color: #64727e;
+.reveal .e4m3-scope-line {
+  margin: 0.38em 0 0;
+  color: #34434d;
   font-size: 0.72em;
   text-align: center;
 }
 
-.reveal .solution-code-panel:has(.current-fragment) .solution-waiting {
-  visibility: hidden;
+.reveal .e4m3-build-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(18em, 0.82fr);
+  gap: 0.75em;
+  align-items: center;
+  width: 100%;
+}
+
+.reveal .e4m3-step-copy {
+  min-width: 0;
+}
+
+.reveal .e4m3-step-copy > :first-child {
+  margin-top: 0;
+}
+
+.reveal .e4m3-step-copy > :last-child {
+  margin-bottom: 0;
+}
+
+.reveal .e4m3-step-copy p,
+.reveal .e4m3-step-copy li {
+  font-size: 0.72em;
+}
+
+.reveal .e4m3-step-copy div.sourceCode {
+  margin-top: 0.42em;
+}
+
+.reveal .e4m3-step-copy pre code {
+  font-size: 0.62em;
+  line-height: 1.28;
+  padding: 0.62em 0.72em;
+}
+
+.reveal .e4m3-equation {
+  margin: 0.35em 0;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.reveal .e4m3-normal-table {
+  font-size: 0.68em;
+}
+
+.reveal .e4m3-normal-table th,
+.reveal .e4m3-normal-table td {
+  padding: 0.34em 0.48em;
+}
+
+@media (max-width: 900px) {
+  .reveal .e4m3-build-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .reveal .e4m3-datapath-frame img.e4m3-datapath {
+    max-height: 8.4em;
+  }
 }
