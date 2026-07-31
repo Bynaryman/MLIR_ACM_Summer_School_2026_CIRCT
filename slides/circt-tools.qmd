@@ -1,0 +1,620 @@
+## The CIRCT tool tour {#tools-route}
+
+This section follows the [ARITH 2026 CIRCT Tutorial](https://github.com/cowardsa/CIRCT_TUTORIAL_2026) by Samuel Coward and myself.
+
+::: {.incremental}
+1. **Basics:** `circt-verilog`, `circt-opt`, `circt-lec`, and `firtool`.
+
+2. **Synthesis & Reports:** `circt-synth`, AIGER export, and area estimation.
+:::
+
+## Start the environment {#tools-setup}
+
+Pull and enter the pre-built course image:
+
+```bash
+docker run -it ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
+```
+\
+
+The same image can be built locally:
+```bash
+git clone https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT
+cd tutorial
+docker build -t mlir-summer-school-2026-circt .
+docker run -it mlir-summer-school-2026-circt
+```
+\
+
+
+::: {.fragment}
+Quick check:
+```bash
+circt-opt --version
+LLVM version 23.0.0git
+CIRCT firtool-1.147.0
+```
+:::
+
+## Tutorial Part 1: CIRCT basics {#tools-basics}
+
+::: {.incremental}
+1. Compile a SystemVerilog design to CIRCT IR.
+
+2. Apply CIRCT optimization passes.
+
+3. Verify that a transformation preserved the circuit.
+
+4. Generate SystemVerilog for downstream EDA tools.
+:::
+
+## Compile the FMA example {#tools-compile}
+
+:::: {.columns}
+::: {.column width="52%"}
+```systemverilog
+// rtl/fma.sv
+module fma (
+  input  wire [3:0] a,
+  input  wire [3:0] b,
+  input  wire [3:0] c,
+  output wire [8:0] d
+);
+  assign d = (a * b) + (c * 1'd1);
+endmodule
+```
+:::
+
+::: {.column width="48%"}
+```bash
+circt-verilog rtl/fma.sv
+```
+
+`circt-verilog` parses SystemVerilog and prints CIRCT IR.
+
+SystemVerilog support remains an ongoing effort documented by
+[`sv-tests`](https://chipsalliance.github.io/sv-tests-results/).
+:::
+::::
+
+## The imported CIRCT IR {#tools-compiled-ir}
+
+```mlir
+module {
+  hw.module @fma(
+      in %a : i4, in %b : i4, in %c : i4,
+      out d : i9) {
+    %c0_i5 = hw.constant 0 : i5
+    %0 = comb.concat %c0_i5, %a : i5, i4
+    %1 = comb.concat %c0_i5, %b : i5, i4
+    %2 = comb.mul %0, %1 : i9
+    %3 = comb.concat %c0_i5, %c : i5, i4
+    %4 = comb.add %2, %3 : i9
+    hw.output %4 : i9
+  }
+}
+```
+
+::: {.fragment}
+The operation mnemonic starts with its dialect: `hw.module`, `comb.mul`,
+`comb.add`. Integer types such as `i4` and `i9` are built into MLIR.
+:::
+
+## Save the IR for the next tools {#tools-save-ir}
+
+```bash
+circt-verilog rtl/fma.sv -o rtl/fma.mlir
+```
+
+::: {.incremental}
+- Without `-o`, use the terminal to inspect a transformation immediately.
+
+- With `-o`, keep an intermediate representation for another pass or tool.
+
+- The file is text: inspect it with `less`, `vim`, or `nano`.
+:::
+
+## Optimize with `circt-opt` {#tools-optimize}
+
+```bash
+circt-opt rtl/fma.mlir \
+  --comb-int-range-narrowing \
+  --canonicalize \
+  -o rtl/fma_opt.mlir
+```
+
+| Pass | What it does here |
+|---|---|
+| `--comb-int-range-narrowing` | Proves that a 4-bit by 4-bit multiplication fits in 8 bits |
+| `--canonicalize` | Removes redundant extensions, truncations, and other local structure |
+
+::: {.fragment}
+CIRCT is a compiler stack: flows are composed from **passes**.
+:::
+
+## The optimized FMA {#tools-optimized-ir}
+
+```mlir
+module {
+  hw.module @fma(
+      in %a : i4, in %b : i4, in %c : i4,
+      out d : i9) {
+    %false = hw.constant false
+    %c0_i4 = hw.constant 0 : i4
+    %0 = comb.concat %c0_i4, %a : i4, i4
+    %1 = comb.concat %c0_i4, %b : i4, i4
+    %2 = comb.mul %0, %1 : i8
+    %3 = comb.concat %c0_i4, %c : i4, i4
+    %4 = comb.add %2, %3 : i8
+    %5 = comb.concat %false, %4 : i1, i8
+    hw.output %5 : i9
+  }
+}
+```
+
+The arithmetic is now eight bits wide; only the module output is extended to
+nine bits.
+
+## Exercise 1 - pass order - 2 min {#tools-exercise-1}
+
+Swap the two passes:
+
+```bash
+circt-opt rtl/fma.mlir \
+  --canonicalize \
+  --comb-int-range-narrowing \
+  -o rtl/fma_swapped.mlir
+
+diff -u rtl/fma_opt.mlir rtl/fma_swapped.mlir
+```
+
+**How does the output change? Why could the second pass order leave more IR?**
+
+::: {.content-visible when-profile="instructor"}
+::: {.fragment}
+**Answer:** narrowing first exposes redundant extensions to `canonicalize`.
+When canonicalization runs first, narrowing later introduces `comb.extract`
+operations and an extra output `comb.concat` that are not cleaned up again.
+:::
+:::
+
+## Do you trust the transformation? {#tools-lec-intro}
+
+> Of course, you do not trust research tools.
+
+::: {.fragment}
+And industrial tools are always exact, except when their documentation lists
+[IEEE-754 partial compliance](https://docs.amd.com/r/en-US/ug1399-vitis-hls/Floats-and-Doubles)
+and
+[deviations](https://docs.amd.com/api/khub/documents/ym1A7qsltTGP_saZFTrikQ/content).
+:::
+
+::: {.fragment}
+CIRCT lets us mark our own homework with a logical equivalence checker:
+`circt-lec`.
+:::
+
+## Verify with `circt-lec` {#tools-lec}
+
+General form:
+
+```bash
+circt-lec --c1 <module_1> <design_1.mlir> \
+          --c2 <module_2> <design_2.mlir>
+```
+
+Our FMA:
+
+```bash
+circt-lec --c1 fma rtl/fma.mlir \
+          --c2 fma rtl/fma_opt.mlir
+```
+
+```text
+c1 == c2
+```
+
+## How does `circt-lec` work? {#tools-lec-how}
+
+::: {.incremental}
+1. Construct a **miter** that drives both circuits with the same inputs and
+   compares their outputs.
+
+2. Lower the miter and both modules to SMT.
+
+3. Ask Z3 whether an input can make the outputs differ.
+
+4. `unsat` means there is no counterexample: `c1 == c2`.
+:::
+
+::: {.fragment}
+CIRCT also provides bounded model checking through `circt-bmc`; this tutorial
+stays with combinational equivalence.
+:::
+
+## Exercise 2 - break the circuit - 5 min {#tools-exercise-2}
+
+1. Copy `rtl/fma_opt.mlir` to a new file.
+2. Break the copied IR with `vim` or `nano`.
+3. Compare it with the original using `circt-lec`.
+4. Check that the result is `c1 != c2`.
+
+::: {.content-visible when-profile="instructor"}
+::: {.fragment}
+Change the multiply to an add, alter a constant, or disconnect an operand.
+The current tool reports inequivalence but does not conveniently print the
+counterexample.
+:::
+:::
+
+## Generate Verilog with `firtool` {#tools-firtool}
+
+A classic CIRCT flow is:
+
+1. Parse a design into CIRCT IR.
+2. Optimize the IR and verify the transformations.
+3. Emit Verilog for downstream FPGA or ASIC tools.
+
+```bash
+firtool rtl/fma_opt.mlir
+```
+
+```systemverilog
+module fma(
+  input  [3:0] a, b, c,
+  output [8:0] d
+);
+  assign d = {1'h0,
+    {4'h0, a} * {4'h0, b} + {4'h0, c}};
+endmodule
+```
+
+## Exercise 3 - round trip - 5 min {#tools-exercise-3}
+
+1. Modify the `firtool` command to save the generated Verilog.
+2. Compile that Verilog back to CIRCT IR with `circt-verilog`.
+3. Use `circt-lec` to prove that the round trip preserved equivalence.
+
+::: {.content-visible when-profile="instructor"}
+::: {.fragment}
+```bash
+firtool rtl/fma_opt.mlir -o rtl/fma_roundtrip.sv
+circt-verilog rtl/fma_roundtrip.sv -o rtl/fma_roundtrip.mlir
+circt-lec --c1 fma rtl/fma_opt.mlir \
+          --c2 fma rtl/fma_roundtrip.mlir
+```
+:::
+:::
+
+## Tutorial Part 2: datapath synthesis {#tools-datapath-part}
+
+::: {.incremental}
+1. Convert word-level arithmetic to the `datapath` dialect.
+
+2. Expose partial products and compressor trees.
+
+3. Synthesize the design to an And-Inverter Graph.
+
+4. Export AIGER for downstream logic synthesis.
+:::
+
+## Why expose the datapath? {#tools-datapath-motivation}
+
+For a dot product `(a * b) + (c * d)`:
+
+| Direct structure | Fused datapath |
+|---|---|
+| Reduce each multiplication separately | Generate all partial products first |
+| Two compressor trees | One shared compressor tree |
+| Three carry-propagate additions | One final carry-propagate addition |
+
+::: {.fragment}
+For small widths the gain may be modest; at larger widths, the arithmetic
+structure gives the optimizer more useful choices.
+:::
+
+## Compile the dot product {#tools-dot-product}
+
+:::: {.columns}
+::: {.column width="46%"}
+```systemverilog
+// rtl/dot_product.sv
+module dot_product (
+  input wire [7:0] a, b, c, d,
+  output wire [15:0] out
+);
+  assign out = (a * b) + (c * d);
+endmodule
+```
+:::
+
+::: {.column width="54%"}
+```bash
+circt-verilog rtl/dot_product.sv \
+  -o rtl/dot_product.mlir
+```
+
+```mlir
+%ab = comb.mul %a16, %b16 : i16
+%cd = comb.mul %c16, %d16 : i16
+%out = comb.add %ab, %cd : i16
+```
+:::
+::::
+
+## Dialect conversion is a transformation {#tools-dialect-conversion}
+
+::: {.incremental}
+- Some passes convert operations between dialects.
+
+- This is often called **lowering**, because compilation usually moves toward
+  lower-level representations.
+
+- A dialect conversion can also promote information to a higher-level form.
+
+- CIRCT pass names commonly follow `--convert-<source>-to-<target>`.
+:::
+
+```bash
+circt-opt rtl/dot_product.mlir \
+  --convert-comb-to-datapath
+```
+
+## Before canonicalization {#tools-convert-datapath}
+
+```mlir
+// a * b
+%abParts:16 = datapath.partial_product %a16, %b16
+  : (i16, i16) -> (i16, i16, i16, i16,
+                    i16, i16, i16, i16,
+                    i16, i16, i16, i16,
+                    i16, i16, i16, i16)
+%abRows:2 = datapath.compress %abParts#0, ...,
+  %abParts#15 : i16 [16 -> 2]
+%ab = comb.add bin %abRows#0, %abRows#1 : i16
+
+// c * d gets another 16 rows and another compressor.
+%out = comb.add %ab, %cd : i16
+```
+
+The conversion exposes the implementation, but it has not yet used the known
+eight-bit operand ranges.
+
+## Optimization opportunities {#tools-datapath-opportunities}
+
+::: {.incremental}
+1. Why did an eight-bit multiplication produce **16 partial products**?
+
+2. Do the two products need separate `datapath.compress` operations?
+
+3. Do we need a carry-propagate addition for each product before adding them?
+:::
+
+```bash
+circt-opt rtl/dot_product.mlir \
+  --convert-comb-to-datapath \
+  --canonicalize
+```
+
+## After canonicalization {#tools-datapath-fused}
+
+```mlir
+%abParts:8 = datapath.partial_product %a16, %b16
+  : (i16, i16) -> (i16, i16, i16, i16,
+                    i16, i16, i16, i16)
+%cdParts:8 = datapath.partial_product %c16, %d16
+  : (i16, i16) -> (i16, i16, i16, i16,
+                    i16, i16, i16, i16)
+
+%rows:2 = datapath.compress
+  %abParts#0, ...,
+  %abParts#7, %cdParts#0, ...,
+  %cdParts#7 : i16 [16 -> 2]
+%out = comb.add bin %rows#0, %rows#1 : i16
+```
+
+Eight useful rows per multiplier, one compressor, one final addition.
+
+## Exercise 4 - read the datapath - 15 min {#tools-exercise-4}
+
+1. Determine what computation `rtl/ex4.mlir` implements.
+2. Write `rtl/ex4_mine.sv` implementing that computation.
+3. Import your SystemVerilog and prove equivalence with `circt-lec`.
+4. Apply `--canonicalize --convert-datapath-to-comb`. What happened?
+
+**Hint:** `extract`, `replicate`, and `concat` implement sign extension:
+
+```systemverilog
+wire [8:0] sext_a = {{5{a[3]}}, a};
+```
+
+::: {.content-visible when-profile="instructor"}
+::: {.fragment}
+```systemverilog
+assign d = $signed(a) * $signed(b) + $signed(c);
+```
+
+Converting back to `comb` expands the signed partial products and reduction
+network into explicit bit-vector logic.
+:::
+:::
+
+## Logic synthesis with `circt-synth` {#tools-synthesize}
+
+`circt-synth` lowers the design toward gate-level `synth` operations. Its
+default low-level representation is an And-Inverter Graph.
+
+```bash
+circt-synth rtl/dot_product.mlir \
+  --analysis-output=analysis \
+  --analysis-output-format=text \
+  -o rtl/dot_product_aig.mlir
+```
+
+```text
+Resource Usage Analysis for module: dot_product
+  <unknown>:          33
+  synth.aig.and_inv: 976
+
+Longest Path Analysis result for "dot_product"
+Maximum path level: 33
+```
+
+These are structural estimates, not technology-mapped area and timing.
+
+## Export AIGER {#tools-aiger}
+
+```bash
+circt-translate rtl/dot_product_aig.mlir \
+  --export-aiger \
+  -o rtl/dot_product.aiger
+```
+
+AIGER can be consumed by tools such as
+[ABC](https://people.eecs.berkeley.edu/~alanmi/abc/) and
+[Yosys](https://github.com/YosysHQ/yosys) for technology mapping toward FPGA
+or ASIC libraries.
+
+::: {.fragment}
+Export from the **`circt-synth` result**, not directly from the word-level IR
+generated by `circt-verilog`.
+:::
+
+## Exercise 5 - beat 54 AIG nodes - 15 min {#tools-exercise-5}
+
+1. Parse `rtl/ex5.sv` and synthesize an AIG. How many And-Inverter nodes does
+   it use?
+2. Copy the SystemVerilog and optimize it **by hand**.
+3. Can you beat Sam's result of **54 And-Inverter nodes**?
+4. Prove your optimized design equivalent to the original with `circt-lec`.
+
+::: {.content-visible when-profile="instructor"}
+::: {.fragment}
+The four branches are one conditional inversion followed by an increment:
+
+```systemverilog
+assign out = (x ^ {8{a}}) + b;
+```
+
+With the pinned image: **149 -> 54** AIG nodes and **13 -> 8** logic levels.
+:::
+:::
+
+## CIRCT command glossary {#tools-glossary}
+
+| Tool | Role in the tutorial |
+|---|---|
+| `circt-verilog` | Parse SystemVerilog and emit CIRCT IR |
+| `circt-opt` | Run CIRCT and MLIR passes |
+| `circt-lec` | Prove two CIRCT modules logically equivalent |
+| `firtool` | Emit Verilog from CIRCT IR |
+| `circt-synth` | Synthesize CIRCT IR to lower-level logic |
+| `circt-translate` | Export formats such as AIGER |
+| `z3` | Solve the equivalence query generated by `circt-lec` |
+
+## Extension: from `arith` to hardware {#tools-arith-part}
+
+The original five exercises began from SystemVerilog. We now add the course's
+new arithmetic exercise.
+
+::: {.incremental}
+1. Express an E4M3 multiplication as one `arith.mulf`.
+
+2. Match that operation in an out-of-tree CIRCT pass.
+
+3. Build the corresponding `comb` datapath.
+
+4. Specialize `%x * %x` into a squarer.
+:::
+
+## The complete RTL is the executable reference {#tools-complete-reference}
+
+```bash
+circt-verilog examples/e4m3fn-mul.sv \
+  -o build/e4m3fn-mul-complete.mlir
+
+./scripts/test-e4m3-all.py
+```
+
+```text
+Testing all 65,536 input pairs
+PASS: all 65536 E4M3 products match MLIR
+```
+
+The reference covers round-to-nearest-even, zeros, subnormals, overflow, and
+signed NaNs. Students can inspect its generated `comb` network.
+
+## Return to one `arith.mulf` {#tools-back-to-arith}
+
+```mlir
+hw.module @e4m3fn_mul(
+    in %lhs : i8, in %rhs : i8,
+    out result : i8) {
+  %lhsf = arith.bitcast %lhs : i8 to f8E4M3FN
+  %rhsf = arith.bitcast %rhs : i8 to f8E4M3FN
+  %product = arith.mulf %lhsf, %rhsf : f8E4M3FN
+  %result = arith.bitcast %product : f8E4M3FN to i8
+  hw.output %result : i8
+}
+```
+
+The pass must now choose the architecture that the RTL reference wrote by
+hand.
+
+## Match the complete floating-point island {#tools-pass-shape}
+
+:::: {.columns}
+::: {.column width="55%"}
+```cpp
+class LowerE4M3FNMulPattern
+    : public OpRewritePattern<arith::BitcastOp> {
+  LogicalResult matchAndRewrite(
+      arith::BitcastOp outputCast,
+      PatternRewriter &rewriter) const override {
+    auto mul = outputCast.getIn()
+        .getDefiningOp<arith::MulFOp>();
+    auto lhsCast = mul.getLhs()
+        .getDefiningOp<arith::BitcastOp>();
+    auto rhsCast = mul.getRhs()
+        .getDefiningOp<arith::BitcastOp>();
+    // Build an i8 comb network.
+  }
+};
+```
+:::
+
+::: {.column width="45%"}
+The root is the output bitcast:
+
+::: {.incremental}
+- `arith.mulf` produces `f8E4M3FN`.
+
+- The new `comb` network produces `i8`.
+
+- At the outer bitcast, the replacement type already agrees.
+:::
+:::
+::::
+
+## Exercise 6 - lower E4M3 - 30 min {#tools-exercise-6}
+
+Edit `lib/LowerE4M3FNToComb.cpp`:
+
+1. Extract sign, exponent, and fraction from both operands.
+2. Build hidden-bit significands and the four-by-four `comb.mul`.
+3. Implement exponent adjustment and normal-path normalization.
+4. Pack the result and test selected normal values.
+5. Add rounding and exceptional values, then run the exhaustive checker.
+
+```bash
+./scripts/test-e4m3-all.py --pass
+```
+
+## Exercise 7 - specialize `x * x` - 15 min {#tools-square-exercise}
+
+1. Match a multiply whose operands are the same SSA value.
+2. Decode the operand only once.
+3. Make finite and zero result signs constant zero.
+4. Preserve the input sign when propagating NaN.
+5. Emit a dedicated four-bit significand squarer.
+6. Prove equivalence and compare AIG area and depth.
