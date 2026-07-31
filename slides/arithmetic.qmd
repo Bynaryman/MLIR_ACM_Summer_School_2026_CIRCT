@@ -34,45 +34,90 @@ hw.module @ex6_integer_mul(
 :::
 ::::
 
-The function boundary and the arithmetic operation are **separate lowering
-decisions**.
+The analogies are visible, but they are not equivalent transformations:
 
-## Compose the boundary and datapath rewrites {#arithmetic-integer-pipeline}
+| MLIR source | Hardware analogue | What is missing? |
+|---|---|---|
+| `func.func` / `return` | `hw.module` / `hw.output` | module and interface policy |
+| `arith.muli` | `comb.mul` | a supported operation mapping |
 
-1. **Course helper:** `--tutorial-func-to-hw` turns arguments and results into
-   ports, then replaces `func.return` with `hw.output`.
-2. `--map-arith-to-comb` maps supported integer `arith` operations to `comb`.
+`func` and `arith` are upstream MLIR dialects. `hw` and `comb` express the
+CIRCT hardware objective.
+
+## Exercise 6: ask the pass registry - 3 min {#arithmetic-exercise-6}
+
+Can upstream `circt-opt` implement both arrows?
 
 ```bash
-build/bin/circt-tutorial-opt examples/ex6_arith_muli.mlir \
+circt-opt --help | grep -i arith
+circt-opt --help | grep -i func
+```
+
+Find:
+
+1. A pass connecting generic arithmetic to combinational hardware.
+2. A pass directly converting `func.func` to `hw.module`.
+
+:::: {.columns .fragment}
+::: {.column width="50%"}
+**Relevant `arith` result**
+
+```text
+--convert-comb-to-arith
+--lower-hwarith-to-hw
+--map-arith-to-comb
+```
+:::
+
+::: {.column width="50%"}
+**Relevant `func` result**
+
+```text
+--lower-cf-to-handshake
+    Lower func and CF into Handshake IR
+```
+
+No direct generic `func.func` → `hw.module` pass.
+:::
+::::
+
+## Exercise 6: two arrows, two tools {#arithmetic-integer-pipeline}
+
+:::: {.columns}
+::: {.column width="57%"}
+**1. Course policy: one function becomes one combinational module**
+
+```bash
+circt-tutorial-opt examples/ex6_arith_muli.mlir \
   --tutorial-func-to-hw \
-  --map-arith-to-comb \
-  --canonicalize
+  -o build/ex6_hw_arith.mlir
 ```
 
-The first pass is tutorial boilerplate, not an upstream CIRCT pass.
-`map-arith-to-comb` is provided by CIRCT.
-
-## Exercise 6: run the integer pipeline - 5 min {#arithmetic-exercise-6}
+**2. CIRCT mapping: supported integer arithmetic becomes `comb`**
 
 ```bash
-./scripts/build.sh
-./scripts/run.sh
+circt-opt build/ex6_hw_arith.mlir \
+  --map-arith-to-comb \
+  -o build/ex6_hw_comb.mlir
 ```
+:::
 
+::: {.column width="43%"}
 ::: {.fragment}
 ```mlir
 hw.module @ex6_integer_mul(
-    in %lhs : i8, in %rhs : i8,
+    in %lhs : i8,
+    in %rhs : i8,
     out product : i8) {
   %product = comb.mul %lhs, %rhs : i8
   hw.output %product : i8
 }
 ```
-
-Locate both rewrites in the result: **function to module**, then **arithmetic to
-combinational logic**.
 :::
+:::
+::::
+
+Inspect the boundary and final stages with `less build/ex6_hw_{arith,comb}.mlir`.
 
 ## Exercise 6: change the arithmetic contract {#arithmetic-float-attempt}
 
@@ -87,11 +132,12 @@ module {
 }
 ```
 
-Run the same pipeline on `examples/ex6_arith_mulf.mlir`:
+Run the same two-stage pipeline on `examples/ex6_arith_mulf.mlir`:
 
 ```bash
-build/bin/circt-tutorial-opt examples/ex6_arith_mulf.mlir \
-  --tutorial-func-to-hw --map-arith-to-comb
+circt-tutorial-opt examples/ex6_arith_mulf.mlir \
+  --tutorial-func-to-hw -o build/ex6_float_hw_arith.mlir
+circt-opt build/ex6_float_hw_arith.mlir --map-arith-to-comb
 ```
 
 ::: {.fragment}

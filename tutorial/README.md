@@ -222,6 +222,17 @@ circt-translate build/aig-comparison/after-aig.mlir \
 - CIRCT's `--map-arith-to-comb` maps supported integer arithmetic operations to
   the `comb` dialect.
 
+First inspect the upstream pass inventory:
+
+```bash
+circt-opt --help | grep -i arith
+circt-opt --help | grep -i func
+```
+
+The first command reveals `--map-arith-to-comb`. The second reveals HLS routes
+such as `--lower-cf-to-handshake`, but no direct generic conversion from
+`func.func` to `hw.module`.
+
 ```bash
 ./scripts/build.sh
 ./scripts/run.sh
@@ -233,12 +244,21 @@ The output should contain:
 %product = comb.mul %lhs, %rhs : i8
 ```
 
+`scripts/run.sh` deliberately uses two tool invocations and leaves both stages
+for inspection:
+
+```text
+build/ex6_hw_arith.mlir  # hw.module containing arith.muli
+build/ex6_hw_comb.mlir   # hw.module containing comb.mul
+```
+
 Now run the same pipeline after changing the arithmetic type:
 
 ```bash
-build/bin/circt-tutorial-opt examples/ex6_arith_mulf.mlir \
+circt-tutorial-opt examples/ex6_arith_mulf.mlir \
   --tutorial-func-to-hw \
-  --map-arith-to-comb
+  -o build/ex6_float_hw_arith.mlir
+circt-opt build/ex6_float_hw_arith.mlir --map-arith-to-comb
 ```
 
 The command fails on `arith.mulf`. This is intentional: the documented

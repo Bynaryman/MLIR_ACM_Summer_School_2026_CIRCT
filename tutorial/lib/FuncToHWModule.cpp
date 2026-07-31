@@ -17,7 +17,8 @@ public:
   StringRef getArgument() const final { return "tutorial-func-to-hw"; }
 
   StringRef getDescription() const final {
-    return "Convert single-block functions to HW modules with matching ports";
+    return "Course helper: wrap single-block functions as combinational HW "
+           "modules";
   }
 
   void getDependentDialects(DialectRegistry &registry) const override {
