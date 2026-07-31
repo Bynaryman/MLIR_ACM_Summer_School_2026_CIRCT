@@ -1,0 +1,180 @@
+## CIRCT continues MLIR toward hardware {#circt-continuation}
+
+[CIRCT](https://circt.llvm.org/) adds representations and transformations for
+the lower part of the abstraction stack.
+
+| Level | What the IR must make explicit |
+|---|---|
+| numerical intent | operations, types, and mathematical semantics |
+| hardware architecture | resources, communication, and scheduling |
+| RTL | modules, combinational logic, state, and clocks |
+| implementation | gates, cells, placement, and wires |
+
+::: {.fragment}
+It is not one hardware IR. It is a set of **dialects that preserve useful
+decisions at different levels**.
+:::
+
+## Digital-design concepts become dialect boundaries {#circt-dialects}
+
+| Concept from the primer | CIRCT vocabulary |
+|---|---|
+| modules, ports, instances, aggregate types | [`hw`](https://circt.llvm.org/docs/Dialects/HW/) |
+| bit-vector combinational logic | [`comb`](https://circt.llvm.org/docs/Dialects/Comb/) |
+| registers, clocks, FIFOs, and memories | [`seq`](https://circt.llvm.org/docs/Dialects/Seq/) |
+| states and transitions | [`fsm`](https://circt.llvm.org/docs/Dialects/FSM/) |
+| streaming and communication | `handshake`, `dc`, `esi` |
+| SystemVerilog-specific constructs | `sv` |
+
+::: {.fragment}
+The dialect boundary records **which hardware concepts have already been
+chosen**.
+:::
+
+## One multiplier, two ways into CIRCT {#circt-two-entrances .smaller}
+
+:::: {.columns}
+::: {.column width="48%"}
+**A complete architecture in SystemVerilog**
+
+```systemverilog
+module e4m3fn_mul(
+  input  logic [7:0] lhs, rhs,
+  output logic [7:0] result
+);
+  // Decode fields.
+  // Multiply significands.
+  // Normalize and round.
+  // Pack zeros, subnormals and NaNs.
+endmodule
+```
+
+`circt-verilog` imports the decisions already present in the RTL.
+:::
+
+::: {.column width="52%"}
+**The numerical operation in `arith`**
+
+```mlir
+hw.module @e4m3fn_mul(
+    in %lhs : i8, in %rhs : i8,
+    out result : i8) {
+  %lhsf = arith.bitcast %lhs
+      : i8 to f8E4M3FN
+  %rhsf = arith.bitcast %rhs
+      : i8 to f8E4M3FN
+  %product = arith.mulf %lhsf, %rhsf
+      : f8E4M3FN
+  %result = arith.bitcast %product
+      : f8E4M3FN to i8
+  hw.output %result : i8
+}
+```
+:::
+::::
+
+## Importing RTL exposes the architecture {#circt-imported-datapath .smaller}
+
+:::: {.columns}
+::: {.column width="56%"}
+```mlir
+%lhsExp = comb.extract %lhs from 3
+    : (i8) -> i4
+%lhsFrac = comb.extract %lhs from 0
+    : (i8) -> i3
+%lhsSign = comb.extract %lhs from 7
+    : (i8) -> i1
+
+%resultSign = comb.xor %lhsSign, %rhsSign : i1
+%lhsSig = comb.concat %zero4, %lhsNormal,
+    %lhsFrac : i4, i1, i3
+%rhsSig = comb.concat %zero4, %rhsNormal,
+    %rhsFrac : i4, i1, i3
+%sigProduct = comb.mul %lhsSig, %rhsSig : i8
+```
+:::
+
+::: {.column width="44%"}
+::: {.incremental}
+- `hw.module` preserves the eight-bit interface.
+
+- `comb.extract` gives names to the packed fields.
+
+- `comb.mul` is now a **four-bit significand multiplier**, not a floating-point
+  operation.
+
+- Muxes and comparisons make exceptional behavior structural.
+:::
+:::
+::::
+
+## Floating-point multiplication is a datapath {#circt-multiplier-parts}
+
+:::: {.columns}
+::: {.column width="59%"}
+![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-align="center" fig-alt="Word-level schematic separating sign, exponent, and significand paths of an E4M3 multiplier" width="100%"}
+:::
+
+::: {.column width="41%"}
+::: {.incremental}
+1. **Decode** sign, exponent, fraction, zero, and NaN.
+
+2. **Multiply** the four-bit significands.
+
+3. **Normalize** the eight-bit product.
+
+4. **Round** back to three fraction bits.
+
+5. **Select and pack** the final E4M3 encoding.
+:::
+:::
+::::
+
+## State and control retain their own structure {#circt-state-control .smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+**A register is not an arithmetic operation**
+
+```mlir
+%product = comb.mul %a, %b : i8
+%product_q = seq.compreg %product, %clk : i8
+```
+
+`seq` records that a value exists **after a clock edge**.
+:::
+
+::: {.column width="50%"}
+**A controller can remain an FSM**
+
+```mlir
+fsm.state @idle transitions {
+  fsm.transition @run guard {
+    fsm.return %start
+  }
+}
+fsm.state @run transitions {
+  fsm.transition @idle
+}
+```
+
+`fsm` preserves states and transitions until lowering them is useful.
+:::
+::::
+
+## Lowering is where intent becomes a circuit {#circt-lowering-decision}
+
+::: {.incremental}
+- `arith.mulf` says **what numerical operation** must be preserved.
+
+- `hw` and `comb` say **which bit-vector network** implements it.
+
+- `seq` says **when values are available**.
+
+- Synthesis decides **which gates or LUTs** realize the network.
+:::
+
+::: {.fragment}
+The tutorial will traverse those views in one direction, prove that they agree,
+then return to `arith.mulf` to write our own lowering.
+:::

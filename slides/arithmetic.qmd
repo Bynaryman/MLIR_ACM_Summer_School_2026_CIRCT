@@ -1,0 +1,319 @@
+## Exercise 6: one function, one hardware objective {#arithmetic-objective}
+
+:::: {.columns}
+::: {.column width="48%"}
+**Input: arithmetic function**
+
+```mlir
+func.func @ex6_integer_mul(
+    %lhs : i8 {hw.name = "lhs"},
+    %rhs : i8 {hw.name = "rhs"})
+    -> (i8 {hw.name = "product"}) {
+  %product = arith.muli %lhs, %rhs : i8
+  return %product : i8
+}
+```
+:::
+
+::: {.column width="4%"}
+$$\Longrightarrow$$
+:::
+
+::: {.column width="48%"}
+**Objective: combinational module**
+
+```mlir
+hw.module @ex6_integer_mul(
+    in %lhs : i8,
+    in %rhs : i8,
+    out product : i8) {
+  %product = comb.mul %lhs, %rhs : i8
+  hw.output %product : i8
+}
+```
+:::
+::::
+
+The function boundary and the arithmetic operation are **separate lowering
+decisions**.
+
+## Compose the boundary and datapath rewrites {#arithmetic-integer-pipeline}
+
+1. **Course helper:** `--tutorial-func-to-hw` turns arguments and results into
+   ports, then replaces `func.return` with `hw.output`.
+2. `--map-arith-to-comb` maps supported integer `arith` operations to `comb`.
+
+```bash
+build/bin/circt-tutorial-opt examples/ex6_arith_muli.mlir \
+  --tutorial-func-to-hw \
+  --map-arith-to-comb \
+  --canonicalize
+```
+
+The first pass is tutorial boilerplate, not an upstream CIRCT pass.
+`map-arith-to-comb` is provided by CIRCT.
+
+## Exercise 6: run the integer pipeline - 5 min {#arithmetic-exercise-6}
+
+```bash
+./scripts/build.sh
+./scripts/run.sh
+```
+
+::: {.fragment}
+```mlir
+hw.module @ex6_integer_mul(
+    in %lhs : i8, in %rhs : i8,
+    out product : i8) {
+  %product = comb.mul %lhs, %rhs : i8
+  hw.output %product : i8
+}
+```
+
+Locate both rewrites in the result: **function to module**, then **arithmetic to
+combinational logic**.
+:::
+
+## Exercise 6: change the arithmetic contract {#arithmetic-float-attempt}
+
+```{.mlir code-line-numbers="3-6"}
+module {
+  func.func @ex6_float_mul(
+      %lhs : f8E4M3FN,
+      %rhs : f8E4M3FN) -> f8E4M3FN {
+    %product = arith.mulf %lhs, %rhs : f8E4M3FN
+    return %product : f8E4M3FN
+  }
+}
+```
+
+Run the same pipeline on `examples/ex6_arith_mulf.mlir`:
+
+```bash
+build/bin/circt-tutorial-opt examples/ex6_arith_mulf.mlir \
+  --tutorial-func-to-hw --map-arith-to-comb
+```
+
+::: {.fragment}
+```text
+error: failed to legalize operation 'arith.mulf'
+```
+:::
+
+## `map-arith-to-comb` draws a deliberate line {#arithmetic-map-contract}
+
+```{.text code-line-numbers="2,4|5-6|9-13"}
+def MapArithToCombPass : Pass<"map-arith-to-comb"> {
+  let summary = "Map arith ops to combinational logic";
+  let description = [{
+    A pass which does a simple `arith` to `comb` mapping wherever possible.
+    This pass will not convert:
+    * floating point operations
+    * operations using `vector`-typed values
+
+    This does not intend to be the definitive lowering/HLS pass of `arith`
+    operations in CIRCT (hence the name "map" instead of e.g. "lower").
+    Rather, it provides a simple way (mostly for testing purposes) to map
+    `arith` operations.
+  }];
+}
+```
+
+[CIRCT `Transforms/Passes.td`, pinned `firtool-1.147.0` source](https://github.com/llvm/circt/blob/firtool-1.147.0/include/circt/Transforms/Passes.td#L56-L76)
+
+The failure is the documented boundary of the pass. Our exercise supplies one
+concrete floating-point lowering.
+
+## Eight bits encode several numerical regimes {#arithmetic-e4m3-format}
+
+::: {.bit-layout}
+::: {.bit-field .sign}
+**s**
+
+`[7]`
+
+<small>sign · 1 bit</small>
+:::
+::: {.bit-field .exponent}
+**eeee**
+
+`[6:3]`
+
+<small>biased exponent · 4 bits</small>
+:::
+::: {.bit-field .fraction}
+**mmm**
+
+`[2:0]`
+
+<small>stored fraction · 3 bits</small>
+:::
+:::
+
+| Regime | Encoding | Value |
+|---|---|---|
+| zero | `e = 0000`, `m = 000` | $0$ |
+| subnormal | `e = 0000`, `m != 000` | $(-1)^s 2^{-6}(m/8)$ |
+| normal | `e != 0000` | $(-1)^s 2^{e-7}(1+m/8)$ |
+| NaN | `e = 1111`, `m = 111` | not a number |
+
+`f8E4M3FN` has bias 7, finite values up to 448, and no infinity.
+[@micikevicius2022fp8]
+
+## Subnormals fill the gap around zero {#arithmetic-e4m3-axis}
+
+![](assets/images/e4m3-number-line.svg){fig-alt="Positive E4M3FN values near zero, with subnormal and normal ranges distinguished" width="100%"}
+
+| Bits | Hex | Value |
+|---|---:|---:|
+| `0 0000 001` | `0x01` | $2^{-9}$ = 0.001953125 |
+| `0 0000 111` | `0x07` | $7 \times 2^{-9}$ = 0.013671875 |
+| `0 0001 000` | `0x08` | $2^{-6}$ = 0.015625 |
+
+The sign bit mirrors these points onto the negative axis.
+
+## The same format spans tiny values to 448 {#arithmetic-e4m3-values}
+
+| Hex | Fields `s eeee mmm` | Value |
+|---:|---|---:|
+| `0x00` | `0 0000 000` | 0 |
+| `0x08` | `0 0001 000` | $2^{-6}$ |
+| `0x30` | `0 0110 000` | 0.5 |
+| `0x38` | `0 0111 000` | 1 |
+| `0x3C` | `0 0111 100` | 1.5 |
+| `0x41` | `0 1000 001` | 2.25 |
+| `0x7E` | `0 1111 110` | 448 |
+| `0x7F` | `0 1111 111` | NaN |
+
+Less precision buys a smaller representation and more operations per watt;
+the exact rounding and exceptional-value rules remain part of the contract.
+
+## Exercise 7: replace the floating-point DAG {#arithmetic-pass-goal}
+
+:::: {.columns}
+::: {.column width="54%"}
+```mlir
+func.func @e4m3fn_mul(
+    %lhs : i8, %rhs : i8) -> i8 {
+  %lhsf = arith.bitcast %lhs
+      : i8 to f8E4M3FN
+  %rhsf = arith.bitcast %rhs
+      : i8 to f8E4M3FN
+  %productf = arith.mulf
+      %lhsf, %rhsf : f8E4M3FN
+  %product = arith.bitcast %productf
+      : f8E4M3FN to i8
+  return %product : i8
+}
+```
+:::
+
+::: {.column width="46%"}
+![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-alt="Word-level DAG of the sign, exponent, and significand paths for E4M3 multiplication" width="100%"}
+
+The custom pass replaces the complete `bitcast` → `mulf` → `bitcast` island
+with an `i8` `comb` datapath.
+:::
+::::
+
+The course helper `--tutorial-func-to-hw` still handles the function boundary.
+
+## E4M3 multiplication exposes three paths {#arithmetic-multiply-paths}
+
+| Path | Normal operands |
+|---|---|
+| sign | $s_r = s_a \oplus s_b$ |
+| exponent | $e_r = e_a + e_b - 7$, then adjust after normalization |
+| significand | $(1.m_a) \times (1.m_b)$: four bits by four bits |
+
+::: {.fragment}
+For example, `0x3C × 0x3C` is $1.5 \times 1.5 = 2.25$, encoded as `0x41`.
+:::
+
+Normalization and rounding bring the raw eight-bit significand product back
+to three stored fraction bits.
+
+## The normal path is already a circuit {#arithmetic-normal-path}
+
+:::: {.columns}
+::: {.column width="49%"}
+```mlir
+%sa = comb.extract %lhs from 7 : (i8) -> i1
+%sb = comb.extract %rhs from 7 : (i8) -> i1
+%sign = comb.xor %sa, %sb : i1
+
+%fa = comb.extract %lhs from 0 : (i8) -> i3
+%fb = comb.extract %rhs from 0 : (i8) -> i3
+%ma4 = comb.concat %one, %fa : i1, i3
+%mb4 = comb.concat %one, %fb : i1, i3
+%ma = comb.concat %zero4, %ma4 : i4, i4
+%mb = comb.concat %zero4, %mb4 : i4, i4
+%raw = comb.mul %ma, %mb : i8
+```
+:::
+
+::: {.column width="51%"}
+![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-alt="Word-level schematic of the sign, exponent, and significand paths for normal E4M3 operands" width="100%"}
+:::
+::::
+
+## Normal arithmetic is only the first checkpoint {#arithmetic-special-cases}
+
+| Case | Required action |
+|---|---|
+| zero | return signed zero |
+| subnormal input | use a significand without the hidden leading one |
+| subnormal result | shift into the gradual-underflow range |
+| discarded bits | round to nearest, ties to even |
+| overflow | return the signed E4M3FN NaN encoding |
+| NaN | return an E4M3FN NaN encoding |
+
+The supplied SystemVerilog reference implements this complete contract.
+
+## Match the complete floating-point island {#arithmetic-pass-shape}
+
+```cpp
+class LowerE4M3FNMulPattern
+    : public OpRewritePattern<arith::BitcastOp> {
+  LogicalResult matchAndRewrite(
+      arith::BitcastOp outputCast,
+      PatternRewriter &rewriter) const override {
+    auto mul = outputCast.getIn()
+        .getDefiningOp<arith::MulFOp>();
+    auto lhsCast = mul.getLhs()
+        .getDefiningOp<arith::BitcastOp>();
+    auto rhsCast = mul.getRhs()
+        .getDefiningOp<arith::BitcastOp>();
+    // Build the i8 comb network from lhsCast and rhsCast.
+  }
+};
+```
+
+The outer bitcast is the root because it and the replacement both produce
+`i8`.
+
+## Exercise 7: lower E4M3 multiplication - 30 min {#arithmetic-exercise-7}
+
+Edit `lib/LowerE4M3FNToComb.cpp` and use
+`examples/ex7_e4m3fn_mul.mlir`.
+
+1. **Normal path:** extract fields, restore hidden bits, multiply, normalize,
+   and pack.
+2. **Full format:** add rounding, zero, subnormal, overflow, and NaN handling.
+3. **Verify:** compare every input pair against MLIR.
+
+```bash
+./scripts/test-e4m3-all.py --pass
+```
+
+The complete hardware reference is
+`examples/ex7_e4m3fn_mul_reference.sv`.
+
+## If time: specialize a squarer {#arithmetic-square-extension}
+
+`examples/optional_e4m3fn_square.mlir` contains `%x * %x`.
+
+- Match equal SSA operands.
+- Decode `%x` once.
+- Emit a dedicated significand squarer.
+- Prove equivalence, then compare AIG nodes and depth.

@@ -1,0 +1,235 @@
+## Quiz time {#dd-quiz}
+
+**Raise your hand if you have already used:**
+
+::: {.incremental}
+- **VHDL**
+
+- **Verilog or SystemVerilog**
+
+- an **FPGA**
+
+- an **ASIC design flow**
+:::
+
+## Two languages, one multiplier {#dd-hdl}
+
+:::: {.columns}
+::: {.column width="54%"}
+**VHDL**
+
+```vhdl
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity mul4 is
+  port(a, b : in  unsigned(3 downto 0);
+       p    : out unsigned(7 downto 0));
+end entity;
+
+architecture rtl of mul4 is
+begin
+  p <= a * b;
+end architecture;
+```
+:::
+
+::: {.column width="46%"}
+**SystemVerilog**
+
+```systemverilog
+module mul4(
+  input  logic [3:0] a, b,
+  output logic [7:0] p
+);
+  assign p = a * b;
+endmodule
+```
+
+::: {.fragment}
+Both describe a **4-bit × 4-bit combinational multiplier**.
+:::
+:::
+::::
+
+## FPGA: a circuit you configure {#dd-fpga-analogy}
+
+:::: {.columns}
+::: {.column width="60%"}
+![Left: a cellular automaton. Right: a simple FPGA. Adapted from [@popoff2026frugality].](assets/images/digital-design/fpga-cellular-automaton.svg){fig-align="center" fig-alt="A cellular automaton grid beside a simple FPGA grid with configurable cells and richer programmable interconnect" width="100%"}
+:::
+
+::: {.column width="40%"}
+**Analogy:** an FPGA is to a cellular automaton what a CPU is to a Turing
+machine.
+
+::: {.incremental}
+- Reconfigurable cells
+
+- Programmable interconnect
+
+- Manufactured first, specialized later
+:::
+:::
+::::
+
+## Configuration turns fabric into a circuit {#dd-fpga-configuration}
+
+:::: {.columns}
+::: {.column width="60%"}
+![Left: a configurable logic cell containing a LUT and register. Right: one configured path through an FPGA. Adapted from [@popoff2026frugality].](assets/images/digital-design/fpga-lut-configured.svg){fig-align="center" fig-alt="A lookup-table cell with a one-bit register beside an FPGA fabric whose selected cells and routes are highlighted" width="100%"}
+:::
+
+::: {.column width="40%"}
+::: {.incremental}
+- A **LUT** stores a truth table.
+
+- A **flip-flop** stores one bit of state.
+
+- A **bitstream** selects functions and routes.
+
+- Once configured, signals propagate through a circuit.
+:::
+:::
+::::
+
+## ASIC: RTL becomes geometry {#dd-asic-cells}
+
+RTL is called *high level* in an ASIC flow. For software people, it is already
+very low level.
+
+:::: {.columns}
+::: {.column width="31%"}
+**RTL**
+
+```systemverilog
+assign y = a | b;
+```
+:::
+
+::: {.column width="34%"}
+![Logic schematic of a SKY130 OR2 standard cell. [@ledoux2024thesis]](assets/images/digital-design/sky130-or2-schematic.svg){fig-align="center" fig-alt="Schematic representation of a two-input OR standard cell" width="100%"}
+:::
+
+::: {.column width="35%"}
+![Physical layout of the same SKY130 OR2 cell. [@ledoux2024thesis]](assets/images/digital-design/sky130-or2-layout-cropped.svg){fig-align="center" fig-alt="Colored GDSII geometry for a two-input OR standard cell" height="350"}
+:::
+::::
+
+::: {.incremental}
+- **Synthesis** chooses cells from a technology library.
+
+- **Place and route** assigns coordinates to every cell and wire.
+:::
+
+## An ASIC is placed and routed {#dd-asic-layout}
+
+:::: {.columns}
+::: {.column width="58%"}
+![Placed-and-routed floating-point divider. [@ledoux2024thesis]](assets/images/digital-design/gds-divider.jpg){fig-align="center" fig-alt="Physical-design view of a routed floating-point divider with standard cells, clock tree, power grid, and signal wires" height="560"}
+:::
+
+::: {.column width="42%"}
+::: {.incremental}
+- Cells occupy **area**.
+
+- Wires have **length, delay, and congestion**.
+
+- Clock and power need their own networks.
+
+- The compiler's output is now a physical object.
+:::
+:::
+::::
+
+## Modules become regions in a floorplan {#dd-floorplan}
+
+:::: {.columns}
+::: {.column width="63%"}
+![Labelled Intel Core i9-13900K die shot. JmsDoug and Fritzchens Fritz, CC0.](assets/images/intel-i9-13900k-labelled-die.jpg){fig-align="center" fig-alt="Labelled Intel Core i9-13900K die showing processor cores, cache arrays, interconnect, graphics, media engines, and I/O logic" height="560"}
+:::
+
+::: {.column width="37%"}
+::: {.incremental}
+- Hierarchy groups a design into **modules**.
+
+- Instances become repeated hardware.
+
+- Large modules and memories become visible regions.
+
+- Floorplanning decides where those regions live.
+:::
+:::
+::::
+
+## Combinational logic is concurrent {#dd-combinational}
+
+:::: {.columns}
+::: {.column width="55%"}
+```systemverilog
+wire [7:0] product;
+
+assign product =
+    {4'b0, a} * {4'b0, b};
+
+assign d =
+    {1'b0, product} + {5'b0, c};
+```
+:::
+
+::: {.column width="45%"}
+::: {.incremental}
+- Outputs depend on the **current inputs**.
+
+- The multiplier and adder both exist.
+
+- Source order is not execution order.
+
+- Width and signedness size the circuit and define its arithmetic.
+:::
+:::
+::::
+
+## Registers add time {#dd-registers}
+
+:::: {.columns}
+::: {.column width="56%"}
+```systemverilog
+logic [7:0] product_q;
+logic [8:0] c_q;
+
+always_ff @(posedge clk) begin
+  product_q <= {4'b0, a} * {4'b0, b};
+  c_q       <= {5'b0, c};
+end
+
+assign d = {1'b0, product_q} + c_q;
+```
+:::
+
+::: {.column width="44%"}
+::: {.incremental}
+- A clock edge samples the inputs of a register.
+
+- Registers store state across cycles.
+
+- A register boundary separates multiplier and adder.
+
+- Latency increases; throughput may remain one result per cycle.
+:::
+:::
+::::
+
+## These concepts need compiler vocabulary {#dd-vocabulary}
+
+| Digital-design concept | Question made explicit |
+|---|---|
+| module, instance, port | what hardware exists, and how is it connected? |
+| combinational operator | what function exists between registers? |
+| width and signedness | what numerical circuit is required? |
+| register and clock | when does a value become available? |
+| FSM, mux, enable | what happens next? |
+| memory, stream, protocol | where does data live, and how does it move? |
+
+Next, CIRCT expresses these distinctions as **MLIR dialects**.

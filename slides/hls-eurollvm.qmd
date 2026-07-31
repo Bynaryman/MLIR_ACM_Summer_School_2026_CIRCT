@@ -1,0 +1,1065 @@
+## Progressive Arithmetic Lowering from Tensor Kernels to Synthesizable Datapaths {#hls-eurollvm-title .eurollvm-title-slide}
+
+::::: {.eurollvm-title-layout}
+:::: {.eurollvm-title-logos}
+![](assets/images/logos/inr_logo_blanc.png){fig-alt="Inria"}
+
+![](assets/images/logos/logo_insa_white.png){fig-alt="INSA Lyon"}
+
+![](assets/images/logos/citi_lab_logo_white.png){fig-alt="CITI Lab"}
+
+![](assets/images/logos/ANR-logo-2021-blanc.png){fig-alt="ANR"}
+::::
+
+:::: {.eurollvm-title-authors}
+**Louis Ledoux**  
+**Pierre Cochard**  
+Florent de Dinechin
+::::
+
+:::: {.eurollvm-title-rule}
+::::
+
+:::: {.eurollvm-title-copy}
+::: {.eurollvm-title-name}
+Progressive Arithmetic Lowering from Tensor Kernels to Synthesizable Datapaths
+:::
+
+::: {.eurollvm-title-event}
+MLIR Workshop @ Euro LLVM Developers' Meeting  
+13 April 2026
+:::
+::::
+:::::
+
+## Motivation: AI {#hls-motivation-ai .eurollvm-slide data-section=""}
+
+::::: {.eurollvm-grid .motivation-grid}
+:::: {.eurollvm-code-card .motivation-code data-tag="Llama.py" data-lang="Python"}
+```python
+class LlamaFfnSublayer(nn.Module):
+    """Llama FFN sublayer using SwiGLU."""
+
+    def __init__(
+        self,
+        dim: int = 512,
+        hidden_dim: int | None = None,
+        multiple_of: int = 256,
+    ):
+        super().__init__()
+        if hidden_dim is None:
+            hidden_dim = 4 * dim
+            hidden_dim = int(2 * hidden_dim / 3)
+            hidden_dim = multiple_of * (
+                (hidden_dim + multiple_of - 1)
+            )
+        self.w_gate = nn.Linear(dim, hidden_dim, bias=False)
+        self.w_up = nn.Linear(dim, hidden_dim, bias=False)
+        self.w_down = nn.Linear(hidden_dim, dim, bias=False)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        gate = F.silu(self.w_gate(x))
+        up = self.w_up(x)
+        return self.w_down(gate * up)
+```
+
+<span class="eurollvm-code-annotation linear" data-label="MatMul projections"></span>
+<span class="eurollvm-code-annotation swiglu" data-label="SiLU + elementwise mul"></span>
+::::
+
+:::: {.eurollvm-figure .motivation-photo}
+![](assets/images/hls/llama-routing-congestion.png){fig-alt="Llama ASIC routing congestion heat map"}
+
+Llama ASIC routing
+::::
+:::::
+
+## Motivation: Audio DSP {#hls-motivation-audio .eurollvm-slide data-section=""}
+
+::::: {.eurollvm-stage}
+:::: {.eurollvm-grid .motivation-grid}
+::: {.eurollvm-audio-left}
+::: {.eurollvm-code-card .audio-code data-tag="softclip.dsp" data-lang="Faust"}
+```text
+// Soft clipping waveshaper.
+// Hyperbolic tangent via foreign function.
+
+gain = 3.0;
+
+tanh = ffunction(float tanhf|tanh|tanhl (float), <math.h>, "");
+
+softclip(x) = tanh(gain * x) / tanh(gain);
+
+process = _,_ : par(i, 2, softclip);
+```
+:::
+
+![](assets/images/hls/softclip.png){.eurollvm-softclip fig-alt="Soft-clipping signal-flow graph"}
+:::
+
+:::: {.eurollvm-figure .motivation-photo}
+::: {.r-stack .audio-wafer-stack}
+![](assets/images/hls/motivation-gfop02-wafer-ttgf0p2.png){.fragment .fade-out data-fragment-index="0" fig-alt="TinyTapeout GF0P02 wafer"}
+![](assets/images/hls/wafer1_anotated.png){.fragment .current-visible data-fragment-index="0" fig-alt="Annotated TinyTapeout GF0P02 wafer"}
+:::
+
+TinyTapeout GF0P02 wafer.space
+::::
+::::
+
+::: {.eurollvm-overlay .fragment data-fragment-index="1"}
+::: {.eurollvm-overlay-message}
+Problem to Silicon ⇒ In reality... multi intermediate arithmetic levels.
+:::
+:::
+:::::
+
+## Emeraude-MLIR {.eurollvm-section-slide}
+
+## Our take on the end-to-end levels {#hls-overall-levels .eurollvm-slide data-section="Emeraude-MLIR"}
+
+::: {.r-stack .eurollvm-diagram-stack}
+![](assets/images/hls/diagrams/eurollvm-diagram-1.svg){.fragment .fade-out data-fragment-index="0" fig-alt="Complete Emeraude-MLIR compilation levels"}
+![](assets/images/hls/diagrams/eurollvm-diagram-2.svg){.fragment .current-visible data-fragment-index="0" fig-alt="Front-end and high-level arithmetic focus"}
+![](assets/images/hls/diagrams/eurollvm-diagram-3.svg){.fragment .current-visible data-fragment-index="1" fig-alt="Structured control flow and arithmetic focus"}
+![](assets/images/hls/diagrams/eurollvm-diagram-4.svg){.fragment data-fragment-index="2" fig-alt="Datapath and output focus"}
+:::
+
+## Motivations at both ends: frontends and backends {.eurollvm-section-slide}
+
+## Frontends on one hand {#hls-frontends .eurollvm-slide data-section="Frontends and backends"}
+
+::::: {.eurollvm-stage}
+:::: {.eurollvm-two-columns .eurollvm-separated}
+::: {.eurollvm-column}
+<div class="eurollvm-subhead">Faust / DSP</div>
+
+- **FIR / IIR recurrences** on sample streams
+- **Fixed-point friendly** audio kernels
+- **Nonlinear audio functions:** saturation, waveshaping, modal/finite-difference-time-domain physical modelling
+- **Precision control:** range, quantization, overflow
+:::
+
+::: {.eurollvm-column}
+<div class="eurollvm-subhead">Tensor / ML</div>
+
+- **Tensor contractions:** (`matmul`, batched GEMM)
+- **Nonlinear kernels:** SiLU / exp / sigmoid / softmax
+- **Accumulation depth:** rounding-error growth
+- **Precision control:** mixed-precision per layer
+:::
+::::
+
+::: {.eurollvm-overlay .fragment}
+::: {.eurollvm-overlay-message}
+Arithmetic motivations of different natures
+:::
+:::
+:::::
+
+## Backends on the other hand {#hls-backends .eurollvm-slide data-section="Frontends and backends"}
+
+::::: {.eurollvm-stage}
+::: {.eurollvm-backend-intro}
+PPA objectives: area, power, performance...  
+... or budgets / constraints
+:::
+
+:::: {.eurollvm-two-columns .eurollvm-separated}
+::: {.eurollvm-column}
+<div class="eurollvm-subhead">FPGA</div>
+
+- Resource budgets: LUT, FF, BRAM, DSP
+- Reconfigurable
+- Throughput-oriented
+:::
+
+::: {.eurollvm-column}
+<div class="eurollvm-subhead">ASIC</div>
+
+- Standard cells (Resizing)
+- Process Design Kit
+  - 7nm, 180nm, corners, high density
+- Physical constraints: congestion, wiring
+- DRC/LVS and signoff requirements
+:::
+::::
+
+::: {.eurollvm-overlay .fragment}
+::: {.eurollvm-overlay-message}
+Hardware constraints of different natures
+:::
+:::
+:::::
+
+## High-level *math* on *tensors* {.eurollvm-section-slide}
+
+## Polynomial approximations {#hls-polynomials .eurollvm-slide data-section="High-level math on tensors"}
+
+::::: {.eurollvm-grid .polynomial-grid}
+:::: {.eurollvm-polynomial-copy}
+- **`RealArith`** and **`FixedPointArith`**.
+- `--realarith-to-fixed_pt_arith` for polynomial approximation lowering.
+- **Horner** Scheme
+
+::: {.eurollvm-poly-plots}
+::: {.eurollvm-figure}
+![](assets/images/hls/poly-deg16.svg){fig-alt="Two degree-16 polynomial approximations"}
+
+2 × degree-16
+:::
+
+::: {.eurollvm-figure}
+![](assets/images/hls/poly-deg4.svg){fig-alt="Thirty-two degree-4 polynomial approximations"}
+
+32 × degree-4
+:::
+:::
+
+::: {.eurollvm-example-box}
+**Example 1:** $f(x)=\tanh(3x)/\tanh(3)$
+
+`--realarith-to-fixed_pt_arith="approximation-method=uniform_piecewise_poly polynomial-degree=10 coeff-storage=switch"`
+
+**index_switch: 8 intervals (cases 0..7)**
+
+$$
+P_0(h)=((((((((((-78h+46)h+1454)h-7314)h-78970)h+682179)h+4256867)h-57922167)h-191490613)h+5510525043)h+5640589127
+$$
+
+$\left[\ldots\right]$
+
+$$
+P_7(h)=((((((((((83h-18)h-206)h+65)h-477)h+12014)h-170708)h+1874477)h-15214840)h+81733304)h+30216113779
+$$
+:::
+::::
+
+:::: {.eurollvm-figure .poster-figure}
+![](assets/images/hls/eurollvm-2025-poster.svg){fig-alt="EuroLLVM 2025 poster"}
+
+**EuroLLVM 2025 poster**  
+[https://hal.science/hal-05063466](https://hal.science/hal-05063466)
+::::
+:::::
+
+## Example on an LLM subkernel {#hls-llama-subkernel .eurollvm-slide data-section="High-level math on tensors"}
+
+::::: {.eurollvm-stage}
+::: {.eurollvm-rendered-ir}
+![](assets/images/hls/llama-subkernel-annotated.svg){fig-alt="Annotated Python and MLIR lowering for a Llama FFN subkernel"}
+:::
+
+::: {.eurollvm-overlay .fragment}
+::: {.eurollvm-overlay-message}
+High-level optimization potential:  
+linear algebra kernels & nonlinear functions.
+:::
+:::
+:::::
+
+## Medium-level *arith* on *SCF* and *memrefs* {.eurollvm-section-slide}
+
+## The gap from MLIR to CIRCT {#hls-gap .eurollvm-slide data-section="Medium-level arithmetic"}
+
+::::: {.r-stack .eurollvm-gap-render-states}
+![](assets/images/hls/gap-map-step-0.svg){.fragment .fade-out data-fragment-index="0" fig-alt="SCF floating-point accumulation before CIRCT lowering"}
+![](assets/images/hls/gap-map-step-1.svg){.fragment .current-visible data-fragment-index="0" fig-alt="Question about lowering SCF floating-point operations to hardware"}
+![](assets/images/hls/gap-map-step-2.svg){.fragment .current-visible data-fragment-index="1" fig-alt="Attempt to use map-arith-to-comb for floating-point operations"}
+![](assets/images/hls/gap-map-step-3.svg){.fragment data-fragment-index="2" fig-alt="Map-arith-to-comb rejection with every f32 type highlighted"}
+:::::
+
+## Approaches in the literature {#hls-literature .eurollvm-slide data-section="Medium-level arithmetic"}
+
+::::: {.eurollvm-stage}
+:::: {.eurollvm-grid .literature-grid}
+::: {.eurollvm-column}
+<div class="eurollvm-subhead">Representative approaches</div>
+
+- ScaleHLS / StreamTensor [1][2]
+- Dynamatic [3]
+- BASE2 [4]
+
+<div class="eurollvm-subhead">Common limitation</div>
+
+Final floating-point implementation is delegated to vendor HLS or IP/core generators.
+:::
+
+::: {.eurollvm-documentation-box}
+<div class="eurollvm-subhead">AMD/Xilinx documentation</div>
+
+"float and double ... are synthesized with IEEE-754 standard **partial compliance**."
+
+"complies with much of the IEEE-754 Standard ... **deviations** generally provide a better trade-off of resources."
+:::
+::::
+
+::: {.eurollvm-citation-strip}
+[1] Ye et al., HPCA 2022 · [2] Ye & Chen, MICRO 2025 · [3] Xu et al., FPGA 2023 · [4] Friebel et al., HEART 2023
+:::
+
+::: {.eurollvm-overlay .fragment}
+::: {.eurollvm-overlay-message}
+Partial compliance + hidden vendor IP ⇒ opaque arithmetic behavior and limited control.
+:::
+:::
+:::::
+
+## Low-level *datapaths* with *comb*, *seq*, and *HW* {.eurollvm-section-slide}
+
+## Comb/seq and cost estimation {#hls-comb-seq .eurollvm-slide data-section="Low-level datapaths"}
+
+::::: {.eurollvm-grid .comb-cost-grid}
+:::: {.eurollvm-column .comb-cost-copy}
+- **CIRCT Core: Comb/Seq/HW**
+- **Cost modeling**
+  - AIG, MIG, High-Level Heuristics
+- **Avoid commiting to hardware**
+- Native AIG export: `circt-translate <synth.mlir> --export-aiger -o 90-final.aig`
+- Fallback AIG export: `hls-driver/scripts/export-aig-via-yosys-abc.sh <circt-opt> <in.mlir> 90-final.aig forward`
+- **PPA in seconds**
+- Preparing **QoR / DSE**
+::::
+
+:::: {.eurollvm-comb-stack}
+::: {.eurollvm-code-card data-tag="F" data-lang="MLIR comb"}
+```mlir
+module {
+  hw.module @forward(in %arg0 : !hw.array<16xi32>, in %arg1 : !hw.array<16xi32>, in %clk : !seq.clock, in %reset : i1, out arg1_out : !hw.array<16xi32>) {
+    ...
+    %111 = comb.extract %local_mem_2_rdata from 31 : (i32) -> i1
+    %112 = comb.extract %local_mem_3_rdata from 31 : (i32) -> i1
+    %113 = comb.xor %111, %112 : i1
+    %114 = comb.extract %local_mem_2_rdata from 23 : (i32) -> i8
+    %115 = comb.extract %local_mem_3_rdata from 23 : (i32) -> i8
+    %118 = comb.concat %c1_i25, %116 : i25, i23
+    %120 = comb.mul %118, %119 : i48
+    %123 = comb.add %114, %115, %122, %c-127_i8 : i8
+    ...
+  }
+}
+```
+:::
+
+::: {.eurollvm-code-card .sv-card data-tag="G" data-lang="SystemVerilog"}
+```systemverilog
+module forward(
+  input  [15:0][31:0] arg0,
+                      arg1,
+  input               clk,
+                      reset,
+  output [15:0][31:0] arg1_out
+);
+  wire [511:0] _GEN_57 = arg0;
+  reg  [31:0]  arg1_mem[0:15];
+  always_ff @(posedge clk) begin
+    if (!reset) begin
+      if (_GEN_5) arg1_mem[_GEN_1] <= _GEN_0;
+      if (_GEN_9) arg1_mem[_GEN_6] <= 32'h0;
+    end
+  end
+  ...
+endmodule
+```
+:::
+::::
+:::::
+
+## HAriCo {.eurollvm-section-slide}
+
+## Introducing HAriCo (Hardware Arithmetic Cores) {#hls-harico .eurollvm-slide data-section="HAriCo"}
+
+::::: {.eurollvm-grid .harico-intro-grid}
+:::: {.eurollvm-column}
+- IR-based **FloPoCo** implementation
+  - Modernized **C++ API**
+  - **Multiple outputs**
+    - *VHDL*, *SystemVerilog*, *MLIR*, ...
+  - Conversion & transformation **passes**
+- **C API** (Python, Rust bindings)
+- **Big code-base** (approx. **90** operators)
+  - (will take time...)
+::::
+
+:::: {.eurollvm-figure .harico-overview}
+![](assets/images/hls/harico-overview.svg){fig-alt="HAriCo architecture and waveform"}
+::::
+:::::
+
+## HAriCo input IR {#hls-scf-loop .eurollvm-slide .eurollvm-untitled data-section="HAriCo"}
+
+::: {.eurollvm-full-diagram}
+![](assets/images/hls/scf-loop-ir.svg){fig-alt="SCF and arithmetic loop selected for hardware materialization"}
+:::
+
+## Three materialization strategies {#hls-strategies .eurollvm-slide data-section="HAriCo"}
+
+::::::: {.eurollvm-strategy-layout}
+:::::: {.eurollvm-strategy-left}
+::::: {.eurollvm-strategy-panel .strategy-per-op}
+<div class="eurollvm-strategy-heading"><span class="strategy-number">1</span><span>Per-op</span></div>
+
+- IEEE754-compliant
+- 1 Operation → 1 Operator
+- N Operations → N Roundings
+:::::
+
+::::: {.eurollvm-strategy-panel .strategy-fused}
+<div class="eurollvm-strategy-heading"><span class="strategy-number">2</span><span>Fused-graph-datapath</span></div>
+
+- FMA philosophy
+- 1 deferred rounding
+- Expression fusion
+
+$$
+\frac{1}{\sqrt{x^2+y^2}}
+\qquad
+\sin(\omega t + \varphi)
+$$
+:::::
+::::::
+
+:::::: {.eurollvm-strategy-panel .strategy-specialized}
+<div class="eurollvm-strategy-heading"><span class="strategy-number">3</span><span>Specialized</span></div>
+
+::::: {.eurollvm-specialized-layout}
+:::: {.eurollvm-specialized-copy}
+- Squarers [1]
+- Constant multipliers [2]
+- Kulisch / Systolic Arrays [3]
+- Target semantics
+
+![](assets/images/hls/overall-sa-1.svg){fig-alt="Systolic array architecture"}
+::::
+
+:::: {.eurollvm-specialized-schematic}
+![](assets/images/hls/s3fdp-cropped.svg){fig-alt="Specialized floating-point datapath"}
+::::
+:::::
+::::::
+:::::::
+
+## From MLIR to CIRCT: `harico-arith-to-comb` {#hls-harico-pass .eurollvm-slide data-section="HAriCo"}
+
+::::::: {.r-stack .eurollvm-harico-pass-states}
+:::::: {.eurollvm-harico-pass-state .fragment .fade-out data-fragment-index="0"}
+::::: {.eurollvm-harico-pass-layout}
+:::: {.eurollvm-strategy-panel .strategy-per-op .pass-strategy}
+<div class="eurollvm-strategy-heading"><span class="strategy-number">1</span><span>Per-op</span></div>
+
+- IEEE754-compliant
+- 1 Operation → 1 Operator
+- N Operations → N Roundings
+::::
+
+:::: {.eurollvm-harico-flow}
+![](assets/images/hls/harico-flow-step-1.svg){fig-alt="Per-operation pattern selected in the HAriCo lowering flow"}
+::::
+:::::
+
+<div class="eurollvm-command"><b>1.</b> <code>emeraude-mlir-opt in.mlir &#45;&#45;harico-arith-to-comb=&quot;<span class='functional'>lowering-mode=per-op</span><span class='performance'> target=VirtexUltraScale target-frequency=2.5e7</span>&quot;</code></div>
+::::::
+
+:::::: {.eurollvm-harico-pass-state .fragment .current-visible data-fragment-index="0"}
+::::: {.eurollvm-harico-pass-layout}
+:::: {.eurollvm-strategy-panel .strategy-fused .pass-strategy}
+<div class="eurollvm-strategy-heading"><span class="strategy-number">2</span><span>Fused-graph-datapath</span></div>
+
+- FMA philosophy
+- 1 deferred rounding
+- Expression fusion
+
+$$
+\frac{1}{\sqrt{x^2+y^2}}
+\qquad
+\sin(\omega t + \varphi)
+$$
+::::
+
+:::: {.eurollvm-harico-flow}
+![](assets/images/hls/harico-flow-step-2.svg){fig-alt="Fused-graph pattern selected in the HAriCo lowering flow"}
+::::
+:::::
+
+<div class="eurollvm-command"><b>2.</b> <code>emeraude-mlir-opt in.mlir &#45;&#45;harico-arith-to-comb=&quot;<span class='functional'>lowering-mode=fused-graph-datapath</span><span class='performance'> target=sky130 target-frequency=2.5e7</span>&quot;</code></div>
+::::::
+
+:::::: {.eurollvm-harico-pass-state .fragment data-fragment-index="1"}
+::::: {.eurollvm-harico-pass-layout}
+:::: {.eurollvm-strategy-panel .strategy-specialized .pass-strategy}
+<div class="eurollvm-strategy-heading"><span class="strategy-number">3</span><span>Specialized</span></div>
+
+- Squarers
+- Constant multipliers
+- Kulisch / Systolic Arrays
+- Target semantics
+
+![](assets/images/hls/s3fdp-cropped.svg){fig-alt="Specialized floating-point datapath"}
+::::
+
+:::: {.eurollvm-harico-flow}
+![](assets/images/hls/harico-flow-step-3.svg){fig-alt="Specialized loop pattern selected in the HAriCo lowering flow"}
+::::
+:::::
+
+<div class="eurollvm-command"><b>3.</b> <code>emeraude-mlir-opt in.mlir &#45;&#45;harico-arith-to-comb=&quot;<span class='functional'>lowering-mode=specialized specializations=enable=s3fdp,s3fdp.chunk_size=32,s3fdp.ovf=10,s3fdp.msb=10,s3fdp.lsb=-20</span><span class='performance'> target=tsmc7 target-frequency=2.5e7</span>&quot;</code></div>
+::::::
+:::::::
+
+## HAriCo C++ API example {#hls-harico-cpp .eurollvm-slide data-section="HAriCo"}
+
+::::: {.eurollvm-api-layout}
+:::: {.eurollvm-code-card .api-code data-tag="C++ API" data-lang="cpp"}
+```cpp
+#include <HAriCo/Context.hpp>
+#include <HAriCo/Operators/FPAddSinglePath.hpp>
+using namespace HAriCo;
+
+auto ctx = Context::new_default();
+ctx.options["target"] = Targets::VirtexUltraScalePlus;
+ctx.options["frequency"] = 500 // MHz;
+
+// Build operator:
+auto op = FPAdd();
+auto options = op.interface(ctx);
+options["wE"] = 8;
+options["wF"] = 23;
+Module mod = op.build(ctx, options);
+
+// Before pass:
+VerilogCodeGenerator gen;
+gen.build(mod).fwrite("fpadd.sv");
+
+PassManager pm;
+pm.add<TimingAnalysisPass>();
+pm.add<SchedulePass>();
+pm.add<PipelineizePass>();
+pm.run(mod);
+gen.build(mod).fwrite("fpadd_pipeline.sv");
+```
+::::
+
+:::: {.eurollvm-api-labels}
+<span>Global options</span>
+<span>IR build</span>
+<span>HDL generation</span>
+<span>Analysis & transformation passes</span>
+::::
+:::::
+
+## HAriCo Python bindings example {#hls-harico-python .eurollvm-slide data-section="HAriCo"}
+
+::::: {.eurollvm-api-layout}
+:::: {.eurollvm-code-card .api-code data-tag="HAriCo.py" data-lang="Python"}
+```python
+import harico as hrc
+
+def main():
+    ctx = hrc.Context()
+    ctx.set_target("VirtexUltrascalePlus", frequency_mhz=500)
+
+    op = hrc.Operator("FPAdd")
+    mod = op.build_ir(
+        ctx,
+        wE=8,
+        wF=23,
+        sub=False,
+        dualPath=False,
+        onlyPositiveIO=False,
+    )
+
+    # Before pass:
+    mod.emit_vhdl("fpadd_before_pipelineize.vhd")
+    mod.emit_verilog("fpadd_before_pipelineize.v")
+
+    # Analysis passes first:
+    pm_analysis = hrc.PassManager(["timing", "schedule"])
+    pm_analysis.run(mod, ctx)
+
+    # Transform pass:
+    pm_pipelineize = hrc.PassManager(["pipelineize"])
+    pm_pipelineize.run(mod, ctx)
+```
+::::
+
+:::: {.eurollvm-api-labels .python-labels}
+<span>Python bindings</span>
+<span>IR build</span>
+<span>HDL generation</span>
+<span>Analysis & transformation passes</span>
+::::
+:::::
+
+## Results: DSP {.eurollvm-section-slide}
+
+## Wafer.space run {#hls-wafer .eurollvm-slide data-section="Results: DSP"}
+
+::: {.eurollvm-result-figure .wafer-result}
+![](assets/images/hls/wafer-edgeblack.png){fig-alt="TinyTapeout wafer layout for the Faust design"}
+
+MPW + TT submission (TTg0p2) on Wafer.space — Utilisation 47.106% · Wire length 377542 um
+:::
+
+## GDS 3D view {#hls-gds-3d .eurollvm-slide data-section="Results: DSP"}
+
+::: {.eurollvm-result-figure .gds-result}
+![](assets/images/hls/faust-gds-3d-view.png){fig-alt="Three-dimensional GDS view"}
+:::
+
+## Reticle view (wafer.space) {#hls-reticle .eurollvm-slide data-section="Results: DSP"}
+
+::: {.eurollvm-result-figure .reticle-result}
+![](assets/images/hls/reticle_white.png){fig-alt="Wafer.space reticle view"}
+:::
+
+## Results: LLM and HAriCo lowering strategies {.eurollvm-section-slide}
+
+## ASIC: GDS routing congestion {#hls-asic-results .eurollvm-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-grid .results-grid}
+:::: {.eurollvm-metric-block}
+**ASIC SKY130HD Llama**
+
+| Metric | Value |
+|---|---:|
+| Area | 1.7233 mm² |
+| Die Dimensions | 1.312 × 1.312 mm |
+| **Power Breakdown** | |
+| Combinational | 0.117 W |
+| Sequential | 0.044 W |
+| Clock | 0.028 W |
+| Total Power | 0.189 W |
+::::
+
+:::: {.eurollvm-figure .routing-result}
+![](assets/images/hls/llama-routing-congestion.png){fig-alt="Llama routing congestion heat map"}
+
+Llama 1.5 mm² routing congestion heatmap
+::::
+:::::
+
+## FPGA: resource usage {#hls-fpga-results .eurollvm-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-grid .results-grid}
+:::: {.eurollvm-metric-block}
+**FPGA VU19P Llama**
+
+| Metric | Value |
+|---|---:|
+| LUTs | 26,928 |
+| Flip-Flops | 12,221 |
+| DSP Blocks | 17 |
+::::
+
+:::: {.eurollvm-figure .fpga-result}
+![](assets/images/hls/fpga-vu19p-placement-routing.jpeg){fig-alt="Llama placement and routing on a VU19P FPGA"}
+
+Llama FPGA vu19p P&R
+::::
+:::::
+
+## Llama FFN sublayer {#hls-ppa-llama .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="Llama FFN Sublayer IR" data-lang="IR"}
+```mlir
+module {
+  func.func @forward(%arg0: tensor<1x2x8xf32>) -> tensor<1x2x8xf32> {
+    %7 = linalg.batch_matmul ... -> tensor<1x2x16xf32>
+    %8 = linalg.generic ... ins(%7 : tensor<1x2x16xf32>) outs(%5 : tensor<1x2x16xf32>) {
+    ^bb0(%in: f32, %out: f32):
+      %neg = arith.negf %in : f32
+      %exp = math.exp %neg : f32
+      %gate = arith.divf %cst_1, %den : f32
+      %silu = arith.mulf %in, %gate : f32
+      linalg.yield %silu : f32
+    } -> tensor<1x2x16xf32>
+    return %18 : tensor<1x2x8xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/llama_ffn_sublayer_style11_single.png){fig-alt="Llama FFN Sublayer area versus delay"}
+
+Llama FFN Sublayer. Area vs. Delay
+::::
+:::::
+
+## MatMul + SiLU {#hls-ppa-matmul-silu .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="MatMul SiLU IR" data-lang="IR"}
+```mlir
+#map = affine_map<(d0, d1) -> (d0, d1)>
+module {
+  func.func @forward(%arg0: tensor<2x4xf32>) -> tensor<2x4xf32> {
+    %mm = linalg.matmul ... -> tensor<2x4xf32>
+    %sig = linalg.generic ... ins(%mm : tensor<2x4xf32>) outs(%empty : tensor<2x4xf32>) {
+    ^bb0(%in: f32, %acc: f32):
+      %neg = arith.negf %in : f32
+      %exp = math.exp %neg : f32
+      %gate = arith.divf %c1, %den : f32
+      linalg.yield %gate : f32
+    } -> tensor<2x4xf32>
+    %out = linalg.generic ... ins(%sig, %mm : tensor<2x4xf32>, tensor<2x4xf32>) outs(%empty : tensor<2x4xf32>)
+    return %out : tensor<2x4xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/matmul_silu_style11_single.png){fig-alt="MatMul plus SiLU area versus delay"}
+
+MatMul + SiLU. Area vs. Delay
+::::
+:::::
+
+## MatMul + sigmoid {#hls-ppa-matmul-sigmoid .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="MatMul Sigmoid IR" data-lang="IR"}
+```mlir
+#map = affine_map<(d0, d1) -> (d0, d1)>
+module {
+  func.func @forward(%arg0: tensor<2x4xf32>) -> tensor<2x4xf32> {
+    %mm = linalg.matmul ... -> tensor<2x4xf32>
+    %out = linalg.generic ... ins(%mm : tensor<2x4xf32>) outs(%empty : tensor<2x4xf32>) {
+    ^bb0(%in: f32, %acc: f32):
+      %neg = arith.negf %in : f32
+      %exp = math.exp %neg : f32
+      %sig = arith.divf %c1, %den : f32
+      linalg.yield %sig : f32
+    } -> tensor<2x4xf32>
+    return %out : tensor<2x4xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/matmul_sigmoid_style11_single.png){fig-alt="MatMul plus sigmoid area versus delay"}
+
+MatMul + Sigmoid. Area vs. Delay
+::::
+:::::
+
+## Attention softmax exponential {#hls-ppa-attn-exp .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="Attention Softmax Exponential IR" data-lang="IR"}
+```mlir
+#map = affine_map<(d0, d1) -> (d0, d1)>
+module {
+  func.func @forward(%query: tensor<2x4xf32>) -> tensor<2x2xf32> {
+    %score = linalg.matmul ... -> tensor<2x2xf32>
+    %out = linalg.generic ... ins(%score : tensor<2x2xf32>) outs(%out_empty : tensor<2x2xf32>) {
+    ^bb0(%in: f32, %acc: f32):
+      %res = math.exp %in : f32
+      linalg.yield %res : f32
+    } -> tensor<2x2xf32>
+    return %out : tensor<2x2xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/attn_softmax_exp_like_style11_single.png){fig-alt="Attention softmax exponential area versus delay"}
+
+Attention Softmax Exponential. Area vs. Delay
+::::
+:::::
+
+## MatMul + sigmoid heavy-tail {#hls-ppa-heavy-tail .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="MatMul Sigmoid Heavy-Tail IR" data-lang="IR"}
+```mlir
+#map = affine_map<(d0, d1) -> (d0, d1)>
+module {
+  func.func @forward(%arg0: tensor<2x8xf32>) -> tensor<2x8xf32> {
+    %mm = linalg.matmul ... -> tensor<2x8xf32>
+    %out = linalg.generic ... ins(%mm : tensor<2x8xf32>) outs(%empty : tensor<2x8xf32>) {
+    ^bb0(%in: f32, %acc: f32):
+      %neg = arith.negf %in : f32
+      %exp = math.exp %neg : f32
+      %res = arith.divf %c1, %den : f32
+      linalg.yield %res : f32
+    } -> tensor<2x8xf32>
+    return %out : tensor<2x8xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/matmul_sigmoid_heavytail_style11_single.png){fig-alt="MatMul plus sigmoid heavy-tail area versus delay"}
+
+MatMul + Sigmoid Heavy-Tail. Area vs. Delay
+::::
+:::::
+
+## GEMV accumulation {#hls-ppa-gemv .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="GEMV Accumulation IR" data-lang="IR"}
+```mlir
+module {
+  func.func @forward(%arg0: tensor<1x4xf32>) -> tensor<1x4xf32> {
+    %w = arith.constant dense<...> : tensor<4x4xf32>
+    %init = linalg.fill ins(%c0 : f32) outs(%empty : tensor<1x4xf32>) -> tensor<1x4xf32>
+    %out = linalg.matmul ins(%arg0, %w : tensor<1x4xf32>, tensor<4x4xf32>) outs(%init : tensor<1x4xf32>)
+      -> tensor<1x4xf32>
+    return %out : tensor<1x4xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/gemv_accum_style11_single.png){fig-alt="GEMV accumulation area versus delay"}
+
+GEMV Accumulation. Area vs. Delay
+::::
+:::::
+
+## Attention score {#hls-ppa-attention-score .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="Attention Score IR" data-lang="IR"}
+```mlir
+module {
+  func.func @forward(%query: tensor<2x4xf32>) -> tensor<2x2xf32> {
+    %kt = arith.constant dense<...> : tensor<4x2xf32>
+    %init = linalg.fill ins(%c0 : f32) outs(%empty : tensor<2x2xf32>) -> tensor<2x2xf32>
+    %score = linalg.matmul ins(%query, %kt : tensor<2x4xf32>, tensor<4x2xf32>) outs(%init : tensor<2x2xf32>)
+      -> tensor<2x2xf32>
+    return %score : tensor<2x2xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/attention_score_style11_single.png){fig-alt="Attention score area versus delay"}
+
+Attention Score. Area vs. Delay
+::::
+:::::
+
+## MatMul accumulation {#hls-ppa-matmul-accum .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="MatMul Accumulation IR" data-lang="IR"}
+```mlir
+module {
+  func.func @forward(%arg0: tensor<2x4xf32>) -> tensor<2x4xf32> {
+    %w = arith.constant dense<...> : tensor<4x4xf32>
+    %init = linalg.fill ins(%c0 : f32) outs(%empty : tensor<2x4xf32>) -> tensor<2x4xf32>
+    %mm = linalg.matmul ins(%arg0, %w : tensor<2x4xf32>, tensor<4x4xf32>) outs(%init : tensor<2x4xf32>)
+      -> tensor<2x4xf32>
+    return %mm : tensor<2x4xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/matmul_accum_style11_single.png){fig-alt="MatMul accumulation area versus delay"}
+
+MatMul Accumulation. Area vs. Delay
+::::
+:::::
+
+## Polybench GESUMMV-like {#hls-ppa-gesummv .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="Polybench GESUMMV-Like IR" data-lang="IR"}
+```mlir
+#map = affine_map<(d0, d1) -> (d0, d1)>
+module {
+  func.func @forward(%arg0: tensor<1x4xf32>) -> tensor<1x4xf32> {
+    %mm = linalg.matmul ... -> tensor<1x4xf32>
+    %out = linalg.generic ... ins(%mm, %arg0 : tensor<1x4xf32>, tensor<1x4xf32>) outs(%empty_out : tensor<1x4xf32>) {
+    ^bb0(%mmv: f32, %in: f32, %acc: f32):
+      %bias = arith.mulf %beta, %in : f32
+      %res = arith.addf %mmv, %bias : f32
+      linalg.yield %res : f32
+    } -> tensor<1x4xf32>
+    return %out : tensor<1x4xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/poly_gesummv_like_style11_single.png){fig-alt="Polybench GESUMMV-like area versus delay"}
+
+Polybench GESUMMV-Like. Area vs. Delay
+::::
+:::::
+
+## DSP FIR accumulation {#hls-ppa-fir .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="DSP FIR Accumulation IR" data-lang="IR"}
+```mlir
+module {
+  func.func @forward(%arg0: tensor<1x8xf32>) -> tensor<1x8xf32> {
+    %w = arith.constant dense<...> : tensor<8x8xf32>
+    %init = linalg.fill ins(%c0 : f32) outs(%empty : tensor<1x8xf32>) -> tensor<1x8xf32>
+    %mm = linalg.matmul ins(%arg0, %w : tensor<1x8xf32>, tensor<8x8xf32>) outs(%init : tensor<1x8xf32>)
+      -> tensor<1x8xf32>
+    return %mm : tensor<1x8xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/dsp_fir_accum_style11_single.png){fig-alt="DSP FIR accumulation area versus delay"}
+
+DSP FIR Accumulation. Area vs. Delay
+::::
+:::::
+
+## Polybench SYRK-like {#hls-ppa-syrk .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+
+::::: {.eurollvm-workload}
+:::: {.eurollvm-code-card data-tag="Polybench SYRK-Like IR" data-lang="IR"}
+```mlir
+module {
+  func.func @forward(%arg0: tensor<1x8xf32>) -> tensor<1x8xf32> {
+    %w = arith.constant dense<...> : tensor<8x8xf32>
+    %init = linalg.fill ins(%c0 : f32) outs(%empty : tensor<1x8xf32>) -> tensor<1x8xf32>
+    %mm = linalg.matmul ins(%arg0, %w : tensor<1x8xf32>, tensor<8x8xf32>) outs(%init : tensor<1x8xf32>)
+      -> tensor<1x8xf32>
+    return %mm : tensor<1x8xf32>
+  }
+}
+```
+::::
+
+:::: {.eurollvm-figure .workload-plot}
+![](assets/images/hls/ppa/poly_syrk_like_style11_single.png){fig-alt="Polybench SYRK-like area versus delay"}
+
+Polybench SYRK-Like. Area vs. Delay
+::::
+:::::
+
+## Closing {.eurollvm-section-slide}
+
+## CIRCT / LLVM commits {#hls-upstream .eurollvm-slide data-section="Closing"}
+
+::: {.eurollvm-result-figure .upstream-result}
+![](assets/images/hls/circt-pr-accepted.png){fig-alt="Accepted CIRCT pull request"}
+
+Internal Emeraude-MLIR transforms pushed upstream.
+:::
+
+## Concluding remarks and future work {#hls-conclusion .eurollvm-slide data-section="Closing"}
+
+<ul class="eurollvm-conclusion">
+  <li>HL: More polynomial approximations schemes</li>
+  <li>ML: More pattern matching in specialized</li>
+  <li>LL: Scheduling transform at <em>Comb</em> level, Bitheaps</li>
+  <li class="fragment" data-fragment-index="0">The DSE engine [4], [5] <sup>1</sup> <sup>2</sup></li>
+  <li class="fragment" data-fragment-index="1">Open the Repository at some point</li>
+  <li class="fragment" data-fragment-index="2">Overall...
+    <ul>
+      <li>Perfect for collaborations
+        <ul>
+          <li>RSCM, Optimization DSE, arithmetic, audio...</li>
+          <li>Interns armies?</li>
+          <li>External (Datapath dialect, CIRCT, EDA community, etc.)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<div class="eurollvm-conclusion-citations fragment" data-fragment-index="0">
+  <sup>1</sup> Hanchen Ye et al., "ScaleHLS: A New Scalable High-Level Synthesis Framework on Multi-Level Intermediate Representation," HPCA 2022.<br>
+  <sup>2</sup> Hanchen Ye and Deming Chen, "StreamTensor: Make Tensors Stream in Dataflow Accelerators for LLMs," MICRO 2025.
+</div>
+
+## Demo time :) {#hls-demo .eurollvm-slide data-section="Closing"}
+
+::: {.eurollvm-center-statement}
+**I will just execute a command while speaking**
+:::
+
+## Thank you {#hls-thank-you .eurollvm-slide data-section="Closing"}
+
+::: {.eurollvm-thank-you}
+**Thank you**
+
+*Q&A*
+:::
+
+## Bibliography {#hls-bibliography-1 .eurollvm-slide .eurollvm-bibliography-slide data-section="Bibliography"}
+
+::: {.eurollvm-bibliography-list}
+1. F. de Dinechin and M. Kumm, *Application-Specific Arithmetic*. Springer.
+2. B. Barbe, L. Ledoux, A. Volkova, and F. de Dinechin, "Reconfigurable constant multipliers: Hardware models, optimization algorithm and applications," *Microprocessors and Microsystems*, p. 105270, 2026. [doi:10.1016/j.micpro.2026.105270](https://doi.org/10.1016/j.micpro.2026.105270).
+3. L. Ledoux and M. Casas, "An Open-Source Framework for Efficient Numerically-Tailored Computations," in *2023 33rd International Conference on Field-Programmable Logic and Applications (FPL)*, 2023, pp. 19–26. [doi:10.1109/FPL60245.2023.00011](https://doi.org/10.1109/FPL60245.2023.00011).
+4. H. Ye et al., "ScaleHLS: A New Scalable High-Level Synthesis Framework on Multi-Level Intermediate Representation," in *2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA)*, 2022, pp. 741–755.
+:::
+
+## Bibliography {#hls-bibliography-2 .eurollvm-slide .eurollvm-bibliography-slide data-section="Bibliography"}
+
+::: {.eurollvm-bibliography-list}
+4. H. Ye et al., "ScaleHLS: A New Scalable High-Level Synthesis Framework on Multi-Level Intermediate Representation," in *2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA)*, 2022, pp. 741–755. [doi:10.1109/HPCA53966.2022.00060](https://doi.org/10.1109/HPCA53966.2022.00060).
+5. H. Ye and D. Chen, "StreamTensor: Make Tensors Stream in Dataflow Accelerators for LLMs," in *Proceedings of the 58th IEEE/ACM International Symposium on Microarchitecture*, MICRO '25, Association for Computing Machinery, 2025, pp. 201–216. [doi:10.1145/3725843.3762817](https://doi.org/10.1145/3725843.3762817).
+:::
+
+## Appendix {.eurollvm-section-slide}
+
+## GDS cell usage {#hls-appendix-cells .eurollvm-slide data-section="Appendix"}
+
+::::: {.eurollvm-native-report .appendix-cells}
+<div class="eurollvm-report-title">Cell usage by Category</div>
+
+| Category | Cells | Count |
+|---|---|---:|
+| Fill | `fillcap` `fill` | 10280 |
+| NAND | `nand2` `nand4` `nand3` | 2627 |
+| Combo Logic | `aoi21` `oai21` `oai22` `oai31` `aoi211` `oai211` `aoi22` `oai32` `oai221` `aoi221` `oai33` | 1645 |
+| Buffer | `clkbuf` `dlyb` `buf` `dlya` | 1258 |
+| Flip Flops | `dffq` | 1179 |
+| NOR | `nor2` `nor4` `nor3` `xnor2` `xnor3` | 1024 |
+| OR | `or2` `or3` `or4` `xor2` `xor3` | 1020 |
+| Clock | `clkinv` | 367 |
+| AND | `and2` `and3` `and4` | 323 |
+| Multiplexer | `mux2` | 316 |
+| Inverter | `inv` | 55 |
+
+::: {.eurollvm-report-caption}
+All in the web as Github Actions.. Impressive !
+:::
+:::::
+
+## GDS precheck results {#hls-appendix-precheck .eurollvm-slide data-section="Appendix"}
+
+::::: {.eurollvm-native-report .appendix-precheck}
+<div class="eurollvm-report-title">Tiny Tapeout Precheck Results</div>
+
+| Check | Result |
+|---|:---:|
+| Magic DRC | <span class="precheck-pass">&#10003;</span> |
+| KLayout pin label overlapping drawing | <span class="precheck-pass">&#10003;</span> |
+| KLayout zero area | <span class="precheck-pass">&#10003;</span> |
+| KLayout Checks | <span class="precheck-pass">&#10003;</span> |
+| Pin check | <span class="precheck-pass">&#10003;</span> |
+| Boundary check | <span class="precheck-pass">&#10003;</span> |
+| Power pin check | <span class="precheck-pass">&#10003;</span> |
+| Layer check | <span class="precheck-pass">&#10003;</span> |
+| Cell name check | <span class="precheck-pass">&#10003;</span> |
+| Analog pin check | <span class="precheck-pass">&#10003;</span> |
+
+::: {.eurollvm-report-caption}
+Many transforms from one Faust line of code passing all checks :)
+:::
+:::::
