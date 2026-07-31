@@ -1,0 +1,281 @@
+\documentclass[tikz,border=0pt]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+
+\providecommand{\DiagramLayer}{0}
+
+\definecolor{neutral}{HTML}{34434D}
+\definecolor{lightneutral}{HTML}{A9B4BC}
+\definecolor{targetcolor}{HTML}{BE123C}
+\definecolor{signcolor}{HTML}{7C3AED}
+\definecolor{significandcolor}{HTML}{0F766E}
+\definecolor{normalizecolor}{HTML}{B7791F}
+\definecolor{exponentcolor}{HTML}{2563EB}
+\definecolor{packcolor}{HTML}{BE185D}
+
+\tikzset{
+  base field/.style={
+    draw=lightneutral,
+    fill=white,
+    line width=0.65pt
+  },
+  block/.style={
+    draw=#1,
+    fill=#1!7,
+    rounded corners=0.8pt,
+    line width=0.8pt,
+    minimum height=0.62cm,
+    inner xsep=4pt,
+    inner ysep=2.5pt,
+    align=center,
+    font=\sffamily\tiny
+  },
+  wire/.style={
+    draw=#1,
+    line width=0.85pt,
+    line cap=round,
+    line join=round,
+    -{Latex[length=1.55mm,width=1.05mm]}
+  },
+  plain wire/.style={
+    draw=#1,
+    line width=0.85pt,
+    line cap=round,
+    line join=round
+  },
+  control wire/.style={
+    draw=#1,
+    line width=0.8pt,
+    dashed,
+    -{Latex[length=1.45mm,width=1mm]}
+  },
+  signal/.style={font=\ttfamily\tiny, text=#1},
+  field text/.style={font=\ttfamily\scriptsize, text=neutral},
+  tiny field text/.style={font=\ttfamily\tiny, text=neutral},
+  operation/.style={font=\ttfamily\scriptsize, text=#1}
+}
+
+\newcommand{\BaseLayer}{%
+  % Fixed bounding box shared by every transparent layer.
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \node[font=\ttfamily\scriptsize, anchor=south west, text=neutral]
+    at (-5.70,0.42) {\%a : i8};
+  \draw[base field] (-5.70,0.35) rectangle (-5.05,-0.35);
+  \draw[base field] (-5.05,0.35) rectangle (-2.75,-0.35);
+  \draw[base field] (-2.75,0.35) rectangle (-0.30,-0.35);
+  \node[field text] at (-5.375,0.00) {s};
+  \node[field text] at (-3.90,0.00) {eeee};
+  \node[field text] at (-1.525,0.00) {mmm};
+
+  \node[font=\ttfamily\scriptsize, anchor=south west, text=neutral]
+    at (0.30,0.42) {\%b : i8};
+  \draw[base field] (0.30,0.35) rectangle (0.95,-0.35);
+  \draw[base field] (0.95,0.35) rectangle (3.25,-0.35);
+  \draw[base field] (3.25,0.35) rectangle (5.70,-0.35);
+  \node[field text] at (0.625,0.00) {s};
+  \node[field text] at (2.10,0.00) {eeee};
+  \node[field text] at (4.475,0.00) {mmm};
+
+  \draw[base field] (-3.00,-13.00) rectangle (-2.30,-13.80);
+  \draw[base field] (-2.30,-13.00) rectangle (0.90,-13.80);
+  \draw[base field] (0.90,-13.00) rectangle (3.00,-13.80);
+}
+
+\newcommand{\TargetLayer}{%
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \node[block=targetcolor, minimum width=1.55cm] (casta) at (-2.25,-1.45)
+    {arith.bitcast\\\scriptsize i8 $\rightarrow$ f8};
+  \node[block=targetcolor, minimum width=1.55cm] (castb) at (2.25,-1.45)
+    {arith.bitcast\\\scriptsize i8 $\rightarrow$ f8};
+  \node[block=targetcolor, minimum width=2.50cm, minimum height=1.05cm]
+    (mulf) at (0.00,-4.15) {arith.mulf\\\scriptsize f8E4M3FN};
+  \node[block=targetcolor, minimum width=1.70cm] (castout) at (0.00,-6.15)
+    {arith.bitcast\\\scriptsize f8 $\rightarrow$ i8};
+
+  \draw[wire=targetcolor] (-2.25,-0.35) -- (casta.north);
+  \draw[wire=targetcolor] (2.25,-0.35) -- (castb.north);
+  \draw[wire=targetcolor] (casta.south) |- ($(mulf.north)+(-0.55,0)$);
+  \draw[wire=targetcolor] (castb.south) |- ($(mulf.north)+(0.55,0)$);
+  \draw[wire=targetcolor] (mulf.south) -- (castout.north);
+  \draw[wire=targetcolor] (castout.south) -- (0.00,-13.00);
+  \node[signal=targetcolor, anchor=west] at (0.18,-8.55)
+    {replace this island};
+}
+
+\newcommand{\SignLayer}{%
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \fill[signcolor!9] (-5.70,0.35) rectangle (-5.05,-0.35);
+  \draw[signcolor, line width=0.8pt] (-5.70,0.35) rectangle (-5.05,-0.35);
+  \fill[signcolor!9] (0.30,0.35) rectangle (0.95,-0.35);
+  \draw[signcolor, line width=0.8pt] (0.30,0.35) rectangle (0.95,-0.35);
+  \fill[signcolor!9] (-3.00,-13.00) rectangle (-2.30,-13.80);
+  \draw[signcolor, line width=0.8pt] (-3.00,-13.00) rectangle (-2.30,-13.80);
+  \node[field text] at (-5.375,0.00) {s};
+  \node[field text] at (0.625,0.00) {s};
+  \node[signal=signcolor] at (-2.65,-13.40) {\%sign};
+
+  \node[block=signcolor, minimum width=1.25cm] (sa) at (-5.15,-1.45)
+    {extract 7\\\tiny \%sa : i1};
+  \node[block=signcolor, minimum width=1.25cm] (sb) at (-3.35,-1.45)
+    {extract 7\\\tiny \%sb : i1};
+  \node[draw=signcolor, fill=signcolor!9, circle, minimum size=0.72cm,
+        line width=0.8pt, font=\sffamily\small, text=signcolor]
+    (xor) at (-4.25,-2.90) {$\oplus$};
+
+  \draw[wire=signcolor] (-5.375,-0.35) |- (sa.north);
+  \draw[wire=signcolor] (0.625,-0.35) |- (sb.north);
+  \draw[wire=signcolor] (sa.south) |- ($(xor.west)+(0,0.10)$);
+  \draw[wire=signcolor] (sb.south) |- ($(xor.east)+(0,-0.10)$);
+  \draw[plain wire=signcolor] (xor.west) -- (-5.55,-2.90)
+    -- (-5.55,-13.40) -- (-3.00,-13.40);
+  \draw[wire=signcolor] (-3.45,-13.40) -- (-3.00,-13.40);
+  \node[signal=signcolor, anchor=west] at (-5.42,-7.10) {\%sign};
+
+  \node[signal=lightneutral] at (-0.70,-13.40) {0000};
+  \node[signal=lightneutral] at (1.95,-13.40) {000};
+}
+
+\newcommand{\SignificandLayer}{%
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \fill[significandcolor!9] (-2.75,0.35) rectangle (-0.30,-0.35);
+  \draw[significandcolor, line width=0.8pt] (-2.75,0.35) rectangle (-0.30,-0.35);
+  \fill[significandcolor!9] (3.25,0.35) rectangle (5.70,-0.35);
+  \draw[significandcolor, line width=0.8pt] (3.25,0.35) rectangle (5.70,-0.35);
+  \node[field text] at (-1.525,0.00) {mmm};
+  \node[field text] at (4.475,0.00) {mmm};
+
+  \node[block=significandcolor, minimum width=1.25cm] (fa) at (1.65,-1.45)
+    {extract 2:0\\\tiny \%fa : i3};
+  \node[block=significandcolor, minimum width=1.25cm] (fb) at (4.45,-1.45)
+    {extract 2:0\\\tiny \%fb : i3};
+  \node[block=significandcolor, minimum width=1.30cm] (ma4) at (1.65,-2.75)
+    {concat\\\tiny \{1, \%fa\}};
+  \node[block=significandcolor, minimum width=1.30cm] (mb4) at (4.45,-2.75)
+    {concat\\\tiny \{1, \%fb\}};
+  \node[block=significandcolor, minimum width=1.30cm] (ma8) at (1.65,-4.00)
+    {zero extend\\\tiny \%ma8 : i8};
+  \node[block=significandcolor, minimum width=1.30cm] (mb8) at (4.45,-4.00)
+    {zero extend\\\tiny \%mb8 : i8};
+  \node[block=significandcolor, minimum width=2.10cm, minimum height=1.05cm]
+    (mul) at (3.05,-5.50) {comb.mul\\\tiny \%raw : i8};
+
+  \draw[wire=significandcolor] (-1.525,-0.35) |- (fa.north);
+  \draw[wire=significandcolor] (4.475,-0.35) -- (fb.north);
+  \draw[wire=significandcolor] (fa.south) -- (ma4.north);
+  \draw[wire=significandcolor] (fb.south) -- (mb4.north);
+  \draw[wire=significandcolor] (ma4.south) -- (ma8.north);
+  \draw[wire=significandcolor] (mb4.south) -- (mb8.north);
+  \draw[wire=significandcolor] (ma8.south) |- ($(mul.north)+(-0.48,0)$);
+  \draw[wire=significandcolor] (mb8.south) |- ($(mul.north)+(0.48,0)$);
+  \draw[plain wire=significandcolor] (mul.south) -- (3.05,-6.40);
+  \node[signal=significandcolor, anchor=west] at (3.17,-6.18) {\%raw};
+}
+
+\newcommand{\NormalizeLayer}{%
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \node[block=normalizecolor, minimum width=1.20cm] (norm) at (1.30,-6.95)
+    {extract 7\\\tiny \%norm : i1};
+  \node[block=normalizecolor, minimum width=1.30cm] (direct) at (2.25,-8.15)
+    {extract 6:3\\\tiny \%direct : i4};
+  \node[block=normalizecolor, minimum width=1.30cm] (shifted) at (4.15,-8.15)
+    {extract 7:4\\\tiny \%shifted : i4};
+  \node[block=normalizecolor, minimum width=1.65cm] (mux) at (3.20,-9.45)
+    {comb.mux\\\tiny \%mant : i4};
+  \node[block=normalizecolor, minimum width=1.50cm] (frac) at (3.20,-10.70)
+    {extract 2:0\\\tiny \%frac : i3};
+
+  \draw[wire=normalizecolor] (3.05,-6.40) |- (norm.east);
+  \draw[wire=normalizecolor] (3.05,-6.40) |- (direct.north);
+  \draw[wire=normalizecolor] (3.05,-6.40) |- (shifted.north);
+  \draw[wire=normalizecolor] (direct.south) |- ($(mux.west)+(0,0.11)$);
+  \draw[wire=normalizecolor] (shifted.south) |- ($(mux.east)+(0,-0.11)$);
+  \draw[control wire=normalizecolor] (norm.south) |- (mux.north);
+  \draw[wire=normalizecolor] (mux.south) -- (frac.north);
+  \draw[plain wire=normalizecolor] (frac.south) -- (3.20,-11.55)
+    -- (1.95,-11.55) -- (1.95,-13.00);
+  \draw[wire=normalizecolor] (1.95,-12.40) -- (1.95,-13.00);
+
+  \draw[control wire=normalizecolor] (norm.west) -- (0.35,-6.95)
+    -- (0.35,-9.45) -- (0.25,-9.45);
+  \node[signal=normalizecolor, anchor=east] at (0.23,-8.10) {\%norm};
+
+  \fill[normalizecolor!9] (0.90,-13.00) rectangle (3.00,-13.80);
+  \draw[normalizecolor, line width=0.8pt] (0.90,-13.00) rectangle (3.00,-13.80);
+  \node[signal=normalizecolor] at (1.95,-13.40) {\%frac};
+}
+
+\newcommand{\ExponentLayer}{%
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \fill[exponentcolor!9] (-5.05,0.35) rectangle (-2.75,-0.35);
+  \draw[exponentcolor, line width=0.8pt] (-5.05,0.35) rectangle (-2.75,-0.35);
+  \fill[exponentcolor!9] (0.95,0.35) rectangle (3.25,-0.35);
+  \draw[exponentcolor, line width=0.8pt] (0.95,0.35) rectangle (3.25,-0.35);
+  \node[field text] at (-3.90,0.00) {eeee};
+  \node[field text] at (2.10,0.00) {eeee};
+
+  \node[block=exponentcolor, minimum width=1.25cm] (ea) at (-1.55,-1.45)
+    {extract 6:3\\\tiny \%ea : i4};
+  \node[block=exponentcolor, minimum width=1.25cm] (eb) at (0.10,-1.45)
+    {extract 6:3\\\tiny \%eb : i4};
+  \node[block=exponentcolor, minimum width=1.55cm] (sum) at (-0.75,-3.20)
+    {comb.add\\\tiny \%ea5 + \%eb5};
+  \node[block=exponentcolor, minimum width=1.55cm] (bias) at (-0.75,-4.55)
+    {comb.sub\\\tiny $-\,7$};
+  \node[block=exponentcolor, minimum width=1.85cm] (adjust) at (-0.75,-9.45)
+    {comb.add\\\tiny + zext(\%norm)};
+  \node[block=exponentcolor, minimum width=1.50cm] (exp) at (-0.70,-10.85)
+    {extract 3:0\\\tiny \%exp : i4};
+
+  \draw[wire=exponentcolor] (-3.90,-0.35) |- (ea.north);
+  \draw[wire=exponentcolor] (2.10,-0.35) |- (eb.north);
+  \draw[wire=exponentcolor] (ea.south) |- ($(sum.north)+(-0.38,0)$);
+  \draw[wire=exponentcolor] (eb.south) |- ($(sum.north)+(0.38,0)$);
+  \draw[wire=exponentcolor] (sum.south) -- (bias.north);
+  \draw[plain wire=exponentcolor] (bias.south) -- (-0.75,-8.98);
+  \draw[wire=exponentcolor] (-0.75,-8.65) -- (adjust.north);
+  \draw[wire=exponentcolor] (adjust.south) -- (exp.north);
+  \draw[plain wire=exponentcolor] (exp.south) -- (-0.70,-13.00);
+  \draw[wire=exponentcolor] (-0.70,-12.40) -- (-0.70,-13.00);
+
+  \fill[white] (-2.28,-13.02) rectangle (0.88,-13.78);
+  \fill[exponentcolor!9] (-2.30,-13.00) rectangle (0.90,-13.80);
+  \draw[exponentcolor, line width=0.8pt] (-2.30,-13.00) rectangle (0.90,-13.80);
+  \node[signal=exponentcolor] at (-0.70,-13.40) {\%exp};
+}
+
+\newcommand{\PackLayer}{%
+  \path[use as bounding box] (-6.2,-14.85) rectangle (6.2,0.95);
+
+  \draw[packcolor, rounded corners=1.2pt, line width=1.15pt]
+    (-3.08,-12.92) rectangle (3.08,-13.88);
+  \node[operation=packcolor, anchor=north] at (0.00,-13.96)
+    {comb.concat $\rightarrow$ \%result : i8};
+  \draw[wire=packcolor] (0.00,-13.88) -- (0.00,-14.55);
+}
+
+\begin{document}
+\begin{tikzpicture}
+  \ifcase\DiagramLayer
+    \BaseLayer
+  \or
+    \TargetLayer
+  \or
+    \SignLayer
+  \or
+    \SignificandLayer
+  \or
+    \NormalizeLayer
+  \or
+    \ExponentLayer
+  \or
+    \PackLayer
+  \fi
+\end{tikzpicture}
+\end{document}

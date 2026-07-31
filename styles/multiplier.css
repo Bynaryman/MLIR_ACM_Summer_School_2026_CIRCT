@@ -1,101 +1,113 @@
-/* Incremental E4M3 normal-path multiplier. */
+/* Staged E4M3 rewrite: one vertical circuit layer per solution step. */
 
-.reveal .e4m3-objective-source {
-  width: min(46em, 100%);
-  margin: 0 auto 0.45em;
-}
-
-.reveal .e4m3-objective-source pre code {
-  font-size: 0.65em;
-  line-height: 1.28;
-  padding: 0.58em 0.75em;
-}
-
-.reveal .e4m3-objective-line {
-  margin: 0.2em 0 0.35em;
-  color: #34434d;
-  font-size: 0.78em;
-  text-align: center;
-}
-
-.reveal .e4m3-datapath-frame {
+.reveal .e4m3-rewrite-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.44fr) minmax(0, 0.56fr);
+  gap: 0.8em;
+  align-items: center;
   width: 100%;
+}
+
+.reveal .e4m3-diagram-panel,
+.reveal .e4m3-rewrite-copy {
   min-width: 0;
 }
 
-.reveal .e4m3-datapath-frame p {
-  margin: 0;
+.reveal .e4m3-vertical-stack {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 17em;
+  margin: 0 auto;
 }
 
-.reveal .e4m3-datapath-frame img.e4m3-datapath {
+.reveal .e4m3-vertical-stack > p {
+  display: contents;
+}
+
+.reveal .e4m3-vertical-stack img {
+  grid-area: 1 / 1;
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 12.2em;
-  margin: 0 auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
   object-fit: contain;
   background: transparent;
   border: 0;
   box-shadow: none;
 }
 
-.reveal .e4m3-objective-schematic img.e4m3-datapath {
-  max-height: 8.6em;
-}
-
 .reveal .e4m3-figure-caption {
-  margin: 0.12em 0 0;
+  margin-top: 0.08em;
   color: #63717a;
-  font-size: 0.47em;
+  font-size: 0.42em;
   text-align: center;
 }
 
-.reveal .e4m3-scope-line {
-  margin: 0.38em 0 0;
-  color: #34434d;
-  font-size: 0.72em;
-  text-align: center;
-}
-
-.reveal .e4m3-build-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(18em, 0.82fr);
-  gap: 0.75em;
-  align-items: center;
-  width: 100%;
-}
-
-.reveal .e4m3-step-copy {
-  min-width: 0;
-}
-
-.reveal .e4m3-step-copy > :first-child {
+.reveal .e4m3-rewrite-copy > :first-child {
   margin-top: 0;
 }
 
-.reveal .e4m3-step-copy > :last-child {
+.reveal .e4m3-rewrite-copy > :last-child {
   margin-bottom: 0;
 }
 
-.reveal .e4m3-step-copy p,
-.reveal .e4m3-step-copy li {
-  font-size: 0.72em;
+.reveal .e4m3-rewrite-copy p,
+.reveal .e4m3-rewrite-copy li {
+  font-size: 0.68em;
 }
 
-.reveal .e4m3-step-copy div.sourceCode {
-  margin-top: 0.42em;
+.reveal .e4m3-stage-code {
+  --stage-color: #be123c;
+  --stage-tint: rgb(190 18 60 / 7%);
+  margin-top: 0.45em;
+  padding: 0.32em 0.36em 0.36em;
+  border-left: 0.13em solid var(--stage-color);
+  background: var(--stage-tint);
 }
 
-.reveal .e4m3-step-copy pre code {
-  font-size: 0.62em;
-  line-height: 1.28;
-  padding: 0.62em 0.72em;
+.reveal .e4m3-stage-code strong {
+  color: var(--stage-color);
+  font-size: 0.65em;
 }
 
-.reveal .e4m3-equation {
-  margin: 0.35em 0;
-  font-size: 0.9em;
-  text-align: center;
+.reveal .e4m3-stage-code div.sourceCode {
+  margin: 0.2em 0 0;
+  border-color: color-mix(in srgb, var(--stage-color) 45%, white);
+  box-shadow: none;
+}
+
+.reveal .e4m3-stage-code pre code {
+  font-size: 0.68em;
+  line-height: 1.2;
+  padding: 0.52em 0.62em;
+}
+
+.reveal .stage-sign {
+  --stage-color: #7c3aed;
+  --stage-tint: rgb(124 58 237 / 7%);
+}
+
+.reveal .stage-significand {
+  --stage-color: #0f766e;
+  --stage-tint: rgb(15 118 110 / 7%);
+}
+
+.reveal .stage-normalize {
+  --stage-color: #b7791f;
+  --stage-tint: rgb(183 121 31 / 8%);
+}
+
+.reveal .stage-exponent {
+  --stage-color: #2563eb;
+  --stage-tint: rgb(37 99 235 / 7%);
+}
+
+.reveal .stage-pack {
+  --stage-color: #be185d;
+  --stage-tint: rgb(190 24 93 / 7%);
 }
 
 .reveal .e4m3-normal-table {
@@ -108,11 +120,11 @@
 }
 
 @media (max-width: 900px) {
-  .reveal .e4m3-build-layout {
+  .reveal .e4m3-rewrite-layout {
     grid-template-columns: 1fr;
   }
 
-  .reveal .e4m3-datapath-frame img.e4m3-datapath {
-    max-height: 8.4em;
+  .reveal .e4m3-vertical-stack {
+    height: 8.2em;
   }
 }

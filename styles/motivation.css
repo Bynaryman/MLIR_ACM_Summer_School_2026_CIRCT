@@ -81,8 +81,3 @@
   margin-right: auto;
   margin-left: auto;
 }
-
-.reveal #arithmetic-normal-path img {
-  max-height: 430px;
-  object-fit: contain;
-}

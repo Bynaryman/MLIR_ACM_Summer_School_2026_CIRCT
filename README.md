@@ -28,7 +28,9 @@ The project retains two render profiles for the later exercises:
 |-- _quarto-student.yml            # Student output directory
 |-- _quarto-instructor.yml         # Instructor output directory
 |-- figures/digital-design/        # Editable SystemVerilog for generated schematics
+|-- figures/arithmetic/            # Editable TikZ for the staged E4M3 datapath
 |-- assets/images/digital-design/  # Reference figures and generated Yosys schematics
+|-- assets/images/arithmetic/      # Generated transparent E4M3 SVG layers
 |-- assets/images/hls/             # EuroLLVM HLS figures and PPA plots
 |-- assets/images/logos/           # Project and institution logos
 |-- styles/                        # Reveal.js presentation CSS
@@ -36,6 +38,7 @@ The project retains two render profiles for the later exercises:
 |-- filters/slide-layout.lua       # Slide title/body layout filter
 |-- scripts/render-course-decks.sh # Builds both deck editions
 |-- scripts/generate-digital-design-schematics.sh # Regenerates Yosys SVGs
+|-- scripts/generate-e4m3-rewrite-datapath.sh # Regenerates staged TikZ SVGs
 |-- tutorial/                      # Original CIRCT tool tour plus arithmetic pass exercises
 |-- .github/workflows/             # GHCR image publication
 |-- dist/                          # Generated slides; ignored
@@ -63,7 +66,7 @@ single large file:
 | `styles/course.css` | Layouts specific to this course: title, who-am-I, roadmap, stack, and exercises |
 | `styles/diagrams.css` | Reusable lowering flows, bit fields, circuit stages, and exercise timing diagrams |
 | `styles/motivation.css` | Shared typography for the motivation and digital-design visual sequence |
-| `styles/multiplier.css` | Incremental E4M3 multiplier schematic and solution workbench |
+| `styles/multiplier.css` | Vertical E4M3 datapath layers and matching solution panels |
 | `styles/hls.css` | EuroLLVM HLS flow diagrams, result layouts, rotated physical-design views, and PPA slides |
 | `styles/code.css` | Shared code-block sizing, borders, scrolling, and highlighted lines |
 | `styles/code-mlir.css` | Colors for MLIR token classes emitted by the MLIR grammar |
@@ -118,6 +121,19 @@ SVG asset with:
 
 The script runs Yosys from the local `openroad/orfs:latest` image and Graphviz
 on the host. Intermediate DOT files stay under the ignored `tmp/` directory.
+
+### Arithmetic rewrite figure
+
+`figures/arithmetic/e4m3-rewrite-datapath.tex` defines the vertical E4M3
+multiplier once, then exports transparent layers for the target operation,
+sign, significand, normalization, exponent, and packing stages:
+
+```bash
+./scripts/generate-e4m3-rewrite-datapath.sh
+```
+
+The generated SVGs have an identical view box, so Reveal.js can unveil each
+circuit layer together with the corresponding Python rewrite code.
 
 ## Build the slides
 
