@@ -8,6 +8,7 @@ add_mlir_library(TutorialTransforms
   CIRCTHW
   MLIRArithDialect
   MLIRFuncDialect
+  MLIRFuncTransforms
   MLIRIR
   MLIRPass
   MLIRTransforms

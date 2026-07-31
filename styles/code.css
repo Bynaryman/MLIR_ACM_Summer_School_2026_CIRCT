@@ -35,6 +35,10 @@
   margin-top: 0.55em;
 }
 
+.reveal .code-gap {
+  height: 0.45em;
+}
+
 .reveal .highlight-line {
   background: rgb(255 214 102 / 0.34) !important;
 }

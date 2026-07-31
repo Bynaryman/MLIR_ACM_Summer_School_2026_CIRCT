@@ -78,8 +78,8 @@ def build_pass_verilog():
         [
             optimizer,
             "examples/ex7_e4m3fn_mul.mlir",
-            "--tutorial-func-to-hw",
             "--lower-e4m3fn-to-comb",
+            "--tutorial-func-to-hw",
             "--canonicalize",
             "-o",
             lowered,

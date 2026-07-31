@@ -1,8 +1,6 @@
 module {
-  func.func @ex6_float_mul(
-      %lhs : f8E4M3FN,
-      %rhs : f8E4M3FN) -> f8E4M3FN {
-    %product = arith.mulf %lhs, %rhs : f8E4M3FN
-    return %product : f8E4M3FN
+  func.func @ex6_mul(%a : f8E4M3FN, %b : f8E4M3FN) -> f8E4M3FN {
+    %r = arith.mulf %a, %b : f8E4M3FN
+    return %r : f8E4M3FN
   }
 }

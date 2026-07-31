@@ -1,11 +1,7 @@
 module {
-  func.func @e4m3fn_mul(
-      %lhs : i8,
-      %rhs : i8) -> i8 {
-    %lhsFloat = arith.bitcast %lhs : i8 to f8E4M3FN
-    %rhsFloat = arith.bitcast %rhs : i8 to f8E4M3FN
-    %product = arith.mulf %lhsFloat, %rhsFloat : f8E4M3FN
-    %result = arith.bitcast %product : f8E4M3FN to i8
-    return %result : i8
+  func.func @e4m3fn_mul(%a : f8E4M3FN, %b : f8E4M3FN)
+      -> f8E4M3FN {
+    %r = arith.mulf %a, %b : f8E4M3FN
+    return %r : f8E4M3FN
   }
 }

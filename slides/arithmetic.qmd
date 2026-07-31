@@ -1,24 +1,39 @@
 ## Exercise 6: start from generic MLIR {#arithmetic-objective}
 
+:::: {.columns}
+::: {.column width="50%"}
 ```bash
 cat examples/ex6_arith_muli.mlir
 ```
 
+<div class="code-gap"></div>
+
 ```mlir
 module {
-  func.func @ex6_integer_mul(
-      %lhs : i8,
-      %rhs : i8) -> i8 {
-    %product = arith.muli %lhs, %rhs : i8
-    return %product : i8
+  func.func @ex6_mul(%a : i8, %b : i8) -> i8 {
+    %r = arith.muli %a, %b : i8
+    return %r : i8
   }
 }
 ```
-
-::: {.fragment}
-**Objective:** choose the simplest hardware architecture for this computation:
-one combinational module, ready for SystemVerilog emission and logic synthesis.
 :::
+
+::: {.column width="50%"}
+::: {.fragment}
+**Objective: a combinational hardware module**
+
+```mlir
+hw.module @ex6_mul(
+    in %in0 : i8, in %in1 : i8, out out0 : i8) {
+  %0 = comb.mul %in0, %in1 : i8
+  hw.output %0 : i8
+}
+```
+
+This is the smallest complete path to SystemVerilog and logic synthesis.
+:::
+:::
+::::
 
 ## Exercise 6: find the missing passes - 3 min {#arithmetic-exercise-6}
 
@@ -83,7 +98,7 @@ circt-opt build/ex6_hw_arith.mlir \
 ::: {.column width="43%"}
 ::: {.fragment data-fragment-index="1"}
 ```mlir
-hw.module @ex6_integer_mul(
+hw.module @ex6_mul(
     in %in0 : i8,
     in %in1 : i8,
     out out0 : i8) {
@@ -99,13 +114,11 @@ Inspect the boundary and final stages with `less build/ex6_hw_{arith,comb}.mlir`
 
 ## Exercise 6: change the arithmetic contract {#arithmetic-float-attempt}
 
-```{.mlir code-line-numbers="3-6"}
+```{.mlir code-line-numbers="2-4"}
 module {
-  func.func @ex6_float_mul(
-      %lhs : f8E4M3FN,
-      %rhs : f8E4M3FN) -> f8E4M3FN {
-    %product = arith.mulf %lhs, %rhs : f8E4M3FN
-    return %product : f8E4M3FN
+  func.func @ex6_mul(%a : f8E4M3FN, %b : f8E4M3FN) -> f8E4M3FN {
+    %r = arith.mulf %a, %b : f8E4M3FN
+    return %r : f8E4M3FN
   }
 }
 ```
@@ -217,30 +230,25 @@ the exact rounding and exceptional-value rules remain part of the contract.
 :::: {.columns}
 ::: {.column width="54%"}
 ```mlir
-func.func @e4m3fn_mul(
-    %lhs : i8, %rhs : i8) -> i8 {
-  %lhsf = arith.bitcast %lhs
-      : i8 to f8E4M3FN
-  %rhsf = arith.bitcast %rhs
-      : i8 to f8E4M3FN
-  %productf = arith.mulf
-      %lhsf, %rhsf : f8E4M3FN
-  %product = arith.bitcast %productf
-      : f8E4M3FN to i8
-  return %product : i8
+func.func @e4m3fn_mul(%a : f8E4M3FN, %b : f8E4M3FN)
+    -> f8E4M3FN {
+  %r = arith.mulf %a, %b : f8E4M3FN
+  return %r : f8E4M3FN
 }
 ```
+
+The source states the numerical computation, not its wire encoding.
 :::
 
 ::: {.column width="46%"}
 ![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-alt="Word-level DAG of the sign, exponent, and significand paths for E4M3 multiplication" width="100%"}
 
-The custom pass replaces the complete `bitcast` → `mulf` → `bitcast` island
-with an `i8` `comb` datapath.
+The custom pass converts `f8E4M3FN` values to their `i8` encoding and replaces
+`arith.mulf` with an `i8` `comb` datapath.
 :::
 ::::
 
-The course helper `--tutorial-func-to-hw` still handles the function boundary.
+Then `--tutorial-func-to-hw` handles only the function boundary.
 
 ## E4M3 multiplication exposes three paths {#arithmetic-multiply-paths}
 
@@ -294,27 +302,28 @@ to three stored fraction bits.
 
 The supplied SystemVerilog reference implements this complete contract.
 
-## Match the complete floating-point island {#arithmetic-pass-shape}
+## The floating-point lowering owns the type change {#arithmetic-pass-shape}
 
 ```cpp
+typeConverter.addConversion(
+    [context](Float8E4M3FNType) -> Type {
+  return IntegerType::get(context, 8);
+});
+
 class LowerE4M3FNMulPattern
-    : public OpRewritePattern<arith::BitcastOp> {
+    : public OpConversionPattern<arith::MulFOp> {
   LogicalResult matchAndRewrite(
-      arith::BitcastOp outputCast,
-      PatternRewriter &rewriter) const override {
-    auto mul = outputCast.getIn()
-        .getDefiningOp<arith::MulFOp>();
-    auto lhsCast = mul.getLhs()
-        .getDefiningOp<arith::BitcastOp>();
-    auto rhsCast = mul.getRhs()
-        .getDefiningOp<arith::BitcastOp>();
-    // Build the i8 comb network from lhsCast and rhsCast.
+      arith::MulFOp mul, OpAdaptor operands,
+      ConversionPatternRewriter &rewriter) const override {
+    Value bits = buildE4M3FNMultiplier(
+        rewriter, mul.getLoc(), operands.getLhs(), operands.getRhs());
+    rewriter.replaceOp(mul, bits);
   }
 };
 ```
 
-The outer bitcast is the root because it and the replacement both produce
-`i8`.
+The conversion framework updates the function signature, block arguments, and
+return together. The later function-to-module pass does not change types.
 
 ## Exercise 7: lower E4M3 multiplication - 30 min {#arithmetic-exercise-7}
 
