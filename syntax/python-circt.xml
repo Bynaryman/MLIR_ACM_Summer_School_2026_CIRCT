@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language
+  name="Python-CIRCT"
+  section="Sources"
+  extensions="*.py"
+  version="1"
+  kateversion="5.0"
+  priority="6"
+  author="Louis Ledoux"
+  license="MIT">
+
+  <highlighting>
+    <contexts>
+      <context name="Normal" attribute="Normal Text" lineEndContext="#stay">
+        <DetectSpaces/>
+        <RegExpr attribute="Comment" context="#stay" String="#.*$"/>
+        <DetectChar attribute="String" context="DoubleString" char="&quot;"/>
+        <DetectChar attribute="String" context="SingleString" char="'"/>
+
+        <keyword attribute="Control Flow" context="#stay" String="control-flow"/>
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <keyword attribute="Constant" context="#stay" String="constants"/>
+        <keyword attribute="Built In" context="#stay" String="builtins"/>
+
+        <RegExpr attribute="Data Type" context="#stay" String="\bi[1-9][0-9]*\b"/>
+        <RegExpr attribute="Function" context="#stay"
+          String="\b[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)+\b"/>
+        <RegExpr attribute="Function" context="#stay"
+          String="\b[A-Za-z_][A-Za-z0-9_]*(?=\s*\()"/>
+        <RegExpr attribute="Variable" context="#stay"
+          String="\b[A-Za-z_][A-Za-z0-9_]*(?=\s*=)"/>
+
+        <RegExpr attribute="Float" context="#stay"
+          String="\b[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?\b"/>
+        <RegExpr attribute="DecVal" context="#stay" String="\b0x[0-9A-Fa-f]+\b"/>
+        <RegExpr attribute="DecVal" context="#stay" String="\b0b[01]+\b"/>
+        <RegExpr attribute="DecVal" context="#stay" String="\b[0-9]+\b"/>
+
+        <AnyChar attribute="Operator" context="#stay" String="{}()[]:,.=+-*/"/>
+      </context>
+
+      <context name="DoubleString" attribute="String" lineEndContext="#pop">
+        <DetectChar attribute="String" context="#pop" char="&quot;"/>
+        <HlCStringChar attribute="String"/>
+      </context>
+
+      <context name="SingleString" attribute="String" lineEndContext="#pop">
+        <DetectChar attribute="String" context="#pop" char="'"/>
+        <HlCStringChar attribute="String"/>
+      </context>
+    </contexts>
+
+    <itemDatas>
+      <itemData name="Normal Text" defStyleNum="dsNormal"/>
+      <itemData name="Keyword" defStyleNum="dsKeyword"/>
+      <itemData name="Control Flow" defStyleNum="dsControlFlow"/>
+      <itemData name="Data Type" defStyleNum="dsDataType"/>
+      <itemData name="Variable" defStyleNum="dsVariable"/>
+      <itemData name="Function" defStyleNum="dsFunction"/>
+      <itemData name="Built In" defStyleNum="dsBuiltIn"/>
+      <itemData name="Constant" defStyleNum="dsConstant"/>
+      <itemData name="DecVal" defStyleNum="dsDecVal"/>
+      <itemData name="Float" defStyleNum="dsFloat"/>
+      <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="Comment" defStyleNum="dsComment"/>
+      <itemData name="Operator" defStyleNum="dsOperator"/>
+    </itemDatas>
+
+    <list name="control-flow">
+      <item>if</item>
+      <item>elif</item>
+      <item>else</item>
+      <item>for</item>
+      <item>while</item>
+      <item>return</item>
+      <item>yield</item>
+      <item>break</item>
+      <item>continue</item>
+      <item>try</item>
+      <item>except</item>
+      <item>finally</item>
+      <item>raise</item>
+    </list>
+
+    <list name="keywords">
+      <item>def</item>
+      <item>class</item>
+      <item>with</item>
+      <item>as</item>
+      <item>is</item>
+      <item>in</item>
+      <item>not</item>
+      <item>and</item>
+      <item>or</item>
+      <item>import</item>
+      <item>from</item>
+      <item>lambda</item>
+      <item>pass</item>
+      <item>async</item>
+      <item>await</item>
+    </list>
+
+    <list name="constants">
+      <item>True</item>
+      <item>False</item>
+      <item>None</item>
+    </list>
+
+    <list name="builtins">
+      <item>bool</item>
+      <item>int</item>
+      <item>len</item>
+      <item>range</item>
+      <item>str</item>
+    </list>
+  </highlighting>
+</language>

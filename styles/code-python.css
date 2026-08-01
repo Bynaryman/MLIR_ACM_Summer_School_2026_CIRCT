@@ -1,0 +1,105 @@
+/* Python token palette and full-function recap slides. */
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .kw {
+  color: #7c3aed;
+  font-weight: 750;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .cf {
+  color: #be123c;
+  font-weight: 750;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .va {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) :is(.bu, .fu) {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .im {
+  color: #b45309;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) :is(.dv, .fl) {
+  color: #b45309;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .st {
+  color: #166534;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .op {
+  color: #0f766e;
+  font-weight: 650;
+}
+
+.reveal code.sourceCode:is(.python, .pythoncirct) .co {
+  color: #64748b;
+  font-style: italic;
+}
+
+.reveal code.sourceCode.pythoncirct .dt {
+  color: #b45309;
+  font-weight: 700;
+}
+
+.reveal code.sourceCode.pythoncirct .cn {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+@media screen {
+  .reveal .slides section.slide.level2.python-recap-slide.present {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .reveal section.python-recap-slide > h2:first-child {
+    display: none;
+  }
+
+  .reveal section.python-recap-slide > .slide-body {
+    align-self: stretch;
+    display: grid;
+    place-items: center;
+  }
+}
+
+.reveal .python-recap-code {
+  width: 82%;
+  margin: 0 auto;
+}
+
+.reveal .python-recap-code div.sourceCode {
+  margin: 0;
+}
+
+.reveal .python-recap-code pre code {
+  max-height: none !important;
+  overflow: visible;
+  padding: 0.55em 0.72em;
+}
+
+.reveal .recap-short .python-recap-code pre code {
+  font-size: 0.82em;
+  line-height: 1.2;
+}
+
+.reveal .recap-medium .python-recap-code pre code {
+  font-size: 0.74em;
+  line-height: 1.15;
+}
+
+.reveal .recap-long .python-recap-code pre code {
+  font-size: 0.7em;
+  line-height: 1.1;
+}
+
+.reveal .recap-full .python-recap-code pre code {
+  font-size: 0.66em;
+  line-height: 1.08;
+}

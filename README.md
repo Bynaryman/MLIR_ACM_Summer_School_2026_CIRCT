@@ -34,7 +34,7 @@ The project retains two render profiles for the later exercises:
 |-- assets/images/hls/             # EuroLLVM HLS figures and PPA plots
 |-- assets/images/logos/           # Project and institution logos
 |-- styles/                        # Reveal.js presentation CSS
-|-- syntax/mlir.xml                # MLIR syntax-highlighting grammar
+|-- syntax/                        # MLIR and CIRCT-Python highlighting grammars
 |-- filters/slide-layout.lua       # Slide title/body layout filter
 |-- scripts/render-course-decks.sh # Builds both deck editions
 |-- scripts/generate-digital-design-schematics.sh # Regenerates Yosys SVGs
@@ -70,6 +70,7 @@ single large file:
 | `styles/hls.css` | EuroLLVM HLS flow diagrams, result layouts, rotated physical-design views, and PPA slides |
 | `styles/code.css` | Shared code-block sizing, borders, scrolling, and highlighted lines |
 | `styles/code-mlir.css` | Colors for MLIR token classes emitted by the MLIR grammar |
+| `styles/code-python.css` | Python token colors and code-only cumulative recap slides |
 
 The shared accent color is `--course-accent` in `styles/lecture.css`.
 Markdown bold text uses it automatically:
@@ -90,9 +91,12 @@ consistent with the title-slide event line and the course diagrams.
 
 ### Syntax and layout filter
 
-`syntax/mlir.xml` is a Pandoc/KDE-style language definition. It recognizes MLIR
-operations, types, values, attributes, numbers, strings, and comments. Pandoc
-turns those categories into token classes; `styles/code-mlir.css` colors them.
+`syntax/mlir.xml` and `syntax/python-circt.xml` are Pandoc/KDE-style language
+definitions. The first recognizes MLIR operations, types, values, attributes,
+numbers, strings, and comments. The second adds CIRCT-aware highlighting for
+Python builder APIs, assigned values, MLIR integer types, control flow, and
+constants. Fence CIRCT builder code as `python-circt`; `styles/code-mlir.css`
+and `styles/code-python.css` color the resulting token classes.
 
 `filters/slide-layout.lua` keeps a regular slide heading separate from its
 body. This lets `styles/lecture.css` keep the heading at the top while centering

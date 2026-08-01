@@ -16,6 +16,7 @@ filters:
 highlight-style: github
 syntax-definitions:
   - syntax/mlir.xml
+  - syntax/python-circt.xml
 
 format:
   revealjs:
@@ -30,6 +31,7 @@ format:
       - styles/hls.css
       - styles/code.css
       - styles/code-mlir.css
+      - styles/code-python.css
     slide-level: 2
     navigation-mode: vertical
     view: slide

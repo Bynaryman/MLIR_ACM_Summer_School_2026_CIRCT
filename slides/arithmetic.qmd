@@ -247,7 +247,7 @@ Root the rewrite at the final `arith.bitcast`: the matched island and its
 replacement then have the same `i8` boundary.
 
 ::: {.e4m3-stage-code .stage-target}
-```python
+```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)  # supplied
     if matched is None:
@@ -289,7 +289,7 @@ remaining seven output bits to zero.
 ::: {.e4m3-stage-code .stage-sign}
 **Sign path**
 
-```python
+```python-circt
 sa = comb.ExtractOp.create(7, i1, lhs).result
 sb = comb.ExtractOp.create(7, i1, rhs).result
 sign = comb.XorOp.create(sa, sb).result
@@ -303,6 +303,26 @@ The long purple wire is now a real SSA value from both inputs to the packed
 result.
 :::
 ::::
+
+## Python recap {#arithmetic-sign-recap .python-recap-slide .recap-short}
+
+::: {.python-recap-code}
+```python-circt
+def lower_e4m3_mul(out_cast, rewriter):
+    matched = match_e4m3_island(out_cast)
+    if matched is None:
+        return True
+    lhs, rhs = matched
+    with rewriter.ip:
+        sa = comb.ExtractOp.create(7, i1, lhs).result
+        sb = comb.ExtractOp.create(7, i1, rhs).result
+        sign = comb.XorOp.create(sa, sb).result
+        zero7 = hw.ConstantOp.create(i7, 0).result
+        result = comb.ConcatOp.create(sign, zero7).result
+    rewriter.replace_op(out_cast, [result])
+    return False
+```
+:::
 
 ## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -353,7 +373,7 @@ $$M=1+\frac{(\mathtt{mmm})_2}{2^3}=(1.\mathtt{mmm})_2,
 ::: {.e4m3-stage-code .stage-significand}
 **Solution**
 
-```python
+```python-circt
 fa = comb.ExtractOp.create(0, i3, lhs).result
 fb = comb.ExtractOp.create(0, i3, rhs).result
 one = hw.ConstantOp.create(i1, 1).result
@@ -367,6 +387,35 @@ product = comb.MulOp.create(ma8, mb8).result
 :::
 :::
 ::::
+
+## Python recap {#arithmetic-significand-recap .python-recap-slide .recap-medium}
+
+::: {.python-recap-code}
+```python-circt
+def lower_e4m3_mul(out_cast, rewriter):
+    matched = match_e4m3_island(out_cast)
+    if matched is None:
+        return True
+    lhs, rhs = matched
+    with rewriter.ip:
+        sa = comb.ExtractOp.create(7, i1, lhs).result
+        sb = comb.ExtractOp.create(7, i1, rhs).result
+        sign = comb.XorOp.create(sa, sb).result
+        fa = comb.ExtractOp.create(0, i3, lhs).result
+        fb = comb.ExtractOp.create(0, i3, rhs).result
+        one = hw.ConstantOp.create(i1, 1).result
+        ma4 = comb.ConcatOp.create(one, fa).result
+        mb4 = comb.ConcatOp.create(one, fb).result
+        zero4 = hw.ConstantOp.create(i4, 0).result
+        ma8 = comb.ConcatOp.create(zero4, ma4).result
+        mb8 = comb.ConcatOp.create(zero4, mb4).result
+        product = comb.MulOp.create(ma8, mb8).result
+        zero7 = hw.ConstantOp.create(i7, 0).result
+        result = comb.ConcatOp.create(sign, zero7).result
+    rewriter.replace_op(out_cast, [result])
+    return False
+```
+:::
 
 ## One bit chooses the normalization {#arithmetic-normalization-bit auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -450,7 +499,7 @@ normalized window, then retain it as the exponent correction.
 ::: {.e4m3-stage-code .stage-normalize}
 **Solution**
 
-```python
+```python-circt
 norm = comb.ExtractOp.create(7, i1, product).result
 direct = comb.ExtractOp.create(3, i4, product).result
 shifted = comb.ExtractOp.create(4, i4, product).result
@@ -460,6 +509,39 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 :::
 ::::
+
+## Python recap {#arithmetic-normalization-recap .python-recap-slide .recap-long}
+
+::: {.python-recap-code}
+```python-circt
+def lower_e4m3_mul(out_cast, rewriter):
+    matched = match_e4m3_island(out_cast)
+    if matched is None:
+        return True
+    lhs, rhs = matched
+    with rewriter.ip:
+        sa = comb.ExtractOp.create(7, i1, lhs).result
+        sb = comb.ExtractOp.create(7, i1, rhs).result
+        sign = comb.XorOp.create(sa, sb).result
+        fa = comb.ExtractOp.create(0, i3, lhs).result
+        fb = comb.ExtractOp.create(0, i3, rhs).result
+        one = hw.ConstantOp.create(i1, 1).result
+        ma4 = comb.ConcatOp.create(one, fa).result
+        mb4 = comb.ConcatOp.create(one, fb).result
+        zero4 = hw.ConstantOp.create(i4, 0).result
+        ma8 = comb.ConcatOp.create(zero4, ma4).result
+        mb8 = comb.ConcatOp.create(zero4, mb4).result
+        product = comb.MulOp.create(ma8, mb8).result
+        norm = comb.ExtractOp.create(7, i1, product).result
+        direct = comb.ExtractOp.create(3, i4, product).result
+        shifted = comb.ExtractOp.create(4, i4, product).result
+        mant = comb.MuxOp.create(norm, shifted, direct).result
+        frac = comb.ExtractOp.create(0, i3, mant).result
+        result = comb.ConcatOp.create(sign, zero4, frac).result
+    rewriter.replace_op(out_cast, [result])
+    return False
+```
+:::
 
 ## Why subtract only one bias? {#arithmetic-exponent-math auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -514,7 +596,7 @@ exponents, removing one bias, and applying the normalization correction.
 ::: {.e4m3-stage-code .stage-exponent}
 **Exponent path**
 
-```python
+```python-circt
 ea = comb.ExtractOp.create(3, i4, lhs).result
 eb = comb.ExtractOp.create(3, i4, rhs).result
 zero1 = hw.ConstantOp.create(i1, 0).result
@@ -531,6 +613,50 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 :::
 :::
 ::::
+
+## Python recap {#arithmetic-exponent-recap .python-recap-slide .recap-full}
+
+::: {.python-recap-code}
+```python-circt
+def lower_e4m3_mul(out_cast, rewriter):
+    matched = match_e4m3_island(out_cast)
+    if matched is None:
+        return True
+    lhs, rhs = matched
+    with rewriter.ip:
+        sa = comb.ExtractOp.create(7, i1, lhs).result
+        sb = comb.ExtractOp.create(7, i1, rhs).result
+        sign = comb.XorOp.create(sa, sb).result
+        fa = comb.ExtractOp.create(0, i3, lhs).result
+        fb = comb.ExtractOp.create(0, i3, rhs).result
+        one = hw.ConstantOp.create(i1, 1).result
+        ma4 = comb.ConcatOp.create(one, fa).result
+        mb4 = comb.ConcatOp.create(one, fb).result
+        zero4 = hw.ConstantOp.create(i4, 0).result
+        ma8 = comb.ConcatOp.create(zero4, ma4).result
+        mb8 = comb.ConcatOp.create(zero4, mb4).result
+        product = comb.MulOp.create(ma8, mb8).result
+        norm = comb.ExtractOp.create(7, i1, product).result
+        direct = comb.ExtractOp.create(3, i4, product).result
+        shifted = comb.ExtractOp.create(4, i4, product).result
+        mant = comb.MuxOp.create(norm, shifted, direct).result
+        frac = comb.ExtractOp.create(0, i3, mant).result
+        ea = comb.ExtractOp.create(3, i4, lhs).result
+        eb = comb.ExtractOp.create(3, i4, rhs).result
+        zero1 = hw.ConstantOp.create(i1, 0).result
+        ea5 = comb.ConcatOp.create(zero1, ea).result
+        eb5 = comb.ConcatOp.create(zero1, eb).result
+        sum_ = comb.AddOp.create(ea5, eb5).result
+        bias = hw.ConstantOp.create(i5, 7).result
+        base = comb.SubOp.create(sum_, bias).result
+        norm5 = comb.ConcatOp.create(zero4, norm).result
+        adjusted = comb.AddOp.create(base, norm5).result
+        exp = comb.ExtractOp.create(0, i4, adjusted).result
+        result = comb.ConcatOp.create(sign, exp, frac).result
+    rewriter.replace_op(out_cast, [result])
+    return False
+```
+:::
 
 ## Together: pack and replace {#arithmetic-normal-path auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -550,13 +676,13 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 The final value has the same `i8` type as the output bitcast being replaced.
 
 ::: {.e4m3-stage-math .stage-pack}
-$$R=s_r\mathbin{\Vert}E_r\mathbin{\Vert}F_r$$
+$$R=\{s,e,f\}\qquad\text{(Verilog notation)}$$
 :::
 
 ::: {.e4m3-stage-code .stage-pack}
 **Finish the callback**
 
-```python
+```python-circt
 result = comb.ConcatOp.create(sign, exp, frac).result
 rewriter.replace_op(out_cast, [result])
 return False
@@ -566,6 +692,51 @@ return False
 The floating-point island is dead; the greedy rewrite removes it.
 :::
 ::::
+
+## Python recap {#arithmetic-final-recap .python-recap-slide .recap-full}
+
+::: {.python-recap-code}
+```python-circt
+def lower_e4m3_mul(out_cast, rewriter):
+    matched = match_e4m3_island(out_cast)
+    if matched is None:
+        return True
+    lhs, rhs = matched
+    with rewriter.ip:
+        sa = comb.ExtractOp.create(7, i1, lhs).result
+        sb = comb.ExtractOp.create(7, i1, rhs).result
+        sign = comb.XorOp.create(sa, sb).result
+        fa = comb.ExtractOp.create(0, i3, lhs).result
+        fb = comb.ExtractOp.create(0, i3, rhs).result
+        one = hw.ConstantOp.create(i1, 1).result
+        ma4 = comb.ConcatOp.create(one, fa).result
+        mb4 = comb.ConcatOp.create(one, fb).result
+        zero4 = hw.ConstantOp.create(i4, 0).result
+        ma8 = comb.ConcatOp.create(zero4, ma4).result
+        mb8 = comb.ConcatOp.create(zero4, mb4).result
+        product = comb.MulOp.create(ma8, mb8).result
+        norm = comb.ExtractOp.create(7, i1, product).result
+        direct = comb.ExtractOp.create(3, i4, product).result
+        shifted = comb.ExtractOp.create(4, i4, product).result
+        mant = comb.MuxOp.create(norm, shifted, direct).result
+        frac = comb.ExtractOp.create(0, i3, mant).result
+        ea = comb.ExtractOp.create(3, i4, lhs).result
+        eb = comb.ExtractOp.create(3, i4, rhs).result
+        zero1 = hw.ConstantOp.create(i1, 0).result
+        ea5 = comb.ConcatOp.create(zero1, ea).result
+        eb5 = comb.ConcatOp.create(zero1, eb).result
+        sum_ = comb.AddOp.create(ea5, eb5).result
+        bias = hw.ConstantOp.create(i5, 7).result
+        base = comb.SubOp.create(sum_, bias).result
+        norm5 = comb.ConcatOp.create(zero4, norm).result
+        adjusted = comb.AddOp.create(base, norm5).result
+        exp = comb.ExtractOp.create(0, i4, adjusted).result
+        result = comb.ConcatOp.create(sign, exp, frac).result
+    rewriter.replace_op(out_cast, [result])
+    return False
+patterns.add(arith.BitcastOp, lower_e4m3_mul)
+```
+:::
 
 ## This checkpoint is intentionally incomplete {#arithmetic-special-cases}
 
