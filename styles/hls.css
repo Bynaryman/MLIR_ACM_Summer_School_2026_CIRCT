@@ -424,17 +424,17 @@
 }
 
 .reveal .eurollvm-code-annotation.linear {
-  top: 67%;
+  top: 64.5%;
   right: 4%;
-  left: 14%;
-  height: 12%;
+  left: 11.2%;
+  height: 14%;
 }
 
 .reveal .eurollvm-code-annotation.swiglu {
-  top: 86%;
-  left: 14%;
-  width: 46%;
-  height: 12%;
+  top: 84%;
+  left: 11.2%;
+  width: 48%;
+  height: 14%;
 }
 
 .reveal .eurollvm-code-annotation.swiglu::after {
@@ -592,7 +592,7 @@
 }
 
 .reveal .eurollvm-poly-plots img {
-  height: 105px;
+  height: 170px;
 }
 
 .reveal .eurollvm-poly-plots .eurollvm-figure {
@@ -600,10 +600,10 @@
 }
 
 .reveal .eurollvm-example-box {
-  padding: 0.45em 0.55em;
+  padding: 0.4em 0.55em;
   border: 1px solid #d9b067;
   background: #fff7e8;
-  font-size: 0.76em;
+  font-size: 0.8em;
 }
 
 .reveal .eurollvm-example-box p {
@@ -618,11 +618,36 @@
 
 .reveal .eurollvm-example-box .math.display {
   margin: 0.12em 0;
-  font-size: 0.57em;
+  font-size: 0.68em;
 }
 
+.reveal .eurollvm-poly-equation {
+  margin: 0.14em 0;
+  font-family: "New Computer Modern Math", "Libertinus Math", serif;
+  font-size: 0.88em;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.reveal .eurollvm-poly-equation .poly-cont {
+  display: inline-block;
+  padding-left: 1.7em;
+}
+
+.reveal .eurollvm-poly-equation .coef-1 { color: #c62828; }
+.reveal .eurollvm-poly-equation .coef-2 { color: #ef6c00; }
+.reveal .eurollvm-poly-equation .coef-3 { color: #f9a825; }
+.reveal .eurollvm-poly-equation .coef-4 { color: #2e7d32; }
+.reveal .eurollvm-poly-equation .coef-5 { color: #1565c0; }
+.reveal .eurollvm-poly-equation .coef-6 { color: #6a1b9a; }
+.reveal .eurollvm-poly-equation .coef-7 { color: #8d6e63; }
+.reveal .eurollvm-poly-equation .coef-8 { color: #00838f; }
+.reveal .eurollvm-poly-equation .coef-9 { color: #ad1457; }
+.reveal .eurollvm-poly-equation .coef-10 { color: #283593; }
+.reveal .eurollvm-poly-equation .coef-11 { color: #4a0f2f; }
+
 .reveal .poster-figure img {
-  height: 430px;
+  height: 560px;
 }
 
 /* Llama recap slide. */
@@ -802,7 +827,7 @@
 }
 
 .reveal .harico-overview img {
-  width: 88%;
+  width: 96%;
   max-width: 100%;
   max-height: 680px;
   transform: none;
@@ -1016,45 +1041,53 @@
 
 /* API slides. */
 .reveal .eurollvm-api-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 1.15fr);
-  gap: 0.75em;
+  display: block;
   height: 100%;
-  padding: 0.4em 1.2em 0.2em 0.2em;
-  align-items: center;
+  padding: 0.55em 0.2em 0.2em;
+}
+
+.reveal .api-code {
+  width: 94%;
+  margin: 0 auto;
 }
 
 .reveal .api-code pre code {
-  font-size: 0.88em;
+  padding-right: 22em;
+  font-size: 0.78em;
   line-height: 1.16;
+  white-space: pre;
 }
 
-.reveal .eurollvm-api-labels {
-  display: grid;
-  grid-template-rows: 1.1fr 1.55fr 1.15fr 1.3fr;
-  height: 75%;
-  align-items: center;
+.reveal .eurollvm-api-annotation {
+  position: absolute;
+  box-sizing: border-box;
+  left: 2.4%;
+  width: 55%;
+  border: 2px solid var(--eurollvm-secondary);
+  border-radius: 8px;
   color: var(--eurollvm-primary);
-  font-size: 0.43em;
+  font-size: 0.5em;
   font-weight: 700;
+  pointer-events: none;
 }
 
-.reveal .eurollvm-api-labels span {
-  position: relative;
-}
-
-.reveal .eurollvm-api-labels span::before {
+.reveal .eurollvm-api-annotation::after {
   position: absolute;
   top: 50%;
-  right: calc(100% + 0.35em);
-  width: 2.6em;
-  border-top: 1px solid var(--eurollvm-secondary);
-  content: "";
+  left: calc(100% + 1em);
+  content: attr(data-label);
+  transform: translateY(-50%);
+  white-space: nowrap;
 }
 
-.reveal .python-labels {
-  grid-template-rows: 0.6fr 2.1fr 1.1fr 1.4fr;
-}
+.reveal .cpp-global { top: 18.5%; height: 12%; }
+.reveal .cpp-build { top: 36%; height: 20%; }
+.reveal .cpp-hdl { top: 60%; height: 12%; }
+.reveal .cpp-passes { top: 74.5%; height: 22%; }
+.reveal .python-import { top: 2.4%; height: 5.2%; }
+.reveal .python-build { top: 23%; height: 32%; }
+.reveal .python-hdl { top: 58.8%; height: 14.5%; }
+.reveal .python-passes { top: 72.8%; height: 25.5%; }
 
 /* Result images and metrics. */
 .reveal .eurollvm-result-figure {

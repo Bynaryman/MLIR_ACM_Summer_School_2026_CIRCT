@@ -223,15 +223,11 @@ Hardware constraints of different natures
 
 **index_switch: 8 intervals (cases 0..7)**
 
-$$
-P_0(h)=((((((((((-78h+46)h+1454)h-7314)h-78970)h+682179)h+4256867)h-57922167)h-191490613)h+5510525043)h+5640589127
-$$
+<div class="eurollvm-poly-equation"><i>P</i><sub>0</sub>(<i>h</i>) = ((((((((((<span class="coef-1">-78</span><i>h</i> + <span class="coef-2">46</span>)<i>h</i> + <span class="coef-3">1454</span>)<i>h</i> + <span class="coef-4">-7314</span>)<i>h</i> + <span class="coef-5">-78970</span>)<i>h</i> + <span class="coef-6">682179</span>)<i>h</i> +<br><span class="poly-cont"><span class="coef-7">4256867</span>)<i>h</i> + <span class="coef-8">-57922167</span>)<i>h</i> + <span class="coef-9">-191490613</span>)<i>h</i> + <span class="coef-10">5510525043</span>)<i>h</i> + <span class="coef-11">5640589127</span></span></div>
 
 $\left[\ldots\right]$
 
-$$
-P_7(h)=((((((((((83h-18)h-206)h+65)h-477)h+12014)h-170708)h+1874477)h-15214840)h+81733304)h+30216113779
-$$
+<div class="eurollvm-poly-equation"><i>P</i><sub>7</sub>(<i>h</i>) = ((((((((((<span class="coef-1">83</span><i>h</i> + <span class="coef-2">-18</span>)<i>h</i> + <span class="coef-3">-206</span>)<i>h</i> + <span class="coef-4">65</span>)<i>h</i> + <span class="coef-5">-477</span>)<i>h</i> + <span class="coef-6">12014</span>)<i>h</i> +<br><span class="poly-cont"><span class="coef-7">-170708</span>)<i>h</i> + <span class="coef-8">1874477</span>)<i>h</i> + <span class="coef-9">-15214840</span>)<i>h</i> + <span class="coef-10">81733304</span>)<i>h</i> + <span class="coef-11">30216113779</span></span></div>
 :::
 ::::
 
@@ -537,13 +533,11 @@ pm.add<PipelineizePass>();
 pm.run(mod);
 gen.build(mod).fwrite("fpadd_pipeline.sv");
 ```
-::::
 
-:::: {.eurollvm-api-labels}
-<span>Global options</span>
-<span>IR build</span>
-<span>HDL generation</span>
-<span>Analysis & transformation passes</span>
+<span class="eurollvm-api-annotation cpp-global" data-label="Global options"></span>
+<span class="eurollvm-api-annotation cpp-build" data-label="IR build"></span>
+<span class="eurollvm-api-annotation cpp-hdl" data-label="HDL generation"></span>
+<span class="eurollvm-api-annotation cpp-passes" data-label="Analysis &amp; transformation passes"></span>
 ::::
 :::::
 
@@ -580,13 +574,11 @@ def main():
     pm_pipelineize = hrc.PassManager(["pipelineize"])
     pm_pipelineize.run(mod, ctx)
 ```
-::::
 
-:::: {.eurollvm-api-labels .python-labels}
-<span>Python bindings</span>
-<span>IR build</span>
-<span>HDL generation</span>
-<span>Analysis & transformation passes</span>
+<span class="eurollvm-api-annotation python-import" data-label="Python bindings"></span>
+<span class="eurollvm-api-annotation python-build" data-label="IR build"></span>
+<span class="eurollvm-api-annotation python-hdl" data-label="HDL generation"></span>
+<span class="eurollvm-api-annotation python-passes" data-label="Analysis &amp; transformation passes"></span>
 ::::
 :::::
 
@@ -658,7 +650,7 @@ Llama FPGA vu19p P&R
 ::::
 :::::
 
-## Llama FFN sublayer {#hls-ppa-llama .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## Llama FFN sublayer {#hls-ppa-llama .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="Llama FFN Sublayer IR" data-lang="IR"}
@@ -687,7 +679,7 @@ Llama FFN Sublayer. Area vs. Delay
 ::::
 :::::
 
-## MatMul + SiLU {#hls-ppa-matmul-silu .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## MatMul + SiLU {#hls-ppa-matmul-silu .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="MatMul SiLU IR" data-lang="IR"}
@@ -717,7 +709,7 @@ MatMul + SiLU. Area vs. Delay
 ::::
 :::::
 
-## MatMul + sigmoid {#hls-ppa-matmul-sigmoid .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## MatMul + sigmoid {#hls-ppa-matmul-sigmoid .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="MatMul Sigmoid IR" data-lang="IR"}
@@ -746,7 +738,7 @@ MatMul + Sigmoid. Area vs. Delay
 ::::
 :::::
 
-## Attention softmax exponential {#hls-ppa-attn-exp .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## Attention softmax exponential {#hls-ppa-attn-exp .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="Attention Softmax Exponential IR" data-lang="IR"}
@@ -773,7 +765,7 @@ Attention Softmax Exponential. Area vs. Delay
 ::::
 :::::
 
-## MatMul + sigmoid heavy-tail {#hls-ppa-heavy-tail .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## MatMul + sigmoid heavy-tail {#hls-ppa-heavy-tail .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="MatMul Sigmoid Heavy-Tail IR" data-lang="IR"}
@@ -802,7 +794,7 @@ MatMul + Sigmoid Heavy-Tail. Area vs. Delay
 ::::
 :::::
 
-## GEMV accumulation {#hls-ppa-gemv .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## GEMV accumulation {#hls-ppa-gemv .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="GEMV Accumulation IR" data-lang="IR"}
@@ -826,7 +818,7 @@ GEMV Accumulation. Area vs. Delay
 ::::
 :::::
 
-## Attention score {#hls-ppa-attention-score .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## Attention score {#hls-ppa-attention-score .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="Attention Score IR" data-lang="IR"}
@@ -850,7 +842,7 @@ Attention Score. Area vs. Delay
 ::::
 :::::
 
-## MatMul accumulation {#hls-ppa-matmul-accum .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## MatMul accumulation {#hls-ppa-matmul-accum .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="MatMul Accumulation IR" data-lang="IR"}
@@ -874,7 +866,7 @@ MatMul Accumulation. Area vs. Delay
 ::::
 :::::
 
-## Polybench GESUMMV-like {#hls-ppa-gesummv .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## Polybench GESUMMV-like {#hls-ppa-gesummv .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="Polybench GESUMMV-Like IR" data-lang="IR"}
@@ -902,7 +894,7 @@ Polybench GESUMMV-Like. Area vs. Delay
 ::::
 :::::
 
-## DSP FIR accumulation {#hls-ppa-fir .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## DSP FIR accumulation {#hls-ppa-fir .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="DSP FIR Accumulation IR" data-lang="IR"}
@@ -926,7 +918,7 @@ DSP FIR Accumulation. Area vs. Delay
 ::::
 :::::
 
-## Polybench SYRK-like {#hls-ppa-syrk .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo"}
+## Polybench SYRK-like {#hls-ppa-syrk .eurollvm-slide .eurollvm-workload-slide data-section="Results: LLM and HAriCo" data-transition="none"}
 
 ::::: {.eurollvm-workload}
 :::: {.eurollvm-code-card data-tag="Polybench SYRK-Like IR" data-lang="IR"}
