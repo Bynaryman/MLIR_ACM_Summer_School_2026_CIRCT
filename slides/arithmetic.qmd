@@ -320,7 +320,8 @@ A normal E4M3 encoding stores only the fraction `mmm`, but its significand
 circuit must restore it before multiplying.
 
 ::: {.e4m3-stage-math .stage-significand}
-$$M=1+\frac{m}{8}=(1.mmm)_2,\qquad P=M_aM_b$$
+$$M=1+\frac{(\mathtt{mmm})_2}{2^3}=(1.\mathtt{mmm})_2,
+\qquad P=M_aM_b$$
 :::
 
 **Your step:** form both 4-bit significands, then build the full-width
@@ -345,7 +346,8 @@ A normal E4M3 encoding stores only the fraction `mmm`, but its significand is
 before multiplying.
 
 ::: {.e4m3-stage-math .stage-significand}
-$$M=1+\frac{m}{8}=(1.mmm)_2,\qquad P=M_aM_b$$
+$$M=1+\frac{(\mathtt{mmm})_2}{2^3}=(1.\mathtt{mmm})_2,
+\qquad P=M_aM_b$$
 :::
 
 ::: {.e4m3-stage-code .stage-significand}
