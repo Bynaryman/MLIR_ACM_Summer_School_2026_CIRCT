@@ -1,4 +1,4 @@
-/* Python token palette and full-function recap slides. */
+/* Python token palette and cumulative function recaps. */
 
 .reveal code.sourceCode:is(.python, .pythoncirct) .kw {
   color: #7c3aed;
@@ -53,53 +53,19 @@
   font-weight: 700;
 }
 
-@media screen {
-  .reveal .slides section.slide.level2.python-recap-slide.present {
-    grid-template-rows: minmax(0, 1fr);
-  }
-
-  .reveal section.python-recap-slide > h2:first-child {
-    display: none;
-  }
-
-  .reveal section.python-recap-slide > .slide-body {
-    align-self: stretch;
-    display: grid;
-    place-items: center;
-  }
-}
-
-.reveal .python-recap-code {
-  width: 82%;
-  margin: 0 auto;
-}
-
-.reveal .python-recap-code div.sourceCode {
+.reveal .e4m3-function-recap div.sourceCode {
   margin: 0;
 }
 
-.reveal .python-recap-code pre code {
+.reveal .e4m3-function-recap {
+  justify-self: start;
+  width: calc(100% - 0.45em);
+}
+
+.reveal .e4m3-function-recap pre code {
+  font-size: 0.6em;
+  line-height: 1.08;
   max-height: none !important;
   overflow: visible;
-  padding: 0.55em 0.72em;
-}
-
-.reveal .recap-short .python-recap-code pre code {
-  font-size: 0.82em;
-  line-height: 1.2;
-}
-
-.reveal .recap-medium .python-recap-code pre code {
-  font-size: 0.74em;
-  line-height: 1.15;
-}
-
-.reveal .recap-long .python-recap-code pre code {
-  font-size: 0.7em;
-  line-height: 1.1;
-}
-
-.reveal .recap-full .python-recap-code pre code {
-  font-size: 0.66em;
-  line-height: 1.08;
+  padding: 0.48em 0.58em;
 }

@@ -304,9 +304,17 @@ result.
 :::
 ::::
 
-## Python recap {#arithmetic-sign-recap .python-recap-slide .recap-short}
+## Together: route the sign {#arithmetic-sign-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
-::: {.python-recap-code}
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier datapath">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -323,6 +331,7 @@ def lower_e4m3_mul(out_cast, rewriter):
     return False
 ```
 :::
+::::
 
 ## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -388,9 +397,18 @@ product = comb.MulOp.create(ma8, mb8).result
 :::
 ::::
 
-## Python recap {#arithmetic-significand-recap .python-recap-slide .recap-medium}
+## Exercise 7A: multiply the significands - 6 min {#arithmetic-significand-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
-::: {.python-recap-code}
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its significand product completed">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -416,6 +434,7 @@ def lower_e4m3_mul(out_cast, rewriter):
     return False
 ```
 :::
+::::
 
 ## One bit chooses the normalization {#arithmetic-normalization-bit auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -510,9 +529,19 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 ::::
 
-## Python recap {#arithmetic-normalization-recap .python-recap-slide .recap-long}
+## Exercise 7B: build the normalization mux - 7 min {#arithmetic-normalization-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
-::: {.python-recap-code}
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with normalization completed">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -542,6 +571,7 @@ def lower_e4m3_mul(out_cast, rewriter):
     return False
 ```
 :::
+::::
 
 ## Why subtract only one bias? {#arithmetic-exponent-math auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -614,9 +644,20 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 :::
 ::::
 
-## Python recap {#arithmetic-exponent-recap .python-recap-slide .recap-full}
+## Together: adjust the exponent {#arithmetic-exponent-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
-::: {.python-recap-code}
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its exponent path completed">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-exponent" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -657,6 +698,7 @@ def lower_e4m3_mul(out_cast, rewriter):
     return False
 ```
 :::
+::::
 
 ## Together: pack and replace {#arithmetic-normal-path auto-animate=true auto-animate-id="e4m3-rewrite"}
 
@@ -693,9 +735,21 @@ The floating-point island is dead; the greedy rewrite removes it.
 :::
 ::::
 
-## Python recap {#arithmetic-final-recap .python-recap-slide .recap-full}
+## Together: pack and replace {#arithmetic-final-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
-::: {.python-recap-code}
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-exponent" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-pack" src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -737,6 +791,7 @@ def lower_e4m3_mul(out_cast, rewriter):
 patterns.add(arith.BitcastOp, lower_e4m3_mul)
 ```
 :::
+::::
 
 ## This checkpoint is intentionally incomplete {#arithmetic-special-cases}
 

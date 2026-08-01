@@ -70,7 +70,7 @@ single large file:
 | `styles/hls.css` | EuroLLVM HLS flow diagrams, result layouts, rotated physical-design views, and PPA slides |
 | `styles/code.css` | Shared code-block sizing, borders, scrolling, and highlighted lines |
 | `styles/code-mlir.css` | Colors for MLIR token classes emitted by the MLIR grammar |
-| `styles/code-python.css` | Python token colors and code-only cumulative recap slides |
+| `styles/code-python.css` | Python token colors and side-by-side cumulative function recaps |
 
 The shared accent color is `--course-accent` in `styles/lecture.css`.
 Markdown bold text uses it automatically:
