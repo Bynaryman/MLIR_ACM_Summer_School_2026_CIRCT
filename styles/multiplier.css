@@ -110,6 +110,23 @@
   --stage-tint: rgb(190 24 93 / 7%);
 }
 
+.reveal .e4m3-stage-math {
+  color: var(--stage-color, #263640);
+  font-size: 0.76em;
+  text-align: center;
+  margin: 0.3em 0 0.4em;
+}
+
+.reveal .e4m3-rewrite-copy .e4m3-stage-math p {
+  font-size: 1em;
+  margin: 0;
+}
+
+.reveal .e4m3-stage-math .math.display,
+.reveal .e4m3-stage-math .MathJax_Display {
+  margin: 0 !important;
+}
+
 .reveal .e4m3-normal-table {
   font-size: 0.68em;
 }

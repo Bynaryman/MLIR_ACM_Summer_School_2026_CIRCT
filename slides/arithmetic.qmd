@@ -278,6 +278,11 @@ patterns.add(
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+::: {.e4m3-stage-math .stage-sign}
+$$(-1)^{s_a}(-1)^{s_b}=(-1)^{s_a+s_b}
+\quad\Longrightarrow\quad s_r=s_a\oplus s_b$$
+:::
+
 **First make the rewrite compile.** Extract both signs, XOR them, and set the
 remaining seven output bits to zero.
 
@@ -314,6 +319,10 @@ A normal E4M3 encoding stores only the fraction `mmm`, but its significand
 (often called mantissa) is `1.mmm₂`. The format omits that leading `1`, so the
 circuit must restore it before multiplying.
 
+::: {.e4m3-stage-math .stage-significand}
+$$M=1+\frac{m}{8}=(1.mmm)_2,\qquad P=M_aM_b$$
+:::
+
 **Your step:** form both 4-bit significands, then build the full-width
 `%product : i8`. `comb.mul` returns the operand width.
 :::
@@ -335,6 +344,10 @@ A normal E4M3 encoding stores only the fraction `mmm`, but its significand is
 `1.mmm₂`. The format omits that leading `1`, so the circuit must restore it
 before multiplying.
 
+::: {.e4m3-stage-math .stage-significand}
+$$M=1+\frac{m}{8}=(1.mmm)_2,\qquad P=M_aM_b$$
+:::
+
 ::: {.e4m3-stage-code .stage-significand}
 **Solution**
 
@@ -344,7 +357,6 @@ fb = comb.ExtractOp.create(0, i3, rhs).result
 one = hw.ConstantOp.create(i1, 1).result
 ma4 = comb.ConcatOp.create(one, fa).result
 mb4 = comb.ConcatOp.create(one, fb).result
-
 zero4 = hw.ConstantOp.create(i4, 0).result
 ma8 = comb.ConcatOp.create(zero4, ma4).result
 mb8 = comb.ConcatOp.create(zero4, mb4).result
@@ -379,7 +391,9 @@ Only two leading forms are possible:
 The `10.x…₂` case has two bits before the binary point; normalized form allows
 only `1.x…₂`:
 
+::: {.e4m3-stage-math .stage-normalize}
 $$1.100_2 \times 1.100_2 = 10.010000_2 = 1.001000_2 \times 2^1$$
+:::
 
 The shift restores `1.x…₂`; incrementing the exponent preserves the value.
 Thus `0x3C × 0x3C` produces `0x41` ($2.25$).
@@ -398,8 +412,13 @@ Thus `0x3C × 0x3C` produces `0x41` ($2.25$).
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-`%product[7]` distinguishes `1.x…` from `10.x…`. Use it to select the normalized
-window, then retain it as the exponent correction.
+::: {.e4m3-stage-math .stage-normalize}
+$$n=\begin{cases}0 & P<2\\1 & P\ge 2\end{cases}
+\qquad M_r=P\,2^{-n}$$
+:::
+
+The bit `%product[7]` distinguishes `1.x…` from `10.x…`. Use it to select the
+normalized window, then retain it as the exponent correction.
 
 **Your step:** produce `%frac : i3` and retain `%norm : i1` for the exponent.
 :::
@@ -418,8 +437,13 @@ window, then retain it as the exponent correction.
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-`%product[7]` distinguishes `1.x…` from `10.x…`. Use it to select the normalized
-window, then retain it as the exponent correction.
+::: {.e4m3-stage-math .stage-normalize}
+$$n=\begin{cases}0 & P<2\\1 & P\ge 2\end{cases}
+\qquad M_r=P\,2^{-n}$$
+:::
+
+The bit `%product[7]` distinguishes `1.x…` from `10.x…`. Use it to select the
+normalized window, then retain it as the exponent correction.
 
 ::: {.e4m3-stage-code .stage-normalize}
 **Solution**
@@ -432,6 +456,35 @@ mant = comb.MuxOp.create(norm, shifted, direct).result
 frac = comb.ExtractOp.create(0, i3, mant).result
 ```
 :::
+:::
+::::
+
+## Why subtract only one bias? {#arithmetic-exponent-math auto-animate=true auto-animate-id="e4m3-rewrite"}
+
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier before exponent adjustment">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+Let $E$ be the stored exponent field and $B=7$ its bias. The exponent used by
+the real value is $e=E-B$.
+
+::: {.e4m3-stage-math .stage-exponent}
+$$\begin{aligned}
+e_r &= (E_a-B)+(E_b-B)+n \\
+E_r &= e_r+B \\
+    &= E_a+E_b-B+n
+\end{aligned}$$
+:::
+
+Adding the two stored fields counts the bias twice. Encoding the result adds
+one bias back, so the circuit subtracts only one bias overall.
 :::
 ::::
 
@@ -449,7 +502,12 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-Add the stored exponents, remove one bias, then add the normalization bit.
+::: {.e4m3-stage-math .stage-exponent}
+$$E_r=E_a+E_b-7+n$$
+:::
+
+Use five-bit intermediates to preserve the carry while adding the stored
+exponents, removing one bias, and applying the normalization correction.
 
 ::: {.e4m3-stage-code .stage-exponent}
 **Exponent path**
@@ -488,6 +546,10 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 The final value has the same `i8` type as the output bitcast being replaced.
+
+::: {.e4m3-stage-math .stage-pack}
+$$R=s_r\mathbin{\Vert}E_r\mathbin{\Vert}F_r$$
+:::
 
 ::: {.e4m3-stage-code .stage-pack}
 **Finish the callback**
