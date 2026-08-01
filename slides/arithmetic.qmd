@@ -225,21 +225,17 @@ The sign bit mirrors these points onto the negative axis.
 Less precision buys a smaller representation and more operations per watt;
 the exact rounding and exceptional-value rules remain part of the contract.
 
-## Exercise 7: replace the floating-point island {#arithmetic-pass-goal}
+## Exercise 7: build an E4M3 multiplier {#arithmetic-pass-goal auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Two E4M3 inputs above an empty vertical multiplier datapath and an eight-bit result">
-  <img src="assets/images/arithmetic/e4m3-rewrite-target.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Two E4M3 inputs above an empty vertical multiplier datapath and an eight-bit result">
+  <img data-id="e4m3-question" src="assets/images/arithmetic/e4m3-rewrite-question.svg" alt="Two E4M3 inputs joining at a question mark before an E4M3 result">
 </div>
-
-::: {.e4m3-figure-caption}
-Normal path adapted from [@dinechin2024asa, Fig. 11.7].
-:::
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 ```mlir
 %af = arith.bitcast %a : i8 to f8E4M3FN
 %bf = arith.bitcast %b : i8 to f8E4M3FN
@@ -271,22 +267,21 @@ patterns.add(
 :::
 ::::
 
-## Together: route the sign {#arithmetic-sign-path}
+## Together: route the sign {#arithmetic-sign-path auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier datapath">
-  <img class="fragment fade-out" data-fragment-index="0" src="assets/images/arithmetic/e4m3-rewrite-target.svg" alt="" aria-hidden="true">
-  <img class="fragment" data-fragment-index="0" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier datapath">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 **First make the rewrite compile.** Extract both signs, XOR them, and set the
 remaining seven output bits to zero.
 
-::: {.e4m3-stage-code .stage-sign .fragment data-fragment-index="0"}
+::: {.e4m3-stage-code .stage-sign}
 **Sign path**
 
 ```python
@@ -299,29 +294,45 @@ result = comb.ConcatOp.create(sign, zero7).result
 ```
 :::
 
-::: {.fragment data-fragment-index="0"}
 The long purple wire is now a real SSA value from both inputs to the packed
 result.
 :::
-:::
 ::::
 
-## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a}
+## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its sign path completed">
-  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
-  <img class="fragment" data-fragment-index="0" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its sign path completed">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 For normal operands, materialize the hidden `1`, then preserve the full
 four-by-four-bit product. `comb.mul` returns the operand width.
 
-::: {.e4m3-stage-code .stage-significand .fragment data-fragment-index="0"}
+**Your step:** construct `%raw : i8` from the two stored fractions.
+:::
+::::
+
+## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a-solution auto-animate=true auto-animate-id="e4m3-rewrite"}
+
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its significand product completed">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+For normal operands, materialize the hidden `1`, then preserve the full
+four-by-four-bit product. `comb.mul` returns the operand width.
+
+::: {.e4m3-stage-code .stage-significand}
 **Solution**
 
 ```python
@@ -340,18 +351,18 @@ raw = comb.MulOp.create(ma8, mb8).result
 :::
 ::::
 
-## One bit chooses the normalization {#arithmetic-normalization-bit}
+## One bit chooses the normalization {#arithmetic-normalization-bit auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier through the full significand product">
-  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier through the full significand product">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 Normal significands are in $[1,2)$, so their product is in $[1,4)$.
 
 ::: {.e4m3-normal-table}
@@ -368,23 +379,42 @@ obtain `0x41` ($2.25$).
 :::
 ::::
 
-## Exercise 7B: build the normalization mux - 7 min {#arithmetic-exercise-7b}
+## Exercise 7B: build the normalization mux - 7 min {#arithmetic-exercise-7b auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier before normalization">
-  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
-  <img class="fragment" data-fragment-index="0" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier before normalization">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 Use `%raw[7]` both as data and as control: it selects the normalized window and
 later increments the exponent.
 
-::: {.e4m3-stage-code .stage-normalize .fragment data-fragment-index="0"}
+**Your step:** produce `%frac : i3` and retain `%norm : i1` for the exponent.
+:::
+::::
+
+## Exercise 7B: build the normalization mux - 7 min {#arithmetic-exercise-7b-solution auto-animate=true auto-animate-id="e4m3-rewrite"}
+
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with normalization completed">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+Use `%raw[7]` both as data and as control: it selects the normalized window and
+later increments the exponent.
+
+::: {.e4m3-stage-code .stage-normalize}
 **Solution**
 
 ```python
@@ -398,23 +428,23 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 ::::
 
-## Together: adjust the exponent {#arithmetic-exponent-path}
+## Together: adjust the exponent {#arithmetic-exponent-path auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier before exponent adjustment">
-  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
-  <img class="fragment" data-fragment-index="0" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier before exponent adjustment">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-exponent" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 Add the stored exponents, remove one bias, then add the normalization bit.
 
-::: {.e4m3-stage-code .stage-exponent .fragment data-fragment-index="0"}
+::: {.e4m3-stage-code .stage-exponent}
 **Exponent path**
 
 ```python
@@ -435,24 +465,24 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 :::
 ::::
 
-## Together: pack and replace {#arithmetic-normal-path}
+## Together: pack and replace {#arithmetic-normal-path auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
-  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
-  <img class="fragment" data-fragment-index="0" src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
+  <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-exponent" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-pack" src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy}
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
 The final value has the same `i8` type as the output bitcast being replaced.
 
-::: {.e4m3-stage-code .stage-pack .fragment data-fragment-index="0"}
+::: {.e4m3-stage-code .stage-pack}
 **Finish the callback**
 
 ```python

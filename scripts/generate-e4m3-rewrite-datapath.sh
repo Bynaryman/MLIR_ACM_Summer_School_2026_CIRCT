@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE="$ROOT/figures/arithmetic/e4m3-rewrite-datapath.tex"
 OUTPUT_DIR="$ROOT/assets/images/arithmetic"
 BUILD_DIR="$(mktemp -d)"
-LAYERS=(base target sign significand normalize exponent pack)
+LAYERS=(base question sign significand normalize exponent pack)
 
 cleanup() {
   rm -rf "$BUILD_DIR"

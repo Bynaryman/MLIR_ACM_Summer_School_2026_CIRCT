@@ -87,29 +87,36 @@
   \draw[base field] (0.90,-13.00) rectangle (3.00,-13.80);
 }
 
-\newcommand{\TargetLayer}{%
+\newcommand{\QuestionLayer}{%
   \LayerBounds
 
-  \node[block=targetcolor, minimum width=1.85cm] (casta) at (-2.30,-1.55)
-    {\textbf{arith.bitcast}\\\ttfamily\small i8 $\rightarrow$ f8};
-  \node[block=targetcolor, minimum width=1.85cm] (castb) at (2.30,-1.55)
-    {\textbf{arith.bitcast}\\\ttfamily\small i8 $\rightarrow$ f8};
-  \node[block=targetcolor, minimum width=2.80cm, minimum height=1.10cm]
-    (mulf) at (0.00,-4.15)
-    {\textbf{arith.mulf}\\\ttfamily\small f8E4M3FN};
-  \node[block=targetcolor, minimum width=1.95cm] (castout) at (0.00,-6.20)
-    {\textbf{arith.bitcast}\\\ttfamily\small f8 $\rightarrow$ i8};
+  \fill[signcolor!9] (-3.00,-13.00) rectangle (-2.30,-13.80);
+  \draw[signcolor, line width=1.05pt]
+    (-3.00,-13.00) rectangle (-2.30,-13.80);
+  \fill[exponentcolor!9] (-2.30,-13.00) rectangle (0.90,-13.80);
+  \draw[exponentcolor, line width=1.05pt]
+    (-2.30,-13.00) rectangle (0.90,-13.80);
+  \fill[significandcolor!9] (0.90,-13.00) rectangle (3.00,-13.80);
+  \draw[significandcolor, line width=1.05pt]
+    (0.90,-13.00) rectangle (3.00,-13.80);
+  \node[field text] at (-2.65,-13.40) {s};
+  \node[field text] at (-0.70,-13.40) {eeee};
+  \node[field text] at (1.95,-13.40) {mmm};
+  \node[font=\ttfamily\normalsize, anchor=south west, text=neutral]
+    at (-3.00,-12.88) {\%result : i8};
 
-  \draw[wire=targetcolor] (-2.30,-0.35) -- (casta.north);
-  \draw[wire=targetcolor] (2.30,-0.35) -- (castb.north);
-  \draw[wire=targetcolor] (casta.south) -- ++(0,-0.32)
-    -| ($(mulf.north)+(-0.62,0)$);
-  \draw[wire=targetcolor] (castb.south) -- ++(0,-0.32)
-    -| ($(mulf.north)+(0.62,0)$);
-  \draw[wire=targetcolor] (mulf.south) -- (castout.north);
-  \draw[wire=targetcolor] (castout.south) -- (0.00,-13.00);
-  \node[signal=targetcolor, anchor=west] at (0.18,-8.65)
-    {replace this island};
+  \node[draw=targetcolor, fill=targetcolor!8, circle,
+        minimum size=2.05cm, line width=1.35pt,
+        font=\sffamily\bfseries\Huge, text=targetcolor]
+    (question) at (0.00,-5.35) {?};
+
+  \draw[plain wire=neutral] (-3.00,-0.35) -- (-3.00,-2.25)
+    -- (0.00,-2.25);
+  \draw[plain wire=neutral] (3.00,-0.35) -- (3.00,-2.25)
+    -- (0.00,-2.25);
+  \fill[neutral] (0.00,-2.25) circle[radius=1.6pt];
+  \draw[wire=neutral] (0.00,-2.25) -- (question.north);
+  \draw[wire=neutral] (question.south) -- (0.00,-13.00);
 }
 
 \newcommand{\SignLayer}{%
@@ -294,7 +301,7 @@
   \ifcase\DiagramLayer
     \BaseLayer
   \or
-    \TargetLayer
+    \QuestionLayer
   \or
     \SignLayer
   \or

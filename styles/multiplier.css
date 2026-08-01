@@ -39,11 +39,11 @@
   box-shadow: none;
 }
 
-.reveal .e4m3-figure-caption {
-  margin-top: 0.08em;
-  color: #63717a;
-  font-size: 0.42em;
-  text-align: center;
+.reveal section[data-auto-animate-id="e4m3-rewrite"] .e4m3-vertical-stack,
+.reveal section[data-auto-animate-id="e4m3-rewrite"] .e4m3-vertical-stack > p,
+.reveal section[data-auto-animate-id="e4m3-rewrite"] .e4m3-vertical-stack img {
+  transform: none !important;
+  transition-property: opacity !important;
 }
 
 .reveal .e4m3-rewrite-copy > :first-child {
