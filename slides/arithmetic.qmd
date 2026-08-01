@@ -72,45 +72,23 @@ No direct generic `func.func` → `hw.module` pass.
 :::
 ::::
 
-## Exercise 6: two transformations, two tools {#arithmetic-integer-pipeline}
-
-:::: {.columns}
-::: {.column width="57%"}
-**1. Course policy: one function becomes one combinational module**
+## Exercise 6: compose two passes {#arithmetic-integer-pipeline}
 
 ```bash
 circt-tutorial-opt examples/ex6_arith_muli.mlir \
-  --tutorial-func-to-hw \
-  -o build/ex6_hw_arith.mlir
-```
+  --tutorial-func-to-hw -o build/ex6_hw_arith.mlir
 
-::: {.fragment data-fragment-index="0"}
-**2. CIRCT mapping: supported integer arithmetic becomes `comb`**
-
-```bash
 circt-opt build/ex6_hw_arith.mlir \
-  --map-arith-to-comb \
-  -o build/ex6_hw_comb.mlir
+  --map-arith-to-comb -o build/ex6_hw_comb.mlir
 ```
-:::
-:::
 
-::: {.column width="43%"}
-::: {.fragment data-fragment-index="1"}
-```mlir
-hw.module @ex6_mul(
-    in %in0 : i8,
-    in %in1 : i8,
-    out out0 : i8) {
-  %0 = comb.mul %in0, %in1 : i8
-  hw.output %0 : i8
-}
-```
-:::
-:::
-::::
+| File | Boundary | Multiplication |
+|---|---|---|
+| `ex6_arith_muli.mlir` | `func.func` | `arith.muli` |
+| `ex6_hw_arith.mlir` | `hw.module` | `arith.muli` |
+| `ex6_hw_comb.mlir` | `hw.module` | `comb.mul` |
 
-Inspect the boundary and final stages with `less build/ex6_hw_{arith,comb}.mlir`.
+**Boundary first; multiplication second.**
 
 ## Exercise 6: change the arithmetic contract {#arithmetic-float-attempt}
 
@@ -160,6 +138,19 @@ def MapArithToCombPass : Pass<"map-arith-to-comb"> {
 
 The failure is the documented boundary of the pass. Our exercise supplies one
 concrete floating-point lowering.
+
+## Read the type name: `f8E4M3FN` {#arithmetic-e4m3-name}
+
+| Part | Meaning |
+|---|---|
+| `f8` | 8-bit floating-point type |
+| `E4` | 4 exponent bits |
+| `M3` | 3 stored mantissa/fraction bits |
+| `FN` | **F = finite; N = NaN.** No infinity encoding. |
+
+Overflow therefore produces NaN instead of infinity.
+
+[MLIR Builtin floating-point types](https://mlir.llvm.org/docs/Dialects/Builtin/#types)
 
 ## Eight bits encode several numerical regimes {#arithmetic-e4m3-format}
 
