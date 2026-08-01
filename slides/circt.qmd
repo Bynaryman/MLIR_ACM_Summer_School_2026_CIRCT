@@ -15,20 +15,18 @@ It is not one hardware IR. It is a set of **dialects that preserve useful
 decisions at different levels**.
 :::
 
-## Digital-design concepts become dialect boundaries {#circt-dialects}
+## The examples have direct CIRCT vocabulary {#circt-dialects}
 
-| Concept from the primer | CIRCT vocabulary |
-|---|---|
-| modules, ports, instances, aggregate types | [`hw`](https://circt.llvm.org/docs/Dialects/HW/) |
-| bit-vector combinational logic | [`comb`](https://circt.llvm.org/docs/Dialects/Comb/) |
-| registers, clocks, FIFOs, and memories | [`seq`](https://circt.llvm.org/docs/Dialects/Seq/) |
-| states and transitions | [`fsm`](https://circt.llvm.org/docs/Dialects/FSM/) |
-| streaming and communication | `handshake`, `dc`, `esi` |
-| SystemVerilog-specific constructs | `sv` |
+| SystemVerilog example | CIRCT vocabulary | Preserved meaning |
+|---|---|---|
+| `module mul_add4` | [`hw.module`](https://circt.llvm.org/docs/Dialects/HW/) | module boundary and ports |
+| `mul_add4 u_left (...)` | `hw.instance` | one hardware instance |
+| `assign product = a * b` | [`comb.mul`](https://circt.llvm.org/docs/Dialects/Comb/) | typed combinational dataflow |
+| `always_ff @(posedge clk)` | [`seq.compreg`](https://circt.llvm.org/docs/Dialects/Seq/) | clocked state |
 
 ::: {.fragment}
-The dialect boundary records **which hardware concepts have already been
-chosen**.
+Passes can now ask the primer's questions directly: **what is structural, what
+is combinational, and what crosses a clock edge?**
 :::
 
 ## One multiplier, two ways into CIRCT {#circt-two-entrances .smaller}

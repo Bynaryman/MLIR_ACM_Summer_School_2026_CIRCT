@@ -12,166 +12,176 @@
 - an **ASIC design flow**
 :::
 
-## Two languages, one multiplier {#dd-hdl}
-
-:::: {.columns}
-::: {.column width="54%"}
-**VHDL**
-
-```vhdl
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-entity mul4 is
-  port(a, b : in  unsigned(3 downto 0);
-       p    : out unsigned(7 downto 0));
-end entity;
-
-architecture rtl of mul4 is
-begin
-  p <= a * b;
-end architecture;
-```
-:::
-
-::: {.column width="46%"}
-**SystemVerilog**
-
-```systemverilog
-module mul4(
-  input  logic [3:0] a, b,
-  output logic [7:0] p
-);
-  assign p = a * b;
-endmodule
-```
-
 ::: {.fragment}
-Both describe the same **4-bit × 4-bit combinational behavior**. Synthesis
-chooses its concrete implementation.
-:::
-:::
-::::
-
-## Combinational logic has no state {#dd-combinational}
-
-Extend the multiplier into the FMA used by the first exercise:
-
-:::: {.columns}
-::: {.column width="55%"}
-```systemverilog
-wire [7:0] product;
-
-assign product =
-    {4'b0, a} * {4'b0, b};
-
-assign d =
-    {1'b0, product} + {5'b0, c};
-```
+We will use short **SystemVerilog** examples. The concepts are independent of
+the HDL syntax.
 :::
 
-::: {.column width="45%"}
-::: {.incremental}
-- The hardware contains a multiplier feeding an adder.
-
-- Gates respond concurrently; the dependency creates a propagation path.
-
-- Nothing is "executed" in source order.
-
-- There is no clock or stored value. Width and signedness define the arithmetic.
-:::
-:::
-::::
-
-## Registers introduce state and clock cycles {#dd-registers}
+## Combinational logic: which line runs first? {#dd-combinational}
 
 :::: {.columns}
 ::: {.column width="56%"}
 ```systemverilog
-logic [7:0] product_q;
-logic [8:0] c_q;
-
-always_ff @(posedge clk) begin
-  product_q <= {4'b0, a} * {4'b0, b};
-  c_q       <= {5'b0, c};
-end
-
-assign d = {1'b0, product_q} + c_q;
-```
-:::
-
-::: {.column width="44%"}
-::: {.incremental}
-- A register samples its input on a clock edge.
-
-- Its output holds the sampled value until the next active edge.
-
-- Combinational logic still propagates concurrently **between** registers.
-
-- This register layer adds a cycle; throughput is a separate design choice.
-:::
-:::
-::::
-
-## Modules create hierarchy {#dd-hierarchy}
-
-:::: {.columns}
-::: {.column width="54%"}
-```systemverilog
-module fma4(
+module mul_add4(
   input  logic [3:0] a, b, c,
   output logic [8:0] d
 );
   logic [7:0] product;
 
-  mul4 u_mul(
-    .a(a), .b(b), .p(product));
-
   assign d =
       {1'b0, product} + {5'b0, c};
+
+  assign product =
+      {4'b0, a} * {4'b0, b};
+endmodule
+```
+:::
+
+::: {.column width="44%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+The assignment to `d` is written first. Does the **adder** execute before the
+**multiplier**?
+:::
+
+::: {.fragment}
+**Answer: neither line runs first.**
+
+- The multiplier and adder are active concurrently.
+- The adder settles after `product`, but it is not scheduled after it.
+- With no register, there is no stored state or clock cycle.
+:::
+:::
+::::
+
+## Bit widths: where does the carry go? {#dd-widths}
+
+:::: {.columns}
+::: {.column width="52%"}
+```systemverilog
+logic [3:0] a, b;
+logic [3:0] wrapped;
+logic [4:0] exact;
+
+assign wrapped = a + b;
+assign exact =
+    {1'b0, a} + {1'b0, b};
+```
+:::
+
+::: {.column width="48%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+For `a = 15` and `b = 1`, what values reach `wrapped` and `exact`?
+:::
+
+::: {.fragment}
+```text
+wrapped = 4'b0000   // 0
+exact   = 5'b10000  // 16
+```
+
+The extra carry exists only when the operands and result have room for it.
+**Width is part of the hardware behavior.**
+:::
+:::
+::::
+
+## Registers: when does `q` change? {#dd-registers}
+
+:::: {.columns}
+::: {.column width="35%"}
+```systemverilog
+always_ff @(posedge clk)
+  q <= d;
+```
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+If `d` changes between two rising clock edges, when can `q` change?
+:::
+:::
+
+::: {.column width="65%"}
+![](assets/images/digital-design/register-timing.svg){.fragment data-fragment-index="0" fig-alt="Timing diagram in which d changes between clock edges and q takes each new value only on the following rising edge" width="100%"}
+
+::: {.fragment data-fragment-index="0"}
+**Answer:** at the next rising edge. Between edges, `q` keeps its previous value.
+:::
+
+::: {.fragment data-fragment-index="1"}
+A register introduces **state** and a **cycle boundary**. Combinational logic
+still propagates between registers.
+:::
+:::
+::::
+
+## Hierarchy: how many datapaths exist? {#dd-hierarchy}
+
+:::: {.columns}
+::: {.column width="54%"}
+```systemverilog
+module pair(
+  input  logic [3:0] a, b, c,
+  output logic [8:0] d0, d1
+);
+  mul_add4 u_left(
+    .a(a), .b(b), .c(c), .d(d0));
+
+  mul_add4 u_right(
+    .a(a), .b(c), .c(b), .d(d1));
 endmodule
 ```
 :::
 
 ::: {.column width="46%"}
-::: {.incremental}
-- A **module** defines a reusable boundary.
+::: {.callout-note appearance="simple" icon=false}
+## Question
 
-- An **instance** creates hardware.
+Does `pair` call `mul_add4` twice, or create **two datapaths**?
+:::
 
-- Ports connect signals across that boundary.
+::: {.fragment}
+**Answer: two datapaths:** two multipliers and two adders.
 
-- Combinational and sequential logic may coexist inside it; the boundary itself
-  adds no clock cycle.
+- A `module` defines a reusable boundary.
+- Each instance creates hardware.
+- Ports connect signals between instances.
+- A hierarchy boundary adds no clock cycle.
 :::
 :::
 ::::
 
-## An FPGA is a configurable circuit {#dd-fpga-analogy}
+## FPGA: what must be configurable? {#dd-fpga-analogy}
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="59%"}
 ![Left: a cellular automaton. Right: a simple FPGA. Adapted from [@popoff2026frugality].](assets/images/digital-design/fpga-cellular-automaton.svg){fig-align="center" fig-alt="A cellular automaton grid beside a simple FPGA grid with configurable cells and richer programmable interconnect" width="100%"}
 :::
 
-::: {.column width="40%"}
-**Analogy:** an FPGA is to a cellular automaton what a CPU is to a Turing
-machine.
+::: {.column width="41%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+If one chip can become many circuits, which parts must be configurable?
+:::
 
 ::: {.incremental}
-- A grid of configurable logic cells
+- **Logic:** LUT truth tables
 
-- A programmable interconnection network
+- **State:** registers
 
-- Combinational paths **and** clocked state
+- **Connections:** routing switches
 
-- Manufactured once, configured for many circuits
+- **Device:** manufactured once, configured for many circuits
 :::
 :::
 ::::
 
-## A bitstream configures structure {#dd-fpga-configuration}
+## FPGA: program or configured circuit? {#dd-fpga-configuration}
 
 :::: {.columns}
 ::: {.column width="55%"}
@@ -179,46 +189,71 @@ machine.
 :::
 
 ::: {.column width="45%"}
-**Configuration**
+::: {.callout-note appearance="simple" icon=false}
+## Question
 
-- Place and route the circuit.
-- Set LUT tables, registers, and routing switches. A 4-input LUT needs
-  $2^4=16$ bits.
-
-::: {.fragment}
-**Execution**
-
-- Connections stay fixed.
-- Signals propagate; registers sample on clock edges.
+Is the bitstream executed one instruction at a time?
 :::
 
 ::: {.fragment}
-**Bitstream:** circuit configuration, **not a CPU instruction stream**.
+**No. It configures structure.**
+
+- Place and route choose cells and connections.
+- A 4-input LUT stores $2^4=16$ truth-table bits.
+- The bitstream sets LUTs, registers, and routing switches.
+:::
+
+::: {.fragment}
+During execution, connections stay fixed: signals propagate through
+combinational paths and registers sample on clock edges.
 :::
 :::
 ::::
 
-## A modern FPGA is more than LUTs {#dd-fpga-resources}
+## FPGA: LUTs or a DSP block? {#dd-fpga-resources}
 
-| FPGA resource | Hardware role |
-|---|---|
-| LUT + register | Boolean logic and one bit of state |
-| programmable routing | wires between resources |
-| DSP block | hard multiplier or multiply-accumulate |
-| block RAM | on-chip storage |
-| I/O blocks | off-chip communication |
-| CPU system on some devices | software, external memory, and peripherals |
+:::: {.columns}
+::: {.column width="36%"}
+```systemverilog
+assign product = a * b;
+```
 
-::: {.fragment}
-The same multiplier may become LUT logic or a hard DSP block. Mapping is a
-target decision; the arithmetic semantics remain the same
-[@popoff2026frugality].
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Where can this multiplier be built?
+:::
 :::
 
-## An ASIC fixes the circuit in silicon {#dd-asic-cells}
+::: {.column width="64%"}
+::: {.fragment}
+| FPGA resource | Hardware role |
+|---|---|
+| LUT + register | Boolean logic and state |
+| routing | wires between resources |
+| DSP block | hard multiplier or MAC |
+| block RAM | on-chip storage |
+:::
 
-An FPGA is configured after fabrication. An ASIC fixes one circuit during
-fabrication. Even an OR gate becomes geometry:
+::: {.fragment}
+The multiplier may use LUT logic or a hard DSP block. The target and synthesis
+flow choose the resource; the arithmetic meaning stays the same
+[@popoff2026frugality].
+:::
+:::
+::::
+
+::: {.fragment}
+Modern devices also integrate I/O and, on some families, a CPU system.
+:::
+
+## ASIC: what becomes fixed? {#dd-asic-cells}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Which parts of this OR gate can be reconfigured after fabrication?
+:::
 
 :::: {.columns}
 ::: {.column width="31%"}
@@ -238,13 +273,12 @@ assign y = a | b;
 :::
 ::::
 
-::: {.incremental}
-- **Logic synthesis** decomposes the datapath and chooses library cells.
-
-- **Place and route** assigns coordinates to every cell and wire.
+::: {.fragment}
+**Answer: none.** Logic synthesis chooses cells; place and route assigns their
+coordinates and wires; fabrication fixes the geometry.
 :::
 
-## An ASIC is placed and routed {#dd-asic-layout}
+## Physical design: what determines cost? {#dd-asic-layout}
 
 :::: {.columns}
 ::: {.column width="58%"}
@@ -252,19 +286,25 @@ assign y = a | b;
 :::
 
 ::: {.column width="42%"}
-::: {.incremental}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Must two logically equivalent layouts have the same delay and area?
+:::
+
+::: {.fragment}
+**No.** Physical cost depends on:
+
 - Cells occupy **area**.
 
 - Wires have **length, delay, and congestion**.
 
 - Clock and power need their own networks.
-
-- The hardware description is becoming a physical object.
 :::
 :::
 ::::
 
-## Hierarchy becomes floorplan {#dd-floorplan}
+## At chip scale: what are the colored regions? {#dd-floorplan}
 
 :::: {.columns}
 ::: {.column width="63%"}
@@ -272,33 +312,36 @@ assign y = a | b;
 :::
 
 ::: {.column width="37%"}
-At chip scale, hierarchy is no longer only a name in the RTL.
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+What from the hardware description is visible in this die photograph?
+:::
 
 ::: {.incremental}
-- Instances repeat hardware.
+- Repeated instances
 
-- Large modules and memories become visible regions.
+- Large modules and memories
 
-- Floorplanning assigns those regions coordinates.
+- Interconnect and I/O
 
-- The description has become **geometry**.
+- A floorplan that gives hierarchy coordinates
 :::
 :::
 ::::
 
-## These concepts need compiler vocabulary {#dd-vocabulary}
+## Keep the questions explicit {#dd-vocabulary}
 
-| Digital-design concept | Question made explicit |
-|---|---|
-| combinational dataflow, width, signedness | what exists between state elements? |
-| register and clock | what is stored, and at which cycle boundary? |
-| module, instance, port | what hardware exists, and how is it connected? |
-| FSM, mux, enable | how is the next state selected? |
-| memory, stream, protocol | where does data live, and how does it move? |
-| cell, wire, floorplan | where and in which technology will it exist? |
+| Question from the example | Hardware concept | Compiler boundary |
+|---|---|---|
+| Which line runs first? | combinational dataflow | `comb` |
+| Where does the carry go? | bit-vector width | `comb` types |
+| When does `q` change? | register and clock | `seq` |
+| How many datapaths exist? | module and instance | `hw` |
+| Program or configured circuit? | LUT and DSP mapping | synthesis target |
+| What becomes fixed? | cells, wires, floorplan | implementation |
 
 ::: {.fragment}
-We started with one multiplication. It became concurrent logic, state,
-hierarchy, cells, wires, and geometry. **CIRCT gives those decisions distinct
-MLIR representations.**
+CIRCT keeps the first four distinctions explicit in `hw`, `comb`, and `seq`.
+Later passes choose target resources and physical implementation.
 :::

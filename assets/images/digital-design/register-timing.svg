@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" role="img" aria-labelledby="title description">
+  <title id="title">Register timing diagram</title>
+  <desc id="description">The input d changes between rising clock edges. The register output q changes only at the following rising edge.</desc>
+  <style>
+    .label {
+      fill: #111827;
+      font: 700 32px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .value {
+      fill: #475569;
+      font: 600 23px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .caption {
+      fill: #0f766e;
+      font: 700 28px Inter, Arial, sans-serif;
+    }
+    .guide {
+      stroke: #94a3b8;
+      stroke-width: 2;
+      stroke-dasharray: 8 10;
+    }
+    .clock {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 5;
+      stroke-linejoin: miter;
+    }
+    .input {
+      fill: none;
+      stroke: #2563eb;
+      stroke-width: 6;
+      stroke-linejoin: miter;
+    }
+    .output {
+      fill: none;
+      stroke: #0f766e;
+      stroke-width: 6;
+      stroke-linejoin: miter;
+    }
+    .sample {
+      fill: #0f766e;
+      stroke: #ffffff;
+      stroke-width: 3;
+    }
+  </style>
+
+  <text class="label" x="45" y="108">clk</text>
+  <text class="label" x="72" y="258">d</text>
+  <text class="label" x="72" y="408">q</text>
+
+  <line class="guide" x1="240" y1="45" x2="240" y2="435"/>
+  <line class="guide" x1="500" y1="45" x2="500" y2="435"/>
+  <line class="guide" x1="760" y1="45" x2="760" y2="435"/>
+  <line class="guide" x1="1020" y1="45" x2="1020" y2="435"/>
+
+  <polyline class="clock" points="180,120 240,120 240,70 370,70 370,120 500,120 500,70 630,70 630,120 760,120 760,70 890,70 890,120 1020,120 1020,70 1150,70"/>
+  <polyline class="input" points="180,270 330,270 330,210 650,210 650,270 900,270 900,210 1150,210"/>
+  <polyline class="output" points="180,420 500,420 500,360 760,360 760,420 1020,420 1020,360 1150,360"/>
+
+  <circle class="sample" cx="240" cy="420" r="8"/>
+  <circle class="sample" cx="500" cy="360" r="8"/>
+  <circle class="sample" cx="760" cy="420" r="8"/>
+  <circle class="sample" cx="1020" cy="360" r="8"/>
+
+  <text class="value" x="270" y="257">0</text>
+  <text class="value" x="450" y="197">1</text>
+  <text class="value" x="705" y="257">0</text>
+  <text class="value" x="965" y="197">1</text>
+
+  <text class="value" x="355" y="408">0</text>
+  <text class="value" x="615" y="347">1</text>
+  <text class="value" x="875" y="408">0</text>
+  <text class="value" x="1080" y="347">1</text>
+
+  <text class="caption" x="180" y="480">q samples d only on a rising clock edge</text>
+</svg>
