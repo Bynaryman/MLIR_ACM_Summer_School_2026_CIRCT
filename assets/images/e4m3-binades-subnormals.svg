@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="290" viewBox="0 0 1200 290" role="img" aria-labelledby="title desc">
+  <title id="title">E4M3FN subnormal values</title>
+  <desc id="desc">Seven subnormal values fill the interval between zero and the smallest normal value.</desc>
+
+  <g fill="#b7791f">
+    <circle cx="106.25" cy="112" r="6"/>
+    <circle cx="122.5" cy="112" r="6"/>
+    <circle cx="138.75" cy="112" r="6"/>
+    <circle cx="155" cy="112" r="6"/>
+    <circle cx="171.25" cy="112" r="6"/>
+    <circle cx="187.5" cy="112" r="6"/>
+    <circle cx="203.75" cy="112" r="6"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle" fill="#b7791f">
+    <text x="155" y="50" font-size="20" font-weight="700">7 subnormal values</text>
+    <text x="155" y="72" font-size="16">E = 0000</text>
+  </g>
+</svg>

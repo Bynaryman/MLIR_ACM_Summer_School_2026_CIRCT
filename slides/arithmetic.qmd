@@ -188,17 +188,25 @@ Overflow therefore produces NaN instead of infinity.
 `f8E4M3FN` has bias 7, finite values up to 448, and no infinity.
 [@micikevicius2022fp8]
 
-## Subnormals fill the gap around zero {#arithmetic-e4m3-axis}
+## Normal binades double; subnormals fill the gap {#arithmetic-e4m3-axis}
 
-![](assets/images/e4m3-number-line.svg){fig-alt="Positive E4M3FN values near zero, with subnormal and normal ranges distinguished" width="100%"}
+A binade $[2^k,2^{k+1})$ contains the values that share one exponent.
 
-| Bits | Hex | Value |
-|---|---:|---:|
-| `0 0000 001` | `0x01` | $2^{-9}$ = 0.001953125 |
-| `0 0000 111` | `0x07` | $7 \times 2^{-9}$ = 0.013671875 |
-| `0 0001 000` | `0x08` | $2^{-6}$ = 0.015625 |
+::: {.r-stack}
+![](assets/images/e4m3-binades.svg){fig-alt="Normal E4M3FN binades double in width and leave no normal values between zero and two to the minus six" width="94%"}
 
-The sign bit mirrors these points onto the negative axis.
+![](assets/images/e4m3-binades-subnormals.svg){.fragment data-fragment-index="0" fig-alt="Seven subnormal values fill the interval next to zero" width="94%"}
+:::
+
+::: {.fragment data-fragment-index="0"}
+Subnormals make underflow **gradual**: seven values continue the smallest normal
+spacing toward zero, preserving nearby subtraction (Sterbenz's lemma).
+:::
+
+::: {.fragment data-fragment-index="1"}
+**Exercise 7 keeps only the normal path.** Many accelerators choose flush-to-zero:
+less shifting and control for AI workloads that tolerate tiny perturbations.
+:::
 
 ## The same format spans tiny values to 448 {#arithmetic-e4m3-values}
 

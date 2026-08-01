@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="290" viewBox="0 0 1200 290" role="img" aria-labelledby="title desc">
+  <title id="title">Normal E4M3FN binades above zero</title>
+  <desc id="desc">A linear number line showing an empty interval between zero and the smallest normal value, followed by three normal binades whose widths and point spacing double at each exponent.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#20262c"/>
+    </marker>
+  </defs>
+
+  <text x="600" y="28" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#20262c">8 encodings per normal binade</text>
+  <line x1="68" y1="112" x2="1160" y2="112" stroke="#20262c" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <circle cx="90" cy="112" r="7" fill="#20262c"/>
+
+  <g fill="#0f766e">
+    <circle cx="220" cy="112" r="6"/><circle cx="236.25" cy="112" r="6"/>
+    <circle cx="252.5" cy="112" r="6"/><circle cx="268.75" cy="112" r="6"/>
+    <circle cx="285" cy="112" r="6"/><circle cx="301.25" cy="112" r="6"/>
+    <circle cx="317.5" cy="112" r="6"/><circle cx="333.75" cy="112" r="6"/>
+
+    <circle cx="350" cy="112" r="6"/><circle cx="382.5" cy="112" r="6"/>
+    <circle cx="415" cy="112" r="6"/><circle cx="447.5" cy="112" r="6"/>
+    <circle cx="480" cy="112" r="6"/><circle cx="512.5" cy="112" r="6"/>
+    <circle cx="545" cy="112" r="6"/><circle cx="577.5" cy="112" r="6"/>
+
+    <circle cx="610" cy="112" r="6"/><circle cx="675" cy="112" r="6"/>
+    <circle cx="740" cy="112" r="6"/><circle cx="805" cy="112" r="6"/>
+    <circle cx="870" cy="112" r="6"/><circle cx="935" cy="112" r="6"/>
+    <circle cx="1000" cy="112" r="6"/><circle cx="1065" cy="112" r="6"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" font-size="18" fill="#20262c" text-anchor="middle">
+    <text x="90" y="86">0</text>
+    <text x="220" y="86">2<tspan baseline-shift="super" font-size="12">-6</tspan></text>
+    <text x="350" y="86">2<tspan baseline-shift="super" font-size="12">-5</tspan></text>
+    <text x="610" y="86">2<tspan baseline-shift="super" font-size="12">-4</tspan></text>
+    <text x="1130" y="86">2<tspan baseline-shift="super" font-size="12">-3</tspan></text>
+  </g>
+
+  <g fill="none" stroke-width="3">
+    <path d="M90 151 v12 h130 v-12" stroke="#b7791f" stroke-dasharray="7 6"/>
+    <path d="M220 151 v12 h130 v-12" stroke="#0f766e"/>
+    <path d="M350 151 v12 h260 v-12" stroke="#0f766e"/>
+    <path d="M610 151 v12 h520 v-12" stroke="#0f766e"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <text x="155" y="191" font-size="20" font-weight="700" fill="#b7791f">no normal values</text>
+
+    <text x="285" y="188" font-size="20" font-weight="700" fill="#0f766e">E = 0001</text>
+    <text x="285" y="216" font-size="17" fill="#20262c">width 2<tspan baseline-shift="super" font-size="11">-6</tspan></text>
+
+    <text x="480" y="188" font-size="20" font-weight="700" fill="#0f766e">E = 0010</text>
+    <text x="480" y="216" font-size="17" fill="#20262c">width 2<tspan baseline-shift="super" font-size="11">-5</tspan> = 2x</text>
+
+    <text x="870" y="188" font-size="20" font-weight="700" fill="#0f766e">E = 0011</text>
+    <text x="870" y="216" font-size="17" fill="#20262c">width 2<tspan baseline-shift="super" font-size="11">-4</tspan> = 4x</text>
+
+    <text x="600" y="270" font-size="19" fill="#20262c">Incrementing the exponent doubles both range and spacing.</text>
+  </g>
+</svg>
