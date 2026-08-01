@@ -58,8 +58,15 @@
 }
 
 .reveal .e4m3-function-recap {
+  display: flex;
+  align-items: center;
   justify-self: start;
+  min-height: 19em;
   width: calc(100% - 0.45em);
+}
+
+.reveal .e4m3-function-recap > .code-copy-outer-scaffold {
+  width: 100%;
 }
 
 .reveal .e4m3-function-recap pre code {
@@ -68,4 +75,118 @@
   max-height: none !important;
   overflow: visible;
   padding: 0.48em 0.58em;
+}
+
+/* Final recap: brackets map Python regions to the datapath colors. */
+.reveal #e4m3-final-python pre code {
+  font-size: 0.58em;
+  padding-right: 6.1em;
+}
+
+.reveal #e4m3-final-python code > span {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(n + 7):nth-child(-n + 9) {
+  --code-stage-color: #7c3aed;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(n + 10):nth-child(-n + 18) {
+  --code-stage-color: #0f766e;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(n + 19):nth-child(-n + 23) {
+  --code-stage-color: #b7791f;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(n + 24):nth-child(-n + 34) {
+  --code-stage-color: #2563eb;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(n + 35):nth-child(-n + 37) {
+  --code-stage-color: #be185d;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(n + 7):nth-child(-n + 37) {
+  border-right: 0.16em solid var(--code-stage-color, transparent);
+  padding-right: 0.55em;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(7)::before,
+.reveal #e4m3-final-python code > span:nth-child(10)::before,
+.reveal #e4m3-final-python code > span:nth-child(19)::before,
+.reveal #e4m3-final-python code > span:nth-child(24)::before,
+.reveal #e4m3-final-python code > span:nth-child(35)::before,
+.reveal #e4m3-final-python code > span:nth-child(9)::before,
+.reveal #e4m3-final-python code > span:nth-child(18)::before,
+.reveal #e4m3-final-python code > span:nth-child(23)::before,
+.reveal #e4m3-final-python code > span:nth-child(34)::before,
+.reveal #e4m3-final-python code > span:nth-child(37)::before {
+  content: "";
+  position: absolute;
+  right: -0.16em;
+  width: 0.58em;
+  border-color: var(--code-stage-color);
+}
+
+.reveal #e4m3-final-python code > span:nth-child(7)::before,
+.reveal #e4m3-final-python code > span:nth-child(10)::before,
+.reveal #e4m3-final-python code > span:nth-child(19)::before,
+.reveal #e4m3-final-python code > span:nth-child(24)::before,
+.reveal #e4m3-final-python code > span:nth-child(35)::before {
+  top: 0;
+  border-top: 0.16em solid var(--code-stage-color);
+}
+
+.reveal #e4m3-final-python code > span:nth-child(9)::before,
+.reveal #e4m3-final-python code > span:nth-child(18)::before,
+.reveal #e4m3-final-python code > span:nth-child(23)::before,
+.reveal #e4m3-final-python code > span:nth-child(34)::before,
+.reveal #e4m3-final-python code > span:nth-child(37)::before {
+  bottom: 0;
+  border-bottom: 0.16em solid var(--code-stage-color);
+}
+
+.reveal #e4m3-final-python code > span:nth-child(7)::after,
+.reveal #e4m3-final-python code > span:nth-child(10)::after,
+.reveal #e4m3-final-python code > span:nth-child(19)::after,
+.reveal #e4m3-final-python code > span:nth-child(24)::after,
+.reveal #e4m3-final-python code > span:nth-child(35)::after {
+  position: absolute;
+  right: -5.7em;
+  width: 4.8em;
+  color: var(--code-stage-color);
+  font-family: var(--r-main-font);
+  font-size: 0.92em;
+  font-weight: 800;
+  line-height: 1;
+  text-align: left;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(7)::after {
+  content: "sign";
+  top: 1.62em;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(10)::after {
+  content: "significand";
+  top: 4.86em;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(19)::after {
+  content: "normalize";
+  top: 2.7em;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(24)::after {
+  content: "exponent";
+  top: 5.94em;
+}
+
+.reveal #e4m3-final-python code > span:nth-child(35)::after {
+  content: "pack";
+  top: 1.62em;
 }

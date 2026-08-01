@@ -267,6 +267,35 @@ patterns.add(
 :::
 ::::
 
+## What must the circuit compute? {#arithmetic-mult-decomposition auto-animate=true auto-animate-id="e4m3-rewrite"}
+
+:::: {.e4m3-rewrite-layout}
+::: {.e4m3-diagram-panel}
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Two E4M3 inputs above an empty multiplier datapath">
+  <img data-id="e4m3-question" src="assets/images/arithmetic/e4m3-rewrite-question.svg" alt="Unknown E4M3 multiplier implementation">
+</div>
+:::
+
+::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+For a normal, finite value, let $E$ be the stored exponent, $B=7$, and $M$ the
+significand:
+
+$$x=(-1)^s\,2^{E-B}\,M,
+\qquad M=(1.\mathtt{mmm})_2$$
+
+Multiplying two values exposes the three datapaths we must build:
+
+$$ab=
+\underbrace{(-1)^{s_a\oplus s_b}}_{\text{sign}}
+\;\underbrace{2^{(E_a-B)+(E_b-B)}}_{\text{exponent}}
+\;\underbrace{(M_aM_b)}_{\text{significand}}$$
+
+The significand product may need normalization; that correction is then added
+to the result exponent.
+:::
+::::
+
 ## Together: route the sign {#arithmetic-sign-path auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
@@ -278,6 +307,8 @@ patterns.add(
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+<div class="e4m3-stage-cue stage-sign">First: compute the sign.</div>
+
 ::: {.e4m3-stage-math .stage-sign}
 $$(-1)^{s_a}(-1)^{s_b}=(-1)^{s_a+s_b}
 \quad\Longrightarrow\quad s_r=s_a\oplus s_b$$
@@ -307,14 +338,16 @@ result.
 ## Together: route the sign {#arithmetic-sign-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
-::: {.e4m3-diagram-panel}
+::: {.e4m3-diagram-panel .e4m3-recap-panel}
+<div class="e4m3-recap-caption">Cumulative schematic</div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
   <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier datapath">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
 </div>
 :::
 
-::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
+::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
+<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -340,21 +373,24 @@ def lower_e4m3_mul(out_cast, rewriter):
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
   <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its sign path completed">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img data-id="e4m3-significand-question" src="assets/images/arithmetic/e4m3-rewrite-significand-question.svg" alt="The significand product is the next datapath to implement">
 </div>
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-A normal E4M3 encoding stores only the fraction `mmm`, but its significand
-(often called mantissa) is `1.mmm₂`. The format omits that leading `1`, so the
-circuit must restore it before multiplying.
+<div class="e4m3-stage-cue stage-significand">Now: multiply the significands.</div>
+
+Normalized scientific notation keeps one non-zero digit before the point. In
+binary that digit can only be `1`, so every normal significand is `1.mmm₂`.
+Because this leading `1` is predictable, E4M3 stores only `mmm`.
 
 ::: {.e4m3-stage-math .stage-significand}
 $$M=1+\frac{(\mathtt{mmm})_2}{2^3}=(1.\mathtt{mmm})_2,
-\qquad P=M_aM_b$$
+\qquad \boxed{P=M_aM_b}$$
 :::
 
-**Your step:** form both 4-bit significands, then build the full-width
-`%product : i8`. `comb.mul` returns the operand width.
+**Your step:** prepend the implicit `1`, form both 4-bit significands, then
+produce the full-width `%product : i8`. `comb.mul` returns the operand width.
 :::
 ::::
 
@@ -370,9 +406,10 @@ $$M=1+\frac{(\mathtt{mmm})_2}{2^3}=(1.\mathtt{mmm})_2,
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-A normal E4M3 encoding stores only the fraction `mmm`, but its significand is
-`1.mmm₂`. The format omits that leading `1`, so the circuit must restore it
-before multiplying.
+<div class="e4m3-stage-cue stage-significand">Now: multiply the significands.</div>
+
+Reconstruct `1.mmm₂`, zero-extend both 4-bit significands to the result width,
+then multiply them as integers.
 
 ::: {.e4m3-stage-math .stage-significand}
 $$M=1+\frac{(\mathtt{mmm})_2}{2^3}=(1.\mathtt{mmm})_2,
@@ -400,7 +437,8 @@ product = comb.MulOp.create(ma8, mb8).result
 ## Exercise 7A: multiply the significands - 6 min {#arithmetic-significand-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
-::: {.e4m3-diagram-panel}
+::: {.e4m3-diagram-panel .e4m3-recap-panel}
+<div class="e4m3-recap-caption">Cumulative schematic</div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
   <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its significand product completed">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
@@ -408,7 +446,8 @@ product = comb.MulOp.create(ma8, mb8).result
 </div>
 :::
 
-::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
+::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
+<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -448,6 +487,8 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+<div class="e4m3-stage-cue stage-normalize">Next: normalize the product.</div>
+
 Each reconstructed significand is in $[1,2)$, so their product is in $[1,4)$.
 Only two leading forms are possible:
 
@@ -532,7 +573,8 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 ## Exercise 7B: build the normalization mux - 7 min {#arithmetic-normalization-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
-::: {.e4m3-diagram-panel}
+::: {.e4m3-diagram-panel .e4m3-recap-panel}
+<div class="e4m3-recap-caption">Cumulative schematic</div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
   <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with normalization completed">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
@@ -541,7 +583,8 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 </div>
 :::
 
-::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
+::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
+<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -586,6 +629,8 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+<div class="e4m3-stage-cue stage-exponent">Then: encode the exponent.</div>
+
 Let $E$ be the stored exponent field and $B=7$ its bias. The exponent used by
 the real value is $e=E-B$.
 
@@ -647,7 +692,8 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 ## Together: adjust the exponent {#arithmetic-exponent-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
-::: {.e4m3-diagram-panel}
+::: {.e4m3-diagram-panel .e4m3-recap-panel}
+<div class="e4m3-recap-caption">Cumulative schematic</div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
   <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier with its exponent path completed">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
@@ -657,7 +703,8 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 </div>
 :::
 
-::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
+::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
+<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -715,6 +762,8 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+<div class="e4m3-stage-cue stage-pack">Finally: pack the result.</div>
+
 The final value has the same `i8` type as the output bitcast being replaced.
 
 ::: {.e4m3-stage-math .stage-pack}
@@ -738,7 +787,8 @@ The floating-point island is dead; the greedy rewrite removes it.
 ## Together: pack and replace {#arithmetic-final-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
-::: {.e4m3-diagram-panel}
+::: {.e4m3-diagram-panel .e4m3-recap-panel}
+<div class="e4m3-recap-caption">Cumulative schematic</div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
   <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
@@ -749,8 +799,9 @@ The floating-point island is dead; the greedy rewrite removes it.
 </div>
 :::
 
-::: {.e4m3-rewrite-copy .e4m3-function-recap data-id="e4m3-copy"}
-```python-circt
+::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
+<div class="e4m3-recap-caption">Cumulative Python lowering</div>
+```{#e4m3-final-python .python-circt}
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
     if matched is None:

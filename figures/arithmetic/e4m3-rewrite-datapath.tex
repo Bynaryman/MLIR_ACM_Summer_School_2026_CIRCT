@@ -156,6 +156,32 @@
   \node[signal=lightneutral] at (1.95,-13.40) {000};
 }
 
+\newcommand{\SignificandQuestionLayer}{%
+  \LayerBounds
+
+  \fill[significandcolor!9] (-2.75,0.35) rectangle (-0.30,-0.35);
+  \draw[significandcolor, line width=1.05pt]
+    (-2.75,0.35) rectangle (-0.30,-0.35);
+  \fill[significandcolor!9] (3.25,0.35) rectangle (5.70,-0.35);
+  \draw[significandcolor, line width=1.05pt]
+    (3.25,0.35) rectangle (5.70,-0.35);
+  \node[field text] at (-1.525,0.00) {mmm};
+  \node[field text] at (4.475,0.00) {mmm};
+
+  \node[draw=significandcolor, fill=significandcolor!8,
+        rounded corners=1pt, line width=1.25pt,
+        minimum width=2.70cm, minimum height=1.45cm,
+        align=center, text=significandcolor]
+    (nextmul) at (4.00,-4.70)
+    {\sffamily\bfseries\Large ?\\[-1pt]
+     \sffamily\small $M_a \times M_b$};
+
+  \draw[wire=significandcolor] (-1.525,-0.35) -- ++(0,-0.80)
+    -| ($(nextmul.north)+(-0.48,0)$);
+  \draw[wire=significandcolor] (4.475,-0.35) -- ++(0,-0.80)
+    -| ($(nextmul.north)+(0.48,0)$);
+}
+
 \newcommand{\SignificandLayer}{%
   \LayerBounds
 
@@ -304,6 +330,8 @@
     \QuestionLayer
   \or
     \SignLayer
+  \or
+    \SignificandQuestionLayer
   \or
     \SignificandLayer
   \or

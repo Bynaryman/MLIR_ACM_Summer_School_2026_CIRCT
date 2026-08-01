@@ -59,6 +59,29 @@
   font-size: 0.68em;
 }
 
+.reveal .e4m3-stage-cue {
+  color: var(--stage-color, #263640);
+  font-size: 0.76em;
+  font-weight: 800;
+  margin: 0 0 0.32em;
+}
+
+.reveal .e4m3-recap-panel {
+  position: relative;
+}
+
+.reveal .e4m3-recap-caption {
+  position: absolute;
+  top: -1.45em;
+  left: 0.1em;
+  z-index: 2;
+  color: #52616b;
+  font-size: 0.48em;
+  font-weight: 750;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .reveal .e4m3-stage-code {
   --stage-color: #be123c;
   --stage-tint: rgb(190 18 60 / 7%);
