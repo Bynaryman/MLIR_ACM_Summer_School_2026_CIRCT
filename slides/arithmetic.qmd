@@ -863,11 +863,277 @@ to expose these missing cases:
 
 The complete reference is `examples/ex7_e4m3fn_mul_reference.sv`.
 
-## If time: specialize a squarer {#arithmetic-square-extension}
+## You chose the circuit {#arithmetic-multiplier-recap}
 
-`examples/optional_e4m3fn_square.mlir` contains `%x * %x`.
+:::: {.columns}
+::: {.column width="44%"}
+<div class="r-stack e4m3-vertical-stack">
+  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
+  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
+  <img src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
+  <img src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
+  <img src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
+  <img src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true">
+</div>
+:::
 
-- Match equal SSA operands.
-- Decode `%x` once.
-- Emit a dedicated significand squarer.
-- Prove equivalence, then compare AIG nodes and depth.
+::: {.column width="56%"}
+::: {.incremental}
+- You recognized one semantic island: `arith.mulf` on `f8E4M3FN`.
+
+- You chose the field extraction, widths, operators, and normalization path.
+
+- You replaced a floating-point contract with explicit `hw` and `comb` IR.
+
+- The resulting circuit reflects **your architecture**, not an opaque
+  floating-point operator.
+:::
+:::
+::::
+
+## Correctness first; cost next {#arithmetic-measure-the-circuit}
+
+Reuse the tools from Exercise 5 at each design checkpoint:
+
+| Question | Tool | Evidence |
+|---|---|---|
+| Does it implement the arithmetic contract? | exhaustive vectors | all E4M3 input pairs |
+| Is a rewrite equivalent? | `circt-lec` | `c1 == c2` |
+| What Boolean structure did it create? | `circt-synth` | AIG nodes and depth |
+
+```bash
+./scripts/test-e4m3-all.py --pass
+./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP_MODULE
+```
+
+AIG statistics are early structural estimates. Technology mapping, placement,
+and routing are still needed for physical area, timing, and energy.
+
+## One operation, many circuits {#arithmetic-hardware-freedom}
+
+`arith.mulf` specifies a numerical operation. It does not prescribe one
+microarchitecture.
+
+::: {.incremental}
+- Use a generic IEEE-style multiplier, or exploit one small format.
+
+- Choose rounding, exception handling, latency, and target technology.
+
+- Trade a multiplier for a lookup table when the domain is tiny.
+
+- Recognize stronger intent: a square, a constant product, or a fused graph.
+:::
+
+This **hardware freedom** is the design space studied in computer-arithmetic
+books, papers, and venues such as the
+[IEEE Symposium on Computer Arithmetic](https://www.arithsymposium.org/)
+[@dinechin2024asa, ch. 14-15].
+
+## Quiz: should `%x * %x` cost the same? {#arithmetic-square-quiz}
+
+:::: {.columns}
+::: {.column width="48%"}
+**Generic product**
+
+```mlir
+%p = arith.mulf %a, %b : f8E4M3FN
+```
+:::
+
+::: {.column width="48%"}
+**Square**
+
+```mlir
+%p = arith.mulf %x, %x : f8E4M3FN
+```
+:::
+::::
+
+::: {.callout-note appearance="simple" icon=false}
+## What becomes simpler when both SSA operands are identical?
+:::
+
+::: {.incremental}
+1. $s_x \oplus s_x = 0$: the normal finite result is positive.
+2. $E_x + E_x = 2E_x$: one exponent is decoded and doubled.
+3. The significand partial-product matrix is symmetric.
+:::
+
+## The product matrix contains repeated work {#arithmetic-square-matrix}
+
+![](assets/images/arithmetic/square-partial-products.svg){fig-alt="Comparison of the sixteen partial products in a generic four-bit multiplier with the six unique cross products and four diagonal wires in a four-bit squarer" width="88%" fig-align="center"}
+
+For a square, the lower triangle duplicates the upper triangle and the
+diagonal does not require an AND gate [@dinechin2024asa, sec. 14.2].
+
+## Why the significand squarer is cheaper {#arithmetic-square-derivation}
+
+:::: {.columns}
+::: {.column width="46%"}
+For $X=\sum_i 2^i x_i$:
+
+$$
+X^2 = \sum_i 2^{2i}x_i
+    + \sum_{j<i} 2^{i+j+1}x_ix_j
+$$
+:::
+
+::: {.column width="54%"}
+::: {.incremental}
+- **Diagonal:** $x_i x_i=x_i$, so it is a wire.
+- **Mirror:** $x_ix_j=x_jx_i$, so compute the pair once and shift its weight.
+- **Four bits:** 16 generic partial products become 6 ANDs and 4 wires.
+:::
+:::
+::::
+
+The bit complexity is roughly halved before compression and rounding. The
+floating-point normalization and exceptional-value policy remain.
+
+## Exercise 8: specialize the E4M3 squarer - 12 min {#arithmetic-square-exercise}
+
+:::: {.columns}
+::: {.column width="48%"}
+```bash
+cat examples/ex8_e4m3fn_square.mlir
+```
+
+```mlir
+module {
+  func.func @e4m3fn_square(
+      %x : f8E4M3FN) -> f8E4M3FN {
+    %r = arith.mulf %x, %x : f8E4M3FN
+    return %r : f8E4M3FN
+  }
+}
+```
+:::
+
+::: {.column width="52%"}
+Extend the callback from Exercise 7:
+
+::: {.incremental}
+1. Match equal SSA operands and decode `%x` only once.
+2. Replace the normal finite sign path with constant zero.
+3. Compute $E_r=2E_x-7+n$.
+4. Replace the $4 \times 4$ significand multiplier with a dedicated squarer.
+5. Reuse the same normalization, packing, and exceptional-value policy.
+:::
+:::
+::::
+
+## Exercise 8: reveal the specialization {#arithmetic-square-solution}
+
+:::: {.columns}
+::: {.column width="50%"}
+**Match the stronger pattern**
+
+```python-circt
+lhs, rhs = matched
+if lhs != rhs:
+    return True
+
+x = lhs
+sign = hw.ConstantOp.create(i1, 0).result
+```
+
+The generic `arith.mulf` pattern remains the fallback when the operands differ.
+:::
+
+::: {.column width="50%"}
+**Specialize the arithmetic**
+
+```python-circt
+ex = comb.ExtractOp.create(3, i4, x).result
+ex5 = comb.ConcatOp.create(zero1, ex).result
+one5 = hw.ConstantOp.create(i5, 1).result
+doubled = comb.ShlOp.create(ex5, one5).result
+base = comb.SubOp.create(doubled, bias).result
+adjusted = comb.AddOp.create(base, norm5).result
+
+product = build_square4(ma4)
+```
+
+`build_square4` emits the six unique cross products and routes the four
+diagonal bits directly.
+:::
+::::
+
+## Exercise 8: build the 4-bit squarer {#arithmetic-square-builder}
+
+:::: {.columns}
+::: {.column width="39%"}
+For each input bit $x_i$:
+
+- route $x_i$ directly to bit position $2i$;
+- compute $x_i x_j$ once for every $j<i$;
+- place that cross product at bit position $i+j+1$.
+
+The loop describes the bit heap. Constant shifts become wiring, and the
+generic `comb.add` network can be compressed by synthesis.
+:::
+
+::: {.column width="61%"}
+```python-circt
+def build_square4(x):
+    bits = [
+        comb.ExtractOp.create(i, i1, x).result
+        for i in range(4)
+    ]
+    zero7 = hw.ConstantOp.create(i7, 0).result
+
+    def at_weight(bit, weight):
+        wide = comb.ConcatOp.create(zero7, bit).result
+        shift = hw.ConstantOp.create(i8, weight).result
+        return comb.ShlOp.create(wide, shift).result
+
+    terms = [at_weight(bits[i], 2 * i) for i in range(4)]
+    for i in range(4):
+        for j in range(i):
+            cross = comb.AndOp.create(bits[i], bits[j]).result
+            terms.append(at_weight(cross, i + j + 1))
+
+    return comb.AddOp.create(*terms).result
+```
+:::
+::::
+
+## Exercise 8: prove, then measure {#arithmetic-square-measure}
+
+Save the generic lowering before adding the specialization:
+
+```bash
+circt-tutorial-opt examples/ex8_e4m3fn_square.mlir \
+  --lower-e4m3fn-to-comb --tutorial-func-to-hw \
+  -o build/ex8_square_generic.mlir
+```
+
+Rebuild, generate `build/ex8_square_specialized.mlir`, then compare:
+
+```bash
+./scripts/compare-aig.py \
+  build/ex8_square_generic.mlir \
+  build/ex8_square_specialized.mlir \
+  e4m3fn_square
+```
+
+`circt-lec` protects behavior; AIG nodes and depth reveal whether the structural
+specialization survived logic synthesis. **Measure instead of assuming.**
+
+## Match more intent; build better datapaths {#arithmetic-specialization-opening}
+
+The same rewrite strategy extends beyond one squarer:
+
+| Recognized arithmetic | Possible datapath |
+|---|---|
+| `%x * %x` | dedicated squarer |
+| `%x * C` | constant multiplier or shift-add network |
+| `%a * %b + %c` | fused multiply-add with one final rounding |
+| $\sum_i x_i^2$ | fused sum-of-squares datapath |
+| dot product or polynomial | target-sized fused operator |
+
+::: {.fragment}
+MLIR preserves enough intent to recognize the pattern; CIRCT lets the pass
+materialize the chosen circuit. This is the bridge to higher-level hardware
+generation.
+:::

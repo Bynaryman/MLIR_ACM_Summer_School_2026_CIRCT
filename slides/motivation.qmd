@@ -86,8 +86,7 @@ floating-point formats**.
 - **FloPoCo:** generate arithmetic operators for a target, a frequency, and a
   numerical contract.
 
-- **Hands-on:** build an E4M3 multiplier; if time permits, specialize it into a
-  squarer.
+- **Hands-on:** build an E4M3 multiplier, then specialize it into a squarer.
 :::
 :::
 ::::

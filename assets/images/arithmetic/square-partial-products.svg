@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" role="img" aria-labelledby="title desc">
+  <title id="title">Four-bit multiplier and squarer partial products</title>
+  <desc id="desc">A generic multiplier computes sixteen partial products. A squarer keeps four diagonal input bits as wires, computes six unique cross products, and removes the six mirrored duplicates.</desc>
+  <style>
+    text { font-family: Inter, Arial, sans-serif; fill: #17212b; }
+    .heading { font-size: 27px; font-weight: 700; }
+    .axis { font-size: 19px; font-weight: 650; fill: #52616b; }
+    .cell-text { font-size: 18px; font-weight: 650; }
+    .summary { font-size: 22px; font-weight: 700; }
+    .note { font-size: 17px; fill: #52616b; }
+    .generic { fill: #eef2f5; stroke: #9eabb5; stroke-width: 2; }
+    .diagonal { fill: #f1e9ff; stroke: #7c3aed; stroke-width: 2.5; }
+    .cross { fill: #e5f5f2; stroke: #0f766e; stroke-width: 2.5; }
+    .removed { fill: #fff; stroke: #aab5bd; stroke-width: 2; stroke-dasharray: 7 6; }
+  </style>
+
+  <text class="heading" x="292" y="38" text-anchor="middle">Generic 4 &#215; 4 product</text>
+  <text class="heading" x="898" y="38" text-anchor="middle">Dedicated 4-bit square</text>
+  <line x1="600" y1="18" x2="600" y2="445" stroke="#d5dde3" stroke-width="2"/>
+
+  <g aria-label="Generic multiplier matrix">
+    <text class="axis" x="184" y="82" text-anchor="middle">a3</text>
+    <text class="axis" x="266" y="82" text-anchor="middle">a2</text>
+    <text class="axis" x="348" y="82" text-anchor="middle">a1</text>
+    <text class="axis" x="430" y="82" text-anchor="middle">a0</text>
+    <text class="axis" x="102" y="129" text-anchor="end">b3</text>
+    <text class="axis" x="102" y="195" text-anchor="end">b2</text>
+    <text class="axis" x="102" y="261" text-anchor="end">b1</text>
+    <text class="axis" x="102" y="327" text-anchor="end">b0</text>
+
+    <g class="generic">
+      <rect x="143" y="96" width="78" height="58" rx="3"/><rect x="225" y="96" width="78" height="58" rx="3"/><rect x="307" y="96" width="78" height="58" rx="3"/><rect x="389" y="96" width="78" height="58" rx="3"/>
+      <rect x="143" y="162" width="78" height="58" rx="3"/><rect x="225" y="162" width="78" height="58" rx="3"/><rect x="307" y="162" width="78" height="58" rx="3"/><rect x="389" y="162" width="78" height="58" rx="3"/>
+      <rect x="143" y="228" width="78" height="58" rx="3"/><rect x="225" y="228" width="78" height="58" rx="3"/><rect x="307" y="228" width="78" height="58" rx="3"/><rect x="389" y="228" width="78" height="58" rx="3"/>
+      <rect x="143" y="294" width="78" height="58" rx="3"/><rect x="225" y="294" width="78" height="58" rx="3"/><rect x="307" y="294" width="78" height="58" rx="3"/><rect x="389" y="294" width="78" height="58" rx="3"/>
+    </g>
+    <g class="cell-text" text-anchor="middle">
+      <text x="182" y="132">a3b3</text><text x="264" y="132">a2b3</text><text x="346" y="132">a1b3</text><text x="428" y="132">a0b3</text>
+      <text x="182" y="198">a3b2</text><text x="264" y="198">a2b2</text><text x="346" y="198">a1b2</text><text x="428" y="198">a0b2</text>
+      <text x="182" y="264">a3b1</text><text x="264" y="264">a2b1</text><text x="346" y="264">a1b1</text><text x="428" y="264">a0b1</text>
+      <text x="182" y="330">a3b0</text><text x="264" y="330">a2b0</text><text x="346" y="330">a1b0</text><text x="428" y="330">a0b0</text>
+    </g>
+    <text class="summary" x="305" y="397" text-anchor="middle">16 AND partial products</text>
+  </g>
+
+  <g aria-label="Specialized squarer matrix">
+    <text class="axis" x="790" y="82" text-anchor="middle">x3</text>
+    <text class="axis" x="872" y="82" text-anchor="middle">x2</text>
+    <text class="axis" x="954" y="82" text-anchor="middle">x1</text>
+    <text class="axis" x="1036" y="82" text-anchor="middle">x0</text>
+    <text class="axis" x="708" y="129" text-anchor="end">x3</text>
+    <text class="axis" x="708" y="195" text-anchor="end">x2</text>
+    <text class="axis" x="708" y="261" text-anchor="end">x1</text>
+    <text class="axis" x="708" y="327" text-anchor="end">x0</text>
+
+    <rect class="diagonal" x="749" y="96" width="78" height="58" rx="3"/>
+    <rect class="cross" x="831" y="96" width="78" height="58" rx="3"/>
+    <rect class="cross" x="913" y="96" width="78" height="58" rx="3"/>
+    <rect class="cross" x="995" y="96" width="78" height="58" rx="3"/>
+    <rect class="removed" x="749" y="162" width="78" height="58" rx="3"/>
+    <rect class="diagonal" x="831" y="162" width="78" height="58" rx="3"/>
+    <rect class="cross" x="913" y="162" width="78" height="58" rx="3"/>
+    <rect class="cross" x="995" y="162" width="78" height="58" rx="3"/>
+    <rect class="removed" x="749" y="228" width="78" height="58" rx="3"/>
+    <rect class="removed" x="831" y="228" width="78" height="58" rx="3"/>
+    <rect class="diagonal" x="913" y="228" width="78" height="58" rx="3"/>
+    <rect class="cross" x="995" y="228" width="78" height="58" rx="3"/>
+    <rect class="removed" x="749" y="294" width="78" height="58" rx="3"/>
+    <rect class="removed" x="831" y="294" width="78" height="58" rx="3"/>
+    <rect class="removed" x="913" y="294" width="78" height="58" rx="3"/>
+    <rect class="diagonal" x="995" y="294" width="78" height="58" rx="3"/>
+
+    <g class="cell-text" text-anchor="middle">
+      <text x="788" y="132">x3</text><text x="870" y="132">x3x2</text><text x="952" y="132">x3x1</text><text x="1034" y="132">x3x0</text>
+      <text class="note" x="788" y="198">reused</text><text x="870" y="198">x2</text><text x="952" y="198">x2x1</text><text x="1034" y="198">x2x0</text>
+      <text class="note" x="788" y="264">reused</text><text class="note" x="870" y="264">reused</text><text x="952" y="264">x1</text><text x="1034" y="264">x1x0</text>
+      <text class="note" x="788" y="330">reused</text><text class="note" x="870" y="330">reused</text><text class="note" x="952" y="330">reused</text><text x="1034" y="330">x0</text>
+    </g>
+    <text class="summary" x="911" y="397" text-anchor="middle">6 ANDs + 4 wires</text>
+    <text class="note" x="911" y="429" text-anchor="middle">Each cross product moves one weight to the left.</text>
+  </g>
+</svg>

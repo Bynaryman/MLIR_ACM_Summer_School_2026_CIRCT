@@ -38,11 +38,11 @@ tutorial/
 |   |-- ex6_arith_mulf.mlir          # Same pipeline, unsupported float op
 |   |-- ex7_e4m3fn_mul.mlir          # Exercise 7 arith.mulf input
 |   |-- ex7_e4m3fn_mul_reference.sv  # Complete E4M3 reference RTL
-|   `-- optional_e4m3fn_square.mlir   # Optional squarer input
+|   `-- ex8_e4m3fn_square.mlir        # Exercise 8 squarer input
 |-- include/Tutorial/Passes.h       # Course pass registration
 |-- lib/
 |   |-- FuncToHWModule.cpp          # Function boundary to HW module pass
-|   |-- LowerE4M3FNToComb.cpp       # Exercise 7 starter pass
+|   |-- LowerE4M3FNToComb.cpp       # Exercises 7-8 lowering pass
 |   `-- Passes.cpp                  # Register both passes
 |-- tools/circt-tutorial-opt/       # Out-of-tree optimizer driver
 |-- scripts/
@@ -309,8 +309,16 @@ boundary; it does not reinterpret numerical types as integers.
 
 `examples/ex7_e4m3fn_mul_reference.sv` is the complete hardware reference.
 
-## Optional: specialize the squarer
+## Exercise 8: specialize the squarer
 
-`examples/optional_e4m3fn_square.mlir` uses the same SSA value twice. Match
+`examples/ex8_e4m3fn_square.mlir` uses the same SSA value twice. Match
 that case, decode the input once, emit a dedicated significand squarer, then
-compare equivalence and AIG statistics.
+compare equivalence and AIG statistics. Save the generic lowering before
+adding the specialization, regenerate it after the change, and reuse
+`scripts/compare-aig.py` to prove equivalence and report AIG nodes and depth.
+
+```bash
+circt-tutorial-opt examples/ex8_e4m3fn_square.mlir \
+  --lower-e4m3fn-to-comb --tutorial-func-to-hw \
+  -o build/ex8_square_specialized.mlir
+```
