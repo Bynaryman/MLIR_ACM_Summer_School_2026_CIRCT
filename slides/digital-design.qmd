@@ -48,12 +48,13 @@ endmodule
 ```
 
 ::: {.fragment}
-Both describe a **4-bit × 4-bit combinational multiplier**.
+Both describe the same **4-bit × 4-bit combinational behavior**. Synthesis
+chooses its concrete implementation.
 :::
 :::
 ::::
 
-## Combinational logic is concurrent {#dd-combinational}
+## Combinational logic has no state {#dd-combinational}
 
 Extend the multiplier into the FMA used by the first exercise:
 
@@ -72,18 +73,18 @@ assign d =
 
 ::: {.column width="45%"}
 ::: {.incremental}
-- Outputs depend on the **current inputs**.
+- The hardware contains a multiplier feeding an adder.
 
-- The multiplier and adder both exist.
+- Gates respond concurrently; the dependency creates a propagation path.
 
-- Source order is not execution order.
+- Nothing is "executed" in source order.
 
-- Width and signedness size the circuit and define its arithmetic.
+- There is no clock or stored value. Width and signedness define the arithmetic.
 :::
 :::
 ::::
 
-## Registers add time {#dd-registers}
+## Registers introduce state and clock cycles {#dd-registers}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -102,13 +103,13 @@ assign d = {1'b0, product_q} + c_q;
 
 ::: {.column width="44%"}
 ::: {.incremental}
-- A clock edge samples the inputs of a register.
+- A register samples its input on a clock edge.
 
-- Registers store state across cycles.
+- Its output holds the sampled value until the next active edge.
 
-- A register boundary separates multiplier and adder.
+- Combinational logic still propagates concurrently **between** registers.
 
-- Latency increases; throughput may remain one result per cycle.
+- This register layer adds a cycle; throughput is a separate design choice.
 :::
 :::
 ::::
@@ -141,12 +142,13 @@ endmodule
 
 - Ports connect signals across that boundary.
 
-- Hierarchy organizes hardware; it does not impose an execution order.
+- Combinational and sequential logic may coexist inside it; the boundary itself
+  adds no clock cycle.
 :::
 :::
 ::::
 
-## FPGA: a circuit you configure {#dd-fpga-analogy}
+## An FPGA is a configurable circuit {#dd-fpga-analogy}
 
 :::: {.columns}
 ::: {.column width="60%"}
@@ -158,38 +160,65 @@ endmodule
 machine.
 
 ::: {.incremental}
-- Reconfigurable cells
+- A grid of configurable logic cells
 
-- Programmable interconnect
+- A programmable interconnection network
 
-- Manufactured first, specialized later
+- Combinational paths **and** clocked state
+
+- Manufactured once, configured for many circuits
 :::
 :::
 ::::
 
-## Configuration maps the circuit onto fabric {#dd-fpga-configuration}
+## A bitstream configures structure {#dd-fpga-configuration}
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="55%"}
 ![Left: a configurable logic cell containing a LUT and register. Right: one configured path through an FPGA. Adapted from [@popoff2026frugality].](assets/images/digital-design/fpga-lut-configured.svg){fig-align="center" fig-alt="A lookup-table cell with a one-bit register beside an FPGA fabric whose selected cells and routes are highlighted" width="100%"}
 :::
 
-::: {.column width="40%"}
-::: {.incremental}
-- A **LUT** stores a truth table.
+::: {.column width="45%"}
+**Configuration**
 
-- A **flip-flop** stores one bit of state.
+- Place and route the circuit.
+- Set LUT tables, registers, and routing switches. A 4-input LUT needs
+  $2^4=16$ bits.
 
-- A **bitstream** selects functions and routes.
+::: {.fragment}
+**Execution**
 
-- The `fma4` hierarchy becomes one configured circuit.
+- Connections stay fixed.
+- Signals propagate; registers sample on clock edges.
+:::
+
+::: {.fragment}
+**Bitstream:** circuit configuration, **not a CPU instruction stream**.
 :::
 :::
 ::::
 
-## ASIC: logic becomes geometry {#dd-asic-cells}
+## A modern FPGA is more than LUTs {#dd-fpga-resources}
 
-After synthesis, even one Boolean operation has a physical implementation:
+| FPGA resource | Hardware role |
+|---|---|
+| LUT + register | Boolean logic and one bit of state |
+| programmable routing | wires between resources |
+| DSP block | hard multiplier or multiply-accumulate |
+| block RAM | on-chip storage |
+| I/O blocks | off-chip communication |
+| CPU system on some devices | software, external memory, and peripherals |
+
+::: {.fragment}
+The same multiplier may become LUT logic or a hard DSP block. Mapping is a
+target decision; the arithmetic semantics remain the same
+[@popoff2026frugality].
+:::
+
+## An ASIC fixes the circuit in silicon {#dd-asic-cells}
+
+An FPGA is configured after fabrication. An ASIC fixes one circuit during
+fabrication. Even an OR gate becomes geometry:
 
 :::: {.columns}
 ::: {.column width="31%"}
@@ -243,7 +272,7 @@ assign y = a | b;
 :::
 
 ::: {.column width="37%"}
-The same module-and-instance idea scales from `mul4` to a processor.
+At chip scale, hierarchy is no longer only a name in the RTL.
 
 ::: {.incremental}
 - Instances repeat hardware.
@@ -261,10 +290,10 @@ The same module-and-instance idea scales from `mul4` to a processor.
 
 | Digital-design concept | Question made explicit |
 |---|---|
-| combinational operator, width, signedness | what numerical circuit is required? |
-| register and clock | when does a value become available? |
+| combinational dataflow, width, signedness | what exists between state elements? |
+| register and clock | what is stored, and at which cycle boundary? |
 | module, instance, port | what hardware exists, and how is it connected? |
-| FSM, mux, enable | what happens next? |
+| FSM, mux, enable | how is the next state selected? |
 | memory, stream, protocol | where does data live, and how does it move? |
 | cell, wire, floorplan | where and in which technology will it exist? |
 
