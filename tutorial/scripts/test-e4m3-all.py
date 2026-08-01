@@ -17,7 +17,37 @@ def run(command, **kwargs):
     return subprocess.run(command, cwd=ROOT, check=True, **kwargs)
 
 
-def generate_reference_vectors():
+def is_exact_normal_case(lhs, rhs, expected):
+    lhs_exponent = (lhs >> 3) & 0xF
+    rhs_exponent = (rhs >> 3) & 0xF
+    lhs_fraction = lhs & 0x7
+    rhs_fraction = rhs & 0x7
+    expected_exponent = (expected >> 3) & 0xF
+    expected_fraction = expected & 0x7
+
+    if lhs_exponent == 0 or rhs_exponent == 0:
+        return False
+    if (lhs_exponent == 0xF and lhs_fraction == 0x7) or (
+        rhs_exponent == 0xF and rhs_fraction == 0x7
+    ):
+        return False
+    if expected_exponent == 0:
+        return False
+    if expected_exponent == 0xF and expected_fraction == 0x7:
+        return False
+
+    product = (8 + lhs_fraction) * (8 + rhs_fraction)
+    unrounded_exponent = (
+        lhs_exponent + rhs_exponent - 7 + (1 if product >= 128 else 0)
+    )
+    if not 1 <= unrounded_exponent <= 0xF:
+        return False
+
+    discarded_width = 4 if product >= 128 else 3
+    return product & ((1 << discarded_width) - 1) == 0
+
+
+def generate_reference_vectors(normal_path=False):
     lhs = bytes(value for value in range(256) for _ in range(256))
     rhs = bytes(range(256)) * 256
     reference_ir = f"""module {{
@@ -60,25 +90,40 @@ def generate_reference_vectors():
             raise RuntimeError("unexpected byte order in MLIR reference vector")
 
     vectors = WORK / "vectors.hex"
+    selected = 0
     with vectors.open("w") as output:
         for index, expected_value in enumerate(expected):
             lhs_value, rhs_value = divmod(index, 256)
+            if normal_path and not is_exact_normal_case(
+                lhs_value, rhs_value, expected_value
+            ):
+                continue
             output.write(f"{lhs_value:02x} {rhs_value:02x} {expected_value:02x}\n")
-    return vectors
+            selected += 1
+    return vectors, selected
 
 
-def build_pass_verilog():
+def build_pass_verilog(lowerer):
     optimizer = ROOT / "build" / "bin" / "circt-tutorial-opt"
     if not optimizer.exists():
         raise RuntimeError("run ./scripts/build.sh before testing the pass")
 
+    lowered_function = WORK / "ex7_e4m3fn_mul_function.mlir"
     lowered = WORK / "ex7_e4m3fn_mul_lowered.mlir"
     verilog = WORK / "ex7_e4m3fn_mul_from_pass.sv"
     run(
         [
-            optimizer,
+            sys.executable,
+            lowerer,
             "examples/ex7_e4m3fn_mul.mlir",
-            "--lower-e4m3fn-to-comb",
+            "-o",
+            lowered_function,
+        ]
+    )
+    run(
+        [
+            optimizer,
+            lowered_function,
             "--tutorial-func-to-hw",
             "--canonicalize",
             "-o",
@@ -99,12 +144,23 @@ def main():
         action="store_true",
         help="test the custom lowering pass instead of the provided RTL",
     )
+    parser.add_argument(
+        "--normal-path",
+        action="store_true",
+        help="check exact normal finite products covered by Exercise 7",
+    )
+    parser.add_argument(
+        "--lowerer",
+        type=Path,
+        default=Path("scripts/lower-e4m3fn.py"),
+        help="Python lowering script to test with --pass",
+    )
     args = parser.parse_args()
 
     WORK.mkdir(parents=True, exist_ok=True)
-    vectors = generate_reference_vectors()
+    vectors, vector_count = generate_reference_vectors(args.normal_path)
     verilog = (
-        build_pass_verilog()
+        build_pass_verilog(args.lowerer)
         if args.test_pass
         else ROOT / "examples" / "ex7_e4m3fn_mul_reference.sv"
     )
@@ -125,9 +181,11 @@ def main():
         text=True,
     )
 
-    print(f"Testing all {PAIR_COUNT:,} input pairs", flush=True)
+    print(f"Testing {vector_count:,} input pairs", flush=True)
     completed = subprocess.run(
-        ["vvp", simulator, f"+VECTORS={vectors}"], cwd=ROOT, check=False
+        ["vvp", simulator, f"+VECTORS={vectors}", f"+COUNT={vector_count}"],
+        cwd=ROOT,
+        check=False,
     )
     return completed.returncode
 

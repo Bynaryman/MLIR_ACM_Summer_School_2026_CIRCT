@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nano \
     ninja-build \
     python3 \
+    python3-venv \
     ripgrep \
     vim \
     wget \
@@ -36,7 +37,15 @@ RUN mkdir -p /opt && \
     mv "/opt/firtool-${CIRCT_VERSION}" /opt/circt && \
     rm /tmp/circt.tar.gz
 
-ENV PATH="/opt/circt/bin:/workspace/build/bin:${PATH}"
+COPY requirements.txt /tmp/tutorial-requirements.txt
+
+RUN python3 -m venv /opt/mlir-python && \
+    /opt/mlir-python/bin/pip install --no-cache-dir \
+      -r /tmp/tutorial-requirements.txt && \
+    rm /tmp/tutorial-requirements.txt
+
+ENV VIRTUAL_ENV="/opt/mlir-python"
+ENV PATH="/opt/mlir-python/bin:/opt/circt/bin:/workspace/build/bin:${PATH}"
 ENV CMAKE_PREFIX_PATH="/opt/circt"
 ENV LD_LIBRARY_PATH="/opt/circt/lib"
 ENV CC=clang

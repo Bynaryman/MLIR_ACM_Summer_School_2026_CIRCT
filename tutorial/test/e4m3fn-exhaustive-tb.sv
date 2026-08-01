@@ -11,6 +11,7 @@ module e4m3fn_exhaustive_tb;
   integer rhs_value;
   integer expected_value;
   integer checked;
+  integer expected_count;
   integer errors;
   reg [1023:0] vector_path;
 
@@ -19,6 +20,8 @@ module e4m3fn_exhaustive_tb;
   initial begin
     if (!$value$plusargs("VECTORS=%s", vector_path))
       $fatal(1, "missing +VECTORS=<path>");
+    if (!$value$plusargs("COUNT=%d", expected_count))
+      expected_count = 65536;
 
     vector_file = $fopen(vector_path, "r");
     if (vector_file == 0)
@@ -47,8 +50,8 @@ module e4m3fn_exhaustive_tb;
     end
     $fclose(vector_file);
 
-    if (checked != 65536)
-      $fatal(1, "read %0d vectors instead of 65536", checked);
+    if (checked != expected_count)
+      $fatal(1, "read %0d vectors instead of %0d", checked, expected_count);
     if (errors != 0)
       $fatal(1, "%0d of %0d E4M3 products differ", errors, checked);
 
