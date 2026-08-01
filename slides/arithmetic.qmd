@@ -310,10 +310,12 @@ result.
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-For normal operands, materialize the hidden `1`, then preserve the full
-four-by-four-bit product. `comb.mul` returns the operand width.
+A normal E4M3 encoding stores only the fraction `mmm`, but its significand
+(often called mantissa) is `1.mmm₂`. The format omits that leading `1`, so the
+circuit must restore it before multiplying.
 
-**Your step:** construct `%raw : i8` from the two stored fractions.
+**Your step:** form both 4-bit significands, then build the full-width
+`%product : i8`. `comb.mul` returns the operand width.
 :::
 ::::
 
@@ -329,8 +331,9 @@ four-by-four-bit product. `comb.mul` returns the operand width.
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-For normal operands, materialize the hidden `1`, then preserve the full
-four-by-four-bit product. `comb.mul` returns the operand width.
+A normal E4M3 encoding stores only the fraction `mmm`, but its significand is
+`1.mmm₂`. The format omits that leading `1`, so the circuit must restore it
+before multiplying.
 
 ::: {.e4m3-stage-code .stage-significand}
 **Solution**
@@ -345,7 +348,7 @@ mb4 = comb.ConcatOp.create(one, fb).result
 zero4 = hw.ConstantOp.create(i4, 0).result
 ma8 = comb.ConcatOp.create(zero4, ma4).result
 mb8 = comb.ConcatOp.create(zero4, mb4).result
-raw = comb.MulOp.create(ma8, mb8).result
+product = comb.MulOp.create(ma8, mb8).result
 ```
 :::
 :::
@@ -363,19 +366,23 @@ raw = comb.MulOp.create(ma8, mb8).result
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-Normal significands are in $[1,2)$, so their product is in $[1,4)$.
+Each reconstructed significand is in $[1,2)$, so their product is in $[1,4)$.
+Only two leading forms are possible:
 
 ::: {.e4m3-normal-table}
-| `%raw[7]` | Keep | Exponent |
-|---:|---|---:|
-| `0` | `%raw[6:3]` | `+ 0` |
-| `1` | `%raw[7:4]` | `+ 1` |
+| Product form | Test | Keep | Exponent |
+|---|---:|---|---:|
+| `1.xxxxxx₂` | `%product[7] = 0` | `%product[6:3]` | `+ 0` |
+| `10.xxxxx₂` | `%product[7] = 1` | `%product[7:4]` | `+ 1` |
 :::
 
-`1.100₂ × 1.100₂ = 10.010000₂`
+The `10.x…₂` case has two bits before the binary point; normalized form allows
+only `1.x…₂`:
 
-For `0x3C × 0x3C`, `%raw[7] = 1`: shift once and increment the exponent to
-obtain `0x41` ($2.25$).
+$$1.100_2 \times 1.100_2 = 10.010000_2 = 1.001000_2 \times 2^1$$
+
+The shift restores `1.x…₂`; incrementing the exponent preserves the value.
+Thus `0x3C × 0x3C` produces `0x41` ($2.25$).
 :::
 ::::
 
@@ -391,8 +398,8 @@ obtain `0x41` ($2.25$).
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-Use `%raw[7]` both as data and as control: it selects the normalized window and
-later increments the exponent.
+`%product[7]` distinguishes `1.x…` from `10.x…`. Use it to select the normalized
+window, then retain it as the exponent correction.
 
 **Your step:** produce `%frac : i3` and retain `%norm : i1` for the exponent.
 :::
@@ -411,16 +418,16 @@ later increments the exponent.
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-Use `%raw[7]` both as data and as control: it selects the normalized window and
-later increments the exponent.
+`%product[7]` distinguishes `1.x…` from `10.x…`. Use it to select the normalized
+window, then retain it as the exponent correction.
 
 ::: {.e4m3-stage-code .stage-normalize}
 **Solution**
 
 ```python
-norm = comb.ExtractOp.create(7, i1, raw).result
-direct = comb.ExtractOp.create(3, i4, raw).result
-shifted = comb.ExtractOp.create(4, i4, raw).result
+norm = comb.ExtractOp.create(7, i1, product).result
+direct = comb.ExtractOp.create(3, i4, product).result
+shifted = comb.ExtractOp.create(4, i4, product).result
 mant = comb.MuxOp.create(norm, shifted, direct).result
 frac = comb.ExtractOp.create(0, i3, mant).result
 ```

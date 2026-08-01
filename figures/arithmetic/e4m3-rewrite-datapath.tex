@@ -173,16 +173,16 @@
   \node[block=significandcolor, minimum width=1.65cm] (fb) at (5.15,-2.70)
     {\textbf{extract}\\\ttfamily\small \%fb = [2:0]};
   \node[block=significandcolor, minimum width=1.65cm] (ma4) at (2.85,-3.95)
-    {\textbf{prepend 1}\\\ttfamily\small \%ma4};
+    {\textbf{form 1.mmm}\\\ttfamily\small \%ma4};
   \node[block=significandcolor, minimum width=1.65cm] (mb4) at (5.15,-3.95)
-    {\textbf{prepend 1}\\\ttfamily\small \%mb4};
+    {\textbf{form 1.mmm}\\\ttfamily\small \%mb4};
   \node[block=significandcolor, minimum width=1.65cm] (ma8) at (2.85,-5.20)
     {\textbf{zero-extend}\\\ttfamily\small \%ma8 : i8};
   \node[block=significandcolor, minimum width=1.65cm] (mb8) at (5.15,-5.20)
     {\textbf{zero-extend}\\\ttfamily\small \%mb8 : i8};
   \node[block=significandcolor, minimum width=2.35cm, minimum height=1.08cm]
     (mul) at (4.00,-6.60)
-    {\textbf{comb.mul}\\\ttfamily\small \%raw : i8};
+    {\textbf{comb.mul}\\\ttfamily\small \%product : i8};
 
   \draw[wire=significandcolor] (-1.525,-0.35) -- ++(0,-0.58) -| (fa.north);
   \draw[wire=significandcolor] (4.475,-0.35) -- ++(0,-0.58) -| (fb.north);
