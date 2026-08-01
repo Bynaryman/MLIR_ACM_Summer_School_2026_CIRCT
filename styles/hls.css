@@ -1089,6 +1089,44 @@
 .reveal .python-hdl { top: 58.8%; height: 14.5%; }
 .reveal .python-passes { top: 72.8%; height: 25.5%; }
 
+/* Tie each box to the syntax-highlighted source lines, not slide percentages. */
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(5) { anchor-name: --cpp-global-first; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(6) { anchor-name: --cpp-global-width; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(7) { anchor-name: --cpp-global-last; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(10) { anchor-name: --cpp-build-first; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(14) { anchor-name: --cpp-build-last, --cpp-build-width; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(16) { anchor-name: --cpp-hdl-first; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(18) { anchor-name: --cpp-hdl-last, --cpp-hdl-width; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(20) { anchor-name: --cpp-passes-first; }
+.reveal #hls-harico-cpp .api-code code.sourceCode > span:nth-child(25) { anchor-name: --cpp-passes-last, --cpp-passes-width; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(1) { anchor-name: --python-import-first, --python-import-last, --python-import-width; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(7) { anchor-name: --python-build-first, --python-build-width; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(15) { anchor-name: --python-build-last; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(17) { anchor-name: --python-hdl-first; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(19) { anchor-name: --python-hdl-last, --python-hdl-width; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(21) { anchor-name: --python-passes-first; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(22) { anchor-name: --python-passes-width; }
+.reveal #hls-harico-python .api-code code.sourceCode > span:nth-child(27) { anchor-name: --python-passes-last; }
+
+@supports (top: anchor(--source-line top)) and (width: anchor-size(--source-line width)) {
+  .reveal .eurollvm-api-annotation {
+    top: calc(anchor(var(--api-first) top) - 0.2em);
+    bottom: calc(anchor(var(--api-last) bottom) - 0.2em);
+    left: calc(anchor(var(--api-first) left) + var(--api-left-adjust, -0.4em));
+    width: calc(anchor-size(var(--api-width) width) + var(--api-width-adjust, 0.8em));
+    height: auto;
+  }
+
+  .reveal .cpp-global { --api-first: --cpp-global-first; --api-last: --cpp-global-last; --api-width: --cpp-global-width; }
+  .reveal .cpp-build { --api-first: --cpp-build-first; --api-last: --cpp-build-last; --api-width: --cpp-build-width; }
+  .reveal .cpp-hdl { --api-first: --cpp-hdl-first; --api-last: --cpp-hdl-last; --api-width: --cpp-hdl-width; }
+  .reveal .cpp-passes { --api-first: --cpp-passes-first; --api-last: --cpp-passes-last; --api-width: --cpp-passes-width; }
+  .reveal .python-import { --api-first: --python-import-first; --api-last: --python-import-last; --api-width: --python-import-width; }
+  .reveal .python-build { --api-first: --python-build-first; --api-last: --python-build-last; --api-width: --python-build-width; --api-left-adjust: 1.35em; --api-width-adjust: -0.95em; }
+  .reveal .python-hdl { --api-first: --python-hdl-first; --api-last: --python-hdl-last; --api-width: --python-hdl-width; --api-left-adjust: 1.35em; --api-width-adjust: -0.95em; }
+  .reveal .python-passes { --api-first: --python-passes-first; --api-last: --python-passes-last; --api-width: --python-passes-width; --api-left-adjust: 1.35em; --api-width-adjust: -0.95em; }
+}
+
 /* Result images and metrics. */
 .reveal .eurollvm-result-figure {
   display: flex;
