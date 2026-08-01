@@ -262,7 +262,8 @@ patterns.add(
 ```
 :::
 
-**Scope:** normal, finite, non-zero operands; normal result; no rounding yet.
+**Edit:** `scripts/lower-e4m3fn.py` · **Supplied:** matcher, integer type aliases,
+and `comb`/`hw` builders · **Scope:** exact normal finite products; no rounding.
 :::
 ::::
 
@@ -843,7 +844,17 @@ patterns.add(arith.BitcastOp, lower_e4m3_mul)
 :::
 ::::
 
-## This checkpoint is intentionally incomplete {#arithmetic-special-cases}
+## Check the scope you implemented {#arithmetic-special-cases}
+
+The normal-path checker selects exact products covered by the exercise:
+
+```bash
+./scripts/test-e4m3-all.py --pass --normal-path
+```
+
+```text
+PASS: all 11892 E4M3 products match MLIR
+```
 
 | Excluded case | Hardware still required |
 |---|---|
@@ -853,8 +864,7 @@ patterns.add(arith.BitcastOp, lower_e4m3_mul)
 | exponent overflow | E4M3FN overflow behavior |
 | NaN input | detect and return the NaN encoding |
 
-The normal-path circuit should compile, but the exhaustive checker is expected
-to expose these missing cases:
+The exhaustive checker deliberately exposes those missing cases:
 
 ```bash
 ./scripts/test-e4m3-all.py --pass
@@ -901,7 +911,7 @@ Reuse the tools from Exercise 5 at each design checkpoint:
 | What Boolean structure did it create? | `circt-synth` | AIG nodes and depth |
 
 ```bash
-./scripts/test-e4m3-all.py --pass
+./scripts/test-e4m3-all.py --pass --normal-path
 ./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP_MODULE
 ```
 
@@ -989,7 +999,7 @@ $$
 The bit complexity is roughly halved before compression and rounding. The
 floating-point normalization and exceptional-value policy remain.
 
-## Exercise 8: specialize the E4M3 squarer - 12 min {#arithmetic-square-exercise}
+## Exercise 8 (optional): specialize the E4M3 squarer - 12 min {#arithmetic-square-exercise}
 
 :::: {.columns}
 ::: {.column width="48%"}
@@ -998,12 +1008,11 @@ cat examples/ex8_e4m3fn_square.mlir
 ```
 
 ```mlir
-module {
-  func.func @e4m3fn_square(
-      %x : f8E4M3FN) -> f8E4M3FN {
-    %r = arith.mulf %x, %x : f8E4M3FN
-    return %r : f8E4M3FN
-  }
+func.func @e4m3fn_square(%x : i8) -> i8 {
+  %xf = arith.bitcast %x : i8 to f8E4M3FN
+  %p = arith.mulf %xf, %xf : f8E4M3FN
+  %r = arith.bitcast %p : f8E4M3FN to i8
+  return %r : i8
 }
 ```
 :::
@@ -1021,7 +1030,7 @@ Extend the callback from Exercise 7:
 :::
 ::::
 
-## Exercise 8: reveal the specialization {#arithmetic-square-solution}
+## Exercise 8 (optional): reveal the specialization {#arithmetic-square-solution}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -1058,7 +1067,7 @@ diagonal bits directly.
 :::
 ::::
 
-## Exercise 8: build the 4-bit squarer {#arithmetic-square-builder}
+## Exercise 8 (optional): build the 4-bit squarer {#arithmetic-square-builder}
 
 :::: {.columns}
 ::: {.column width="39%"}
@@ -1097,17 +1106,22 @@ def build_square4(x):
 :::
 ::::
 
-## Exercise 8: prove, then measure {#arithmetic-square-measure}
+## Exercise 8 (optional): prove, then measure {#arithmetic-square-measure}
 
-Save the generic lowering before adding the specialization:
+Save the generic lowering before editing the callback:
 
 ```bash
-circt-tutorial-opt examples/ex8_e4m3fn_square.mlir \
-  --lower-e4m3fn-to-comb --tutorial-func-to-hw \
+python scripts/lower-e4m3fn.py examples/ex8_e4m3fn_square.mlir | \
+  circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
   -o build/ex8_square_generic.mlir
+
+# After adding the specialization, run the same pipeline:
+python scripts/lower-e4m3fn.py examples/ex8_e4m3fn_square.mlir | \
+  circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
+  -o build/ex8_square_specialized.mlir
 ```
 
-Rebuild, generate `build/ex8_square_specialized.mlir`, then compare:
+Then compare both circuits:
 
 ```bash
 ./scripts/compare-aig.py \
@@ -1116,8 +1130,10 @@ Rebuild, generate `build/ex8_square_specialized.mlir`, then compare:
   e4m3fn_square
 ```
 
-`circt-lec` protects behavior; AIG nodes and depth reveal whether the structural
-specialization survived logic synthesis. **Measure instead of assuming.**
+`circt-lec` proves equivalence; AIG nodes and depth show whether the
+specialization survived synthesis.
+
+**Pinned reference:** 57 → 50 AIG nodes; 14 → 13 logic levels.
 
 ## Match more intent; build better datapaths {#arithmetic-specialization-opening}
 
