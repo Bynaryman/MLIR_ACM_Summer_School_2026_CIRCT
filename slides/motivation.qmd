@@ -106,7 +106,7 @@ Who has seen a version of this plot before?
 
 :::: {.columns}
 ::: {.column width="34%"}
-![*Application-Specific Arithmetic*, de Dinechin and Kumm, 2024. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
+![*Application-Specific Arithmetic*, de Dinechin and Kumm, 2024. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover-hires.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
 :::
 
 ::: {.column width="66%"}

@@ -46,7 +46,7 @@
 
 ## Application-Specific Arithmetic cover
 
-- Local file: `motivation/application-specific-arithmetic-cover.jpg`
+- Local file: `motivation/application-specific-arithmetic-cover-hires.jpg`
 - Description: high-resolution cover used for the application-specific
   arithmetic team introduction
 - Authors: Florent de Dinechin and Martin Kumm
