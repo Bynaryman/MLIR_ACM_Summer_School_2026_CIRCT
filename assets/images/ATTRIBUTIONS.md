@@ -118,13 +118,14 @@
 
 ## Digital-design primer figures
 
-- Local files: `digital-design/register-timing.svg`,
+- Local files: `digital-design/register-timing-question.svg`,
+  `digital-design/register-timing.svg`,
   `digital-design/clocked-datapath.svg`,
   `digital-design/stored-program-models.svg`, and
   `digital-design/spatial-models.svg`
 - Editable source: `figures/digital-design/primer-diagrams.tex`
 - Generator: `scripts/generate-digital-design-primer-diagrams.sh`
-- Description: thin-line TikZ figures for clocked computation and the
+- Description: TikZ figures for clocked computation and the
   stored-program/spatial-computing analogy
 - Visual reference for the computing models: *Frugalit\'e et conception de
   circuits pour le traitement du signal audio num\'erique*, 2026

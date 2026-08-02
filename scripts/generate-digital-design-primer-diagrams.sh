@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE="$ROOT/figures/digital-design/primer-diagrams.tex"
 OUTPUT_DIR="$ROOT/assets/images/digital-design"
 BUILD_DIR="$(mktemp -d)"
-DIAGRAMS=(register-timing clocked-datapath stored-program-models spatial-models)
+DIAGRAMS=(register-timing-question register-timing clocked-datapath stored-program-models spatial-models)
 
 cleanup() {
   rm -rf "$BUILD_DIR"
@@ -28,4 +28,4 @@ for index in "${!DIAGRAMS[@]}"; do
     "$OUTPUT_DIR/$diagram.svg"
 done
 
-printf '%s\n' "$OUTPUT_DIR"/{register-timing,clocked-datapath,stored-program-models,spatial-models}.svg
+printf '%s\n' "$OUTPUT_DIR"/{register-timing-question,register-timing,clocked-datapath,stored-program-models,spatial-models}.svg

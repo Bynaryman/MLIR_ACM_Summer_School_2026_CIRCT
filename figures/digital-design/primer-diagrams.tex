@@ -32,38 +32,49 @@
     inner sep=0pt, font=\sffamily\scriptsize, text=ink}
 }
 
-\newcommand{\RegisterTiming}{%
+\newcommand{\RegisterTimingInputs}{%
   \path[use as bounding box] (0,0) rectangle (15.4,5.5);
 
   \node[mono label, anchor=east] at (1.15,4.55) {clk};
   \node[mono label, anchor=east] at (1.15,2.95) {d};
   \node[mono label, anchor=east] at (1.15,1.35) {q};
 
-  \draw[line]
+  \draw[draw=ink, line width=1.15pt, line cap=round, line join=round]
     (1.45,4.20) -- (2.25,4.20) -- (2.25,4.90) -- (4.15,4.90)
     -- (4.15,4.20) -- (6.05,4.20) -- (6.05,4.90) -- (7.95,4.90)
     -- (7.95,4.20) -- (9.85,4.20) -- (9.85,4.90) -- (11.75,4.90)
     -- (11.75,4.20) -- (13.65,4.20) -- (13.65,4.90) -- (15.05,4.90);
 
   \foreach \x in {2.25,6.05,9.85,13.65} {
-    \draw[clock, dashed] (\x,0.82) -- (\x,5.12);
+    \draw[draw=muted!72, line width=0.85pt, dashed, line cap=round]
+      (\x,0.82) -- (\x,5.12);
   }
 
-  \draw[draw=ink, line width=0.8pt]
+  \draw[draw=ink, line width=1.25pt, line cap=round, line join=round]
     (1.45,2.60) -- (3.55,2.60) -- (3.55,3.30) -- (8.05,3.30)
     -- (8.05,2.60) -- (11.35,2.60) -- (11.35,3.30) -- (15.05,3.30);
+}
 
-  \draw[draw=accent, line width=0.9pt]
+\newcommand{\RegisterTiming}{%
+  \RegisterTimingInputs
+
+  \draw[draw=accent, line width=1.4pt, line cap=round, line join=round]
     (1.45,1.00) -- (6.05,1.00) -- (6.05,1.70) -- (9.85,1.70)
     -- (9.85,1.00) -- (13.65,1.00) -- (13.65,1.70) -- (15.05,1.70);
 
   \foreach \x/\y in {2.25/1.00,6.05/1.70,9.85/1.00,13.65/1.70} {
-    \fill[white] (\x,\y) circle[radius=2.15pt];
-    \draw[accent, line width=0.8pt] (\x,\y) circle[radius=2.15pt];
+    \fill[white] (\x,\y) circle[radius=2.6pt];
+    \draw[accent, line width=1.1pt] (\x,\y) circle[radius=2.6pt];
   }
 
   \node[small label, anchor=west, text=accent] at (1.45,0.46)
     {q samples d only at a rising edge};
+}
+
+\newcommand{\RegisterTimingQuestion}{%
+  \RegisterTimingInputs
+
+  \node[font=\sffamily\bfseries\Large, text=accent] at (8.25,1.35) {?};
 }
 
 \newcommand{\ClockedDatapath}{%
@@ -187,6 +198,8 @@
 \begin{document}
 \begin{tikzpicture}
   \ifcase\DiagramLayer
+    \RegisterTimingQuestion
+  \or
     \RegisterTiming
   \or
     \ClockedDatapath

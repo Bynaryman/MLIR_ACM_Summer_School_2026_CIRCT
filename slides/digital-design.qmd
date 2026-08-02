@@ -108,7 +108,15 @@ always_ff @(posedge clk)
 :::
 
 ::: {.column width="72%"}
-![](assets/images/digital-design/register-timing.svg){.fragment data-fragment-index="0" fig-alt="Timing diagram in which d changes between clock edges and q samples it only at rising edges" width="100%"}
+::: {.r-stack}
+::: {.fragment .fade-out data-fragment-index="0" style="width: 100%;"}
+![](assets/images/digital-design/register-timing-question.svg){fig-alt="Timing diagram showing clock and d waveforms while the q waveform remains unknown" width="100%"}
+:::
+
+::: {.fragment data-fragment-index="0" style="width: 100%;"}
+![](assets/images/digital-design/register-timing.svg){fig-alt="Completed timing diagram in which d changes between clock edges and q samples it only at rising edges" width="100%"}
+:::
+:::
 :::
 ::::
 
