@@ -5,6 +5,7 @@ project:
     - mlir-circt-summer-school.qmd
   resources:
     - assets/images/**
+    - assets/videos/**
 
 profile:
   default: student

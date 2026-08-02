@@ -77,7 +77,7 @@ format:
 4. [MLIR and CIRCT](#circt)
 5. [Hands-on CIRCT tools](#circt-tools)
 6. [Application-specific arithmetic](#arithmetic)
-7. [MLIR-based HLS](#hls)
+7. [Bonus: MLIR-based HLS](#hls)
 :::
 
 # `$ whoami` {#about .section-title .center .whoami-intro}
@@ -123,7 +123,20 @@ format:
 
 {{< include slides/arithmetic.qmd >}}
 
-# HLS with MLIR and CIRCT {#hls .section-title .center}
+## What to keep from this session {#course-takeaways}
+
+- `hw`, `comb`, and `seq` preserve hardware structure, dataflow, and state.
+
+- A lowering is an **architecture choice**: one operation can become many
+  circuits.
+
+- Prove behavior first; then compare Boolean structure and physical cost.
+
+- MLIR and CIRCT make that design loop programmable.
+
+[Preserve intent long enough to choose the circuit deliberately.]{.marker}
+
+# Bonus: HLS with MLIR and CIRCT {#hls .section-title .center}
 
 {{< include slides/hls-eurollvm.qmd >}}
 

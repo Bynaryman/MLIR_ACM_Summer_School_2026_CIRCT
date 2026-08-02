@@ -398,6 +398,25 @@ Same SystemVerilog. Very different consequences.
 :::
 ::::
 
+## I used a floorplan as a canvas {#dd-placement-art}
+
+:::: {.columns}
+::: {.column width="50%"}
+![](assets/videos/digital-design/openroad-mlir-placement.mp4){aria-label="OpenROAD placement iterations converging toward the MLIR mark" width="560" autoplay=true loop=true muted=true playsinline=true}
+
+**MLIR**
+:::
+
+::: {.column width="50%"}
+![](assets/videos/digital-design/openroad-llvm-placement.mp4){aria-label="OpenROAD placement iterations converging toward the LLVM dragon" width="560" autoplay=true loop=true muted=true playsinline=true}
+
+**LLVM**
+:::
+::::
+
+Each frame is a real OpenROAD placement iteration. Image-derived blockages
+shape the canvas; the placer arranges a synthesized arithmetic design.
+
 ## One Boolean function, three representations {#dd-asic-cells}
 
 :::: {.columns}

@@ -23,7 +23,7 @@ The project retains two render profiles for the later exercises:
 |-- slides/circt.qmd               # CIRCT concepts through the E4M3 example
 |-- slides/circt-tools.qmd         # Command-line tour and timed exercises
 |-- slides/arithmetic.qmd          # E4M3 lowering and implementation choices
-|-- slides/hls-eurollvm.qmd        # EuroLLVM HLS chapter included by the deck
+|-- slides/hls-eurollvm.qmd        # Optional EuroLLVM HLS chapter
 |-- _quarto.yml                    # Shared Quarto project configuration
 |-- _quarto-student.yml            # Student output directory
 |-- _quarto-instructor.yml         # Instructor output directory
@@ -33,6 +33,7 @@ The project retains two render profiles for the later exercises:
 |-- assets/images/arithmetic/      # Generated transparent E4M3 SVG layers
 |-- assets/images/hls/             # EuroLLVM HLS figures and PPA plots
 |-- assets/images/logos/           # Project and institution logos
+|-- assets/videos/digital-design/  # OpenROAD placement artwork
 |-- styles/                        # Reveal.js presentation CSS
 |-- syntax/                        # MLIR and CIRCT-Python highlighting grammars
 |-- filters/slide-layout.lua       # Slide title/body layout filter
@@ -105,8 +106,8 @@ the body vertically. It does not modify title slides or section-title slides.
 
 ### HLS chapter
 
-`slides/hls-eurollvm.qmd` is included from the final HLS stack in the canonical
-deck. It ports the EuroLLVM sequence from application workloads through tensor
+`slides/hls-eurollvm.qmd` is included as bonus material after the main course
+conclusion. It ports the EuroLLVM sequence from application workloads through tensor
 and loop IRs, HAriCo lowering, CIRCT `comb`/`seq`/`hw`, ASIC/FPGA results, and
 the workload PPA study. MLIR examples are fenced `mlir` blocks, so they use the
 local grammar instead of being baked into screenshots. Figures copied from the

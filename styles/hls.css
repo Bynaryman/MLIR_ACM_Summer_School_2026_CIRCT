@@ -224,6 +224,7 @@
 
 /* Shared layouts. */
 .reveal .eurollvm-grid {
+  box-sizing: border-box;
   display: grid;
   width: 100%;
   height: 100%;
@@ -504,10 +505,12 @@
 
 .reveal .eurollvm-diagram-stack img,
 .reveal .eurollvm-full-diagram img {
+  display: block;
   width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
+  margin: 0;
   object-fit: contain;
 }
 
@@ -1041,6 +1044,7 @@
 
 /* API slides. */
 .reveal .eurollvm-api-layout {
+  box-sizing: border-box;
   display: block;
   height: 100%;
   padding: 0.55em 0.2em 0.2em;
@@ -1214,6 +1218,7 @@
 
 /* PPA workload slides. */
 .reveal .eurollvm-workload {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
   gap: 0.7em;

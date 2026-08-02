@@ -56,7 +56,7 @@ First tool: **`circt-verilog`** parses SystemVerilog and prints CIRCT IR.
 
 :::: {.columns}
 ::: {.column width="50%"}
-Let's inspect the fma module..
+Let's inspect the FMA module.
 ```bash
 cat rtl/ex1_fma.sv
 ```
@@ -83,7 +83,7 @@ endmodule
 :::
 
 ::: {.column width="50%"}
-.. and its MLIR/CIRT Counterpart
+... and its MLIR/CIRCT counterpart
 ```bash
 circt-verilog rtl/ex1_fma.sv
 ```

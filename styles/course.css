@@ -993,6 +993,11 @@
   font-size: 0.62em;
 }
 
+.reveal #references .csl-entry {
+  font-size: 0.92em;
+  line-height: 1.18;
+}
+
 .reveal .takeaway-item:nth-child(2n) {
   border-left-color: #b36b32;
 }

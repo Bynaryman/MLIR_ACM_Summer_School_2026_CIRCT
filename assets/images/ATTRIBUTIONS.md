@@ -167,6 +167,17 @@
   thesis, Universitat Polit\`ecnica de Catalunya, 2024
 - License: presenter-owned thesis material
 
+## OpenROAD placement artwork
+
+- Local files: `../videos/digital-design/openroad-mlir-placement.mp4` and
+  `../videos/digital-design/openroad-llvm-placement.mp4`
+- Source: presenter-owned `feature-arith-logo` experiment in the local
+  OpenROAD-flow-scripts repository
+- Description: Nesterov global-placement iterations constrained by
+  image-derived blockages to form the MLIR mark and LLVM dragon
+- Author: Louis Ledoux
+- License: presenter-owned course and research material
+
 ## Generated digital-design schematics
 
 - Local directory: `digital-design/yosys/`

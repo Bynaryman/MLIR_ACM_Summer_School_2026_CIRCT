@@ -109,7 +109,7 @@ TinyTapeout GF0P02 wafer.space
 
 ::: {.eurollvm-overlay .fragment data-fragment-index="1"}
 ::: {.eurollvm-overlay-message}
-Problem to Silicon ⇒ In reality... multi intermediate arithmetic levels.
+Problem to silicon crosses many intermediate arithmetic levels.
 :::
 :::
 :::::
@@ -955,22 +955,12 @@ Internal Emeraude-MLIR transforms pushed upstream.
 ## Concluding remarks and future work {#hls-conclusion .eurollvm-slide data-section="Closing"}
 
 <ul class="eurollvm-conclusion">
-  <li>HL: More polynomial approximations schemes</li>
-  <li>ML: More pattern matching in specialized</li>
-  <li>LL: Scheduling transform at <em>Comb</em> level, Bitheaps</li>
-  <li class="fragment" data-fragment-index="0">The DSE engine [4], [5] <sup>1</sup> <sup>2</sup></li>
-  <li class="fragment" data-fragment-index="1">Open the Repository at some point</li>
-  <li class="fragment" data-fragment-index="2">Overall...
-    <ul>
-      <li>Perfect for collaborations
-        <ul>
-          <li>RSCM, Optimization DSE, arithmetic, audio...</li>
-          <li>Interns armies?</li>
-          <li>External (Datapath dialect, CIRCT, EDA community, etc.)</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
+  <li><strong>High level:</strong> broaden the polynomial approximation schemes.</li>
+  <li><strong>Middle level:</strong> recognize and fuse more arithmetic patterns.</li>
+  <li><strong>Low level:</strong> schedule <em>comb</em> graphs and materialize bit heaps.</li>
+  <li class="fragment" data-fragment-index="0">Close the loop with cost models and design-space exploration.<sup>1</sup> <sup>2</sup></li>
+  <li class="fragment" data-fragment-index="1">Upstream reusable components and open the research prototype.</li>
+  <li class="fragment" data-fragment-index="2">Connect frontend, arithmetic, CIRCT, and EDA communities through explicit IR contracts.</li>
 </ul>
 <div class="eurollvm-conclusion-citations fragment" data-fragment-index="0">
   <sup>1</sup> Hanchen Ye et al., "ScaleHLS: A New Scalable High-Level Synthesis Framework on Multi-Level Intermediate Representation," HPCA 2022.<br>
@@ -1029,7 +1019,7 @@ Internal Emeraude-MLIR transforms pushed upstream.
 | Inverter | `inv` | 55 |
 
 ::: {.eurollvm-report-caption}
-All in the web as Github Actions.. Impressive !
+The complete precheck runs in GitHub Actions.
 :::
 :::::
 
