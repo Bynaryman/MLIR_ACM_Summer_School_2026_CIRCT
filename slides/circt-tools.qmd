@@ -278,10 +278,10 @@ finished. The semantics are unchanged, the IR is larger, and a final
 > Of course, you do not trust research tools.
 
 ::: {.fragment}
-And industrial tools are always exact, except when their documentation lists
-[IEEE-754 partial compliance](https://docs.amd.com/r/en-US/ug1399-vitis-hls/Floats-and-Doubles)
-and
-[deviations](https://docs.amd.com/api/khub/documents/ym1A7qsltTGP_saZFTrikQ/content).
+> And industrial tools are always exact, except when their documentation lists
+> [IEEE-754 partial compliance](https://docs.amd.com/r/en-US/ug1399-vitis-hls/Floats-and-Doubles)
+> and
+> [deviations](https://docs.amd.com/api/khub/documents/ym1A7qsltTGP_saZFTrikQ/content).
 :::
 
 ::: {.fragment}
