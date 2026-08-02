@@ -45,7 +45,9 @@ CIRCT firtool-1.147.0
 
 * Exercise 3: **Verify** that a transformation preserved the circuit. ($\approx$ 5 min.)
 
-* Exercise 4: **Generate** SystemVerilog for downstream EDA tools.
+* Exercise 4: **Generate** SystemVerilog for downstream EDA tools. ($\approx$ 5 min.)
+
+* Exercise 5: **Prove and measure** the same function with less logic. ($\approx$ 12 min.)
 :::
 
 ## Exercise 1: compile the FMA example {#tools-exercise-1 auto-animate=true auto-animate-id="exercise-1-import"}
