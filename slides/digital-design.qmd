@@ -222,12 +222,13 @@ moves between instances.
 :::
 ::::
 
-## Quiz: from one PE to an array {#dd-generate}
+## Quiz: one PE or nine? {#dd-generate}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-The loops range from 0 to 2. How many `pe` instances exist after elaboration?
+In the finished circuit, does this code create **one `pe` reused nine times** or
+**nine `pe` instances operating in parallel**?
 :::
 
 :::: {.columns}
@@ -242,9 +243,10 @@ endgenerate
 ```
 
 ::: {.fragment}
-**Nine PEs.**
+**Nine separate PEs, operating in parallel.**
 
-The loops construct hardware. They do not run while the circuit operates.
+`generate` repeats hardware while the circuit is being built. It is not a loop
+that runs while the circuit operates.
 
 3 by 3 output-stationary array [@ledoux2024thesis].
 :::
