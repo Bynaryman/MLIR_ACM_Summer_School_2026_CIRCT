@@ -116,6 +116,45 @@
   audio num\'erique*, 2026
 - License: presenter and co-author-owned course material
 
+## Digital-design primer figures
+
+- Local files: `digital-design/register-timing.svg`,
+  `digital-design/clocked-datapath.svg`,
+  `digital-design/stored-program-models.svg`, and
+  `digital-design/spatial-models.svg`
+- Editable source: `figures/digital-design/primer-diagrams.tex`
+- Generator: `scripts/generate-digital-design-primer-diagrams.sh`
+- Description: thin-line TikZ figures for clocked computation and the
+  stored-program/spatial-computing analogy
+- Visual reference for the computing models: *Frugalit\'e et conception de
+  circuits pour le traitement du signal audio num\'erique*, 2026
+- License: presenter and co-author-owned course material
+
+- Local files: `digital-design/thesis-systolic-array.svg`,
+  `digital-design/thesis-lut2.svg`, `digital-design/thesis-fpga-island.svg`, and
+  `digital-design/thesis-asic-flow.svg`
+- Source: Louis Ledoux, *Floating-Point Arithmetic Paradigms for
+  High-Performance Computing: Software Algorithms and Hardware Designs*, PhD
+  thesis, Universitat Polit\`ecnica de Catalunya, 2024
+- Description: presenter-owned vector figures reused for the hierarchy, FPGA,
+  and ASIC explanations
+- License: presenter-owned thesis material
+
+- Local file: `digital-design/xc2064-package.png`
+- Source: the XC2064 package figure in the presenter's PhD thesis
+- License: presenter-owned thesis material
+
+- Local files: `digital-design/tinytapeout-logo.svg` and
+  `digital-design/zero-to-asic-logo.png`
+- Sources: <https://tinytapeout.com/branding/> and
+  <https://www.zerotoasiccourse.com/>
+- Description: official project marks used on the further-learning slide
+
+- Local file: `digital-design/transistors-video.jpg`
+- Source: Branch Education, *How do Transistors Work? How are Transistors
+  Assembled Inside a CPU?*, <https://www.youtube.com/watch?v=_Pqfjer8-O4>
+- Description: video thumbnail linked to the original animation
+
 ## ASIC background figures
 
 - Local files: `digital-design/sky130-or2-schematic.svg`,

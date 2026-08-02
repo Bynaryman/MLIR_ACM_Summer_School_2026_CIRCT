@@ -1,0 +1,199 @@
+\documentclass[tikz,border=1pt]{standalone}
+
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,positioning}
+
+\providecommand{\DiagramLayer}{0}
+
+\definecolor{ink}{HTML}{20282D}
+\definecolor{muted}{HTML}{7B858C}
+\definecolor{accent}{HTML}{0F766E}
+
+\tikzset{
+  line/.style={draw=ink, line width=0.72pt, line cap=round, line join=round},
+  faint line/.style={draw=muted!62, line width=0.48pt, line cap=round},
+  data/.style={line, -{Latex[length=1.65mm,width=1.05mm]}},
+  bidata/.style={line, {Latex[length=1.45mm,width=0.95mm]}-{Latex[length=1.45mm,width=0.95mm]}},
+  clock/.style={draw=muted, line width=0.62pt, line cap=round},
+  label/.style={font=\sffamily\small, text=ink},
+  small label/.style={font=\sffamily\scriptsize, text=ink},
+  mono label/.style={font=\ttfamily\small, text=ink},
+  register/.style={draw=ink, fill=white, line width=0.72pt, minimum width=1.35cm,
+    minimum height=2.05cm, inner sep=2pt, font=\sffamily\small, text=ink},
+  operator/.style={draw=ink, fill=white, line width=0.72pt, circle,
+    minimum size=0.86cm, inner sep=0pt, font=\sffamily\large, text=ink},
+  machine/.style={draw=ink, fill=white, line width=0.72pt, rounded corners=1pt,
+    minimum width=2.45cm, minimum height=1.65cm, align=center,
+    font=\sffamily\small, text=ink},
+  cell/.style={draw=ink, fill=white, line width=0.55pt, minimum size=0.46cm,
+    inner sep=0pt},
+  clb/.style={draw=ink, fill=white, line width=0.65pt, minimum size=0.72cm,
+    inner sep=0pt, font=\sffamily\scriptsize, text=ink}
+}
+
+\newcommand{\RegisterTiming}{%
+  \path[use as bounding box] (0,0) rectangle (15.4,5.5);
+
+  \node[mono label, anchor=east] at (1.15,4.55) {clk};
+  \node[mono label, anchor=east] at (1.15,2.95) {d};
+  \node[mono label, anchor=east] at (1.15,1.35) {q};
+
+  \draw[line]
+    (1.45,4.20) -- (2.25,4.20) -- (2.25,4.90) -- (4.15,4.90)
+    -- (4.15,4.20) -- (6.05,4.20) -- (6.05,4.90) -- (7.95,4.90)
+    -- (7.95,4.20) -- (9.85,4.20) -- (9.85,4.90) -- (11.75,4.90)
+    -- (11.75,4.20) -- (13.65,4.20) -- (13.65,4.90) -- (15.05,4.90);
+
+  \foreach \x in {2.25,6.05,9.85,13.65} {
+    \draw[clock, dashed] (\x,0.82) -- (\x,5.12);
+  }
+
+  \draw[draw=ink, line width=0.8pt]
+    (1.45,2.60) -- (3.55,2.60) -- (3.55,3.30) -- (8.05,3.30)
+    -- (8.05,2.60) -- (11.35,2.60) -- (11.35,3.30) -- (15.05,3.30);
+
+  \draw[draw=accent, line width=0.9pt]
+    (1.45,1.00) -- (6.05,1.00) -- (6.05,1.70) -- (9.85,1.70)
+    -- (9.85,1.00) -- (13.65,1.00) -- (13.65,1.70) -- (15.05,1.70);
+
+  \foreach \x/\y in {2.25/1.00,6.05/1.70,9.85/1.00,13.65/1.70} {
+    \fill[white] (\x,\y) circle[radius=2.15pt];
+    \draw[accent, line width=0.8pt] (\x,\y) circle[radius=2.15pt];
+  }
+
+  \node[small label, anchor=west, text=accent] at (1.45,0.46)
+    {q samples d only at a rising edge};
+}
+
+\newcommand{\ClockedDatapath}{%
+  \path[use as bounding box] (0,0) rectangle (15.4,6.0);
+
+  \node[register] (r0) at (2.55,3.55) {register};
+  \node[register] (r1) at (12.85,3.55) {register};
+
+  \draw[line] ($(r0.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
+  \draw[line] ($(r1.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
+
+  \node[draw=muted!72, dashed, rounded corners=2pt, line width=0.58pt,
+    minimum width=6.45cm, minimum height=2.55cm,
+    label={[label, text=muted]above:combinational logic}] (comb) at (7.70,3.55) {};
+  \node[operator] (mul) at (6.45,3.55) {$\times$};
+  \node[operator] (add) at (8.95,3.55) {$+$};
+
+  \draw[data] (0.45,3.55) -- (r0.west);
+  \draw[data] (r0.east) -- (mul.west);
+  \draw[data] (mul.east) -- (add.west);
+  \draw[data] (add.east) -- (r1.west);
+  \draw[data] (r1.east) -- (14.95,3.55);
+
+  \node[small label, anchor=south] at (6.45,4.08) {multiply};
+  \node[small label, anchor=south] at (8.95,4.08) {add};
+
+  \draw[clock] (1.25,0.95) -- (13.20,0.95);
+  \node[mono label, anchor=east, text=muted] at (1.05,0.95) {clk};
+  \draw[clock] (2.20,0.95) |- ($(r0.south west)+(0.12,0.18)$);
+  \draw[clock] (12.50,0.95) |- ($(r1.south west)+(0.12,0.18)$);
+
+  \draw[decorate, decoration={brace, amplitude=4pt}, draw=ink, line width=0.55pt]
+    (3.25,5.32) -- (12.15,5.32)
+    node[midway, yshift=0.38cm, label] {one clock period: 0.5 ns at 2 GHz};
+}
+
+\newcommand{\StoredProgramModels}{%
+  \path[use as bounding box] (0,0) rectangle (15.4,5.8);
+
+  \node[label, font=\sffamily\bfseries\small] at (3.55,5.30) {Turing machine};
+  \node[label, font=\sffamily\bfseries\small] at (11.65,5.30) {von Neumann computer};
+
+  \node[machine, minimum width=2.35cm, minimum height=1.35cm] (control)
+    at (3.55,3.80) {finite\\control};
+  \foreach \i in {0,...,9} {
+    \draw[line] (0.65+0.58*\i,1.25) rectangle ++(0.58,0.58);
+  }
+  \foreach \i in {2,3,5,6} {
+    \fill[accent!16] (0.65+0.58*\i,1.25) rectangle ++(0.58,0.58);
+    \draw[line] (0.65+0.58*\i,1.25) rectangle ++(0.58,0.58);
+  }
+  \draw[bidata] (control.south) -- (3.55,1.83);
+  \draw[data] (2.15,3.80) -- (1.35,3.80);
+  \draw[data] (4.95,3.80) -- (5.75,3.80);
+  \node[small label, text=muted] at (3.55,0.72) {program and data on the tape};
+
+  \node[machine] (cpu) at (9.50,3.25) {processor};
+  \node[machine] (mem) at (13.15,3.25) {memory};
+  \draw[data] ($(cpu.east)+(0,0.32)$) -- node[small label, above] {address} ($(mem.west)+(0,0.32)$);
+  \draw[bidata] ($(cpu.east)+(0,-0.32)$) -- node[small label, below] {data} ($(mem.west)+(0,-0.32)$);
+  \node[small label, text=muted, align=center] at (11.35,1.35)
+    {change the stored instructions;\\the datapath remains the processor};
+}
+
+\newcommand{\SpatialModels}{%
+  \path[use as bounding box] (0,0) rectangle (15.4,6.4);
+
+  \node[label, font=\sffamily\bfseries\small] at (3.65,5.95) {cellular automaton};
+  \node[label, font=\sffamily\bfseries\small] at (11.55,5.95) {simple FPGA fabric};
+
+  \foreach \x in {0,...,5} {
+    \foreach \y in {0,...,5} {
+      \ifnum\x<5
+        \draw[faint line] (1.75+0.72*\x,1.15+0.72*\y) -- ++(0.72,0);
+      \fi
+      \ifnum\y<5
+        \draw[faint line] (1.75+0.72*\x,1.15+0.72*\y) -- ++(0,0.72);
+      \fi
+    }
+  }
+  \foreach \x in {0,...,5} {
+    \foreach \y in {0,...,5} {
+      \node[cell] at (1.75+0.72*\x,1.15+0.72*\y) {};
+    }
+  }
+  \foreach \x/\y in {2/1,2/2,2/3,3/3} {
+    \node[cell, fill=accent!18, draw=accent] at (1.75+0.72*\x,1.15+0.72*\y) {};
+  }
+  \node[small label, text=muted, align=center] at (3.55,0.48)
+    {many identical cells; local communication};
+
+  \foreach \x in {0,...,3} {
+    \foreach \y in {0,...,3} {
+      \node[clb] (c\x\y) at (9.65+1.28*\x,1.15+1.28*\y)
+        {\ifnum\x=1\ifnum\y=2 LUT\fi\fi};
+    }
+  }
+  \foreach \y in {0,...,3} {
+    \foreach \x in {0,...,2} {
+      \draw[faint line] (c\x\y.east) -- (c\the\numexpr\x+1\relax\y.west);
+    }
+  }
+  \foreach \x in {0,...,3} {
+    \foreach \y in {0,...,2} {
+      \draw[faint line] (c\x\y.north) -- (c\x\the\numexpr\y+1\relax.south);
+    }
+  }
+
+  \draw[draw=accent, line width=0.95pt, line cap=round]
+    (c01.west) -- (c01.east) -- (c11.west) -- (c11.north)
+    -- (c12.south) -- (c12.east) -- (c22.west) -- (c22.north)
+    -- (c23.south) -- (c23.east) -- (c33.west);
+  \foreach \name in {c01,c11,c12,c22,c23,c33} {
+    \node[clb, draw=accent, fill=accent!12] at (\name) {};
+  }
+  \node[small label, text=accent] at (c12) {LUT};
+  \node[small label, text=muted, align=center] at (11.55,0.48)
+    {configuration chooses cell functions and routes};
+}
+
+\begin{document}
+\begin{tikzpicture}
+  \ifcase\DiagramLayer
+    \RegisterTiming
+  \or
+    \ClockedDatapath
+  \or
+    \StoredProgramModels
+  \or
+    \SpatialModels
+  \fi
+\end{tikzpicture}
+\end{document}

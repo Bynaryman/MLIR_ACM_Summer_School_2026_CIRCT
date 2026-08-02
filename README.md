@@ -27,7 +27,7 @@ The project retains two render profiles for the later exercises:
 |-- _quarto.yml                    # Shared Quarto project configuration
 |-- _quarto-student.yml            # Student output directory
 |-- _quarto-instructor.yml         # Instructor output directory
-|-- figures/digital-design/        # Editable SystemVerilog for generated schematics
+|-- figures/digital-design/        # Editable SystemVerilog and TikZ primer figures
 |-- figures/arithmetic/            # Editable TikZ for the staged E4M3 datapath
 |-- assets/images/digital-design/  # Reference figures and generated Yosys schematics
 |-- assets/images/arithmetic/      # Generated transparent E4M3 SVG layers
@@ -38,6 +38,7 @@ The project retains two render profiles for the later exercises:
 |-- filters/slide-layout.lua       # Slide title/body layout filter
 |-- scripts/render-course-decks.sh # Builds both deck editions
 |-- scripts/generate-digital-design-schematics.sh # Regenerates Yosys SVGs
+|-- scripts/generate-digital-design-primer-diagrams.sh # Regenerates primer TikZ SVGs
 |-- scripts/generate-e4m3-rewrite-datapath.sh # Regenerates staged TikZ SVGs
 |-- tutorial/                      # Original CIRCT tool tour plus arithmetic pass exercises
 |-- .github/workflows/             # GHCR image publication
@@ -113,6 +114,19 @@ source presentation live under `assets/images/hls/`; their provenance is listed
 in `assets/images/ATTRIBUTIONS.md`.
 
 ### Digital-design schematics
+
+`figures/digital-design/primer-diagrams.tex` defines the register timing,
+clocked datapath, stored-program, and spatial-computing figures used by the
+primer. The figures share thin strokes, one accent color, and one font family.
+Regenerate their SVGs with:
+
+```bash
+./scripts/generate-digital-design-primer-diagrams.sh
+```
+
+The systolic-array, LUT, FPGA-island, and ASIC-flow figures are adapted directly
+from the presenter's thesis and kept as vector assets under
+`assets/images/digital-design/`.
 
 The introductory E4M3 normal-path schematic is generated from
 `figures/digital-design/concepts.sv` rather than drawn manually. It uses the
