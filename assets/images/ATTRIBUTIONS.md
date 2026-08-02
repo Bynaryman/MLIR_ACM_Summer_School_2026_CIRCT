@@ -145,6 +145,13 @@
 - Source: the XC2064 package figure in the presenter's PhD thesis
 - License: presenter-owned thesis material
 
+- Local file: `digital-design/vu19p-package.png`
+- Source: Xilinx, *Virtex UltraScale+ VU19P FPGA Press Deck*, 2019,
+  <https://www.xilinx.com/publications/presentations/vu19p-press-deck.pdf>
+- Description: transparent product image extracted from the official press deck
+- Copyright: Xilinx, 2019; reproduced for this educational presentation with
+  source attribution
+
 - Local files: `digital-design/tinytapeout-logo.svg` and
   `digital-design/zero-to-asic-logo.png`
 - Sources: <https://tinytapeout.com/branding/> and

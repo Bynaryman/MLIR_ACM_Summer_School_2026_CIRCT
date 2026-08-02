@@ -278,55 +278,11 @@ The same physical chip can implement many different digital circuits.
 :::
 ::::
 
-## The stored-program model {#dd-stored-program}
-
-![](assets/images/digital-design/stored-program-models.svg){fig-alt="A Turing machine with control and tape beside a von Neumann processor and memory" width="80%"}
-
-::: {.fragment}
-- Turing machine: program and data share the tape.
-- von Neumann computer: the processor fetches both from memory.
-- We change the **instructions**, not the processor datapath.
-:::
-
-## A spatial model of computation {#dd-spatial-model}
-
-![](assets/images/digital-design/spatial-models.svg){fig-alt="A cellular automaton grid beside a simple FPGA fabric with a configured route" width="69%"}
-
-::: {.fragment}
-- Cellular automaton: simple cells communicate locally.
-- FPGA: cell functions and routes are configurable.
-- After configuration, the cells and routes form one circuit.
-
-The analogy is **CPU to Turing machine; FPGA to cellular automaton**
-[@popoff2026frugality].
-:::
-
-## Quiz: change the computation {#dd-programming-model-quiz}
-
-::: {.callout-note appearance="simple" icon=false}
-## Question
-
-We replace an addition with a multiplication. What changes on a CPU? What
-changes on an FPGA?
-:::
-
-::: {.fragment}
-| Target | What changes? | What stays in place? |
-|---|---|---|
-| CPU | the instruction stream | the processor datapath |
-| FPGA | LUT contents and selected routes | the manufactured fabric |
-:::
-
-::: {.fragment}
-An executable tells a processor **what to execute**. An FPGA bitstream tells a
-fabric **what circuit to become**.
-:::
-
-## A LUT stores a truth table {#dd-fpga-lut}
+## Quiz: which function is in this LUT? {#dd-fpga-lut}
 
 :::: {.columns}
 ::: {.column width="50%"}
-![A 2-input LUT configured as an OR gate. [@ledoux2024thesis]](assets/images/digital-design/thesis-lut2.svg){fig-alt="Two input bits address one of four stored output bits in a lookup table" width="100%"}
+![A 2-input lookup table. [@ledoux2024thesis]](assets/images/digital-design/thesis-lut2.svg){fig-alt="Two input bits address one of four stored output bits in a lookup table" width="100%"}
 :::
 
 ::: {.column width="50%"}
@@ -349,7 +305,39 @@ Which two-input gate is stored here?
 :::
 ::::
 
-## Inside a real FPGA {#dd-fpga-fabric}
+## Quiz: what if six inputs are not enough? {#dd-fpga-larger-function}
+
+:::: {.columns}
+::: {.column width="48%"}
+```systemverilog
+logic a, b, c, d, e, f, g;
+logic y;
+
+assign y = a | b | c | d |
+           e | f | g;
+```
+:::
+
+::: {.column width="52%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+One LUT6 can see at most six inputs. How could the FPGA implement this
+seven-input OR?
+:::
+
+::: {.fragment}
+**Connect several LUTs.** For example:
+
+1. one LUT computes `a | b | c | d | e | f`;
+2. another LUT combines that result with `g`.
+
+Synthesis performs this decomposition.
+:::
+:::
+::::
+
+## Many LUTs become one larger circuit {#dd-fpga-fabric}
 
 :::: {.columns}
 ::: {.column width="68%"}
@@ -357,15 +345,36 @@ Which two-input gate is stored here?
 :::
 
 ::: {.column width="32%"}
-- **Logic cells:** LUTs and flip-flops
-- **Routing:** configurable switches and tracks
-- **Hard blocks:** multipliers and DSPs
-- **Memory:** block RAM
-- **Infrastructure:** clocks and I/O
+- **CLBs:** groups of LUTs and flip-flops
+- **Connection blocks:** attach CLBs to routing tracks
+- **Switch blocks:** join the selected tracks
+- **Hard blocks:** DSPs and memories beside the fabric
 
 ::: {.fragment}
-The bitstream configures this fabric. It is not fetched one instruction at a
-time.
+Synthesis decomposes the function, placement chooses the resources, and routing
+connects them into one circuit.
+:::
+:::
+::::
+
+## A modern FPGA is enormous {#dd-fpga-vu19p}
+
+:::: {.columns}
+::: {.column width="58%"}
+![Xilinx Virtex UltraScale+ VU19P package. [@xilinx2019vu19p]](assets/images/digital-design/vu19p-package.png){fig-alt="Large lidless Xilinx Virtex UltraScale Plus VU19P FPGA package" height="640"}
+:::
+
+::: {.column width="42%"}
+**Virtex UltraScale+ VU19P**
+
+- **35 billion** transistors
+- **9 million** system logic cells
+- **2,072** user I/Os
+- **80** high-speed transceivers
+
+::: {.fragment}
+Millions of configurable resources, memories, DSPs, and wires become the
+circuit described by one bitstream.
 :::
 :::
 ::::
