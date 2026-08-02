@@ -497,6 +497,8 @@ Learn the complete open-source digital ASIC flow.
 
 ## The same circuit lives in several representations {#dd-vocabulary}
 
+:::: {.columns}
+::: {.column width="57%"}
 We have just seen the same hardware concepts living together at several levels:
 
 - **SystemVerilog / RTL:** modules, connections, combinational logic, and
@@ -504,9 +506,15 @@ We have just seen the same hardware concepts living together at several levels:
 - **Gate-level netlists:** gates or cells and their connectivity.
 - **Physical design:** placed cells and routed wires.
 
-::: {.fragment}
+::: {.fragment data-fragment-index="0"}
 Each level keeps different decisions explicit. This is a natural fit for
 **MLIR's multi-level IR model**.
 
 **CIRCT extends MLIR with hardware IRs and transformations.**
 :::
+:::
+
+::: {.column width="43%"}
+![](assets/images/digital-design/circt-dialects.svg){.fragment data-fragment-index="0" fig-alt="Overview of CIRCT dialects, their frontends, lowerings, and hardware outputs" height="730"}
+:::
+::::

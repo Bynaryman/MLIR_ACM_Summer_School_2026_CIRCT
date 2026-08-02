@@ -104,6 +104,15 @@
 - Visual reference: Florent de Dinechin et al., *Posit arithmetic units: the
   good, the bad, and the ugly*, <https://inria.hal.science/hal-01959581>
 
+## CIRCT dialect overview
+
+- Local file: `digital-design/circt-dialects.svg`
+- Description: official overview of CIRCT dialects, their interactions, and
+  their paths from frontend languages to hardware outputs
+- Source: CIRCT, *Getting Started with the CIRCT Project*,
+  <https://circt.llvm.org/docs/GettingStarted/>
+- Original SVG: <https://circt.llvm.org/includes/img/dialects.svg>
+
 ## FPGA background figures
 
 - Local files: `digital-design/fpga-cellular-automaton.svg` and
