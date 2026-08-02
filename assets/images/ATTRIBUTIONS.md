@@ -197,13 +197,15 @@
   physical implementation, including the software/hardware boundary
 - License: presenter-owned course and application material
 
-- Local files: `motivation/abstraction-layers-step-1.svg` and
-  `motivation/abstraction-layers-step-3.svg`
-- Source: pages 14 and 16 of the presenter's 16:9 HoliGrail deck
+- Local files: `motivation/abstraction-layers-step-1.svg` through
+  `motivation/abstraction-layers-step-5.svg`
+- Source: pages 14-17 of the presenter's 16:9 HoliGrail deck
   `mlir-peyrusse/flopoco_part/holygrail169.pdf`
-- Description: the stack before and after highlighting hardware-generation
-  paths that cross the instruction-set boundary; slide chrome and explanatory
-  text were excluded from the crops
+- Description: successive views of the stack highlight a conventional compiler
+  window, hardware-generation paths crossing the ISA boundary, MLIR's broader
+  view, and the Logic/RTL plus circuit layers covered by this course. Slide
+  chrome and explanatory text were excluded from the source crops; the final
+  course-focus outline was added locally.
 - License: presenter-owned course and research material
 
 ## Louis Ledoux portrait

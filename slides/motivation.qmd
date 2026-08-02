@@ -1,3 +1,75 @@
+## Arithmetic optimization spans the stack {#motivation-hardware-freedom}
+
+:::::: {.columns}
+::::: {.column width="52%"}
+:::: {.r-stack .motivation-layer-states}
+![](assets/images/motivation/abstraction-layers-step-1.svg){.fragment .fade-out .instant-fragment data-fragment-index="0" fig-alt="Computer-science abstraction layers from problem specification through software, hardware, devices, and physics"}
+![](assets/images/motivation/abstraction-layers-step-2.svg){.fragment .fade-in-then-out .instant-fragment data-fragment-index="0" fig-alt="Programming language, compiler IR, and ISA layers highlighted as the usual optimization window of a software compiler"}
+![](assets/images/motivation/abstraction-layers-step-3.svg){.fragment .fade-in-then-out .instant-fragment data-fragment-index="1" fig-alt="Arrows crossing the instruction-set boundary from compiler representations to hardware logic and RTL"}
+![](assets/images/motivation/abstraction-layers-step-4.svg){.fragment .fade-in-then-out .instant-fragment data-fragment-index="2" fig-alt="A large frame spanning abstraction layers from problem specification through circuits to represent MLIR's multi-level view"}
+![](assets/images/motivation/abstraction-layers-step-5.svg){.fragment .instant-fragment data-fragment-index="3" fig-alt="Logic and RTL plus circuit layers highlighted as the focus of this course"}
+::::
+:::::
+
+::::: {.column width="48%"}
+:::: {.r-stack .motivation-layer-copy}
+::: {.motivation-layer-copy-state .fragment .fade-out .instant-fragment data-fragment-index="0"}
+[One problem, many representations]{.motivation-state-label}
+
+- Each layer exposes different decisions.
+
+- Software and hardware are intertwined and **multi-level**.
+:::
+
+::: {.motivation-layer-copy-state .fragment .fade-in-then-out .instant-fragment data-fragment-index="0"}
+[1. Optimize a fixed machine]{.motivation-state-label}
+
+- Algebraic simplification: $x \times 1 \rightarrow x$.
+
+- Strength reduction: $x \times 2 \rightarrow x \ll 1$.
+
+- Instruction selection: fused multiply-add.
+
+**A compiler usually sees a local window.**
+:::
+
+::: {.motivation-layer-copy-state .fragment .fade-in-then-out .instant-fragment data-fragment-index="1"}
+[2. Build the machine]{.motivation-state-label}
+
+- High-level synthesis crosses the ISA boundary.
+
+- Specialize operators: $x^2$, $x/3$.
+
+- Fuse operators and map them to LUTs or DSPs.
+
+**More hardware freedom means more opportunities.**
+:::
+
+::: {.motivation-layer-copy-state .fragment .fade-in-then-out .instant-fragment data-fragment-index="2"}
+[3. Traverse the stack]{.motivation-state-label}
+
+- MLIR dialects keep domain intent explicit.
+
+- Lowerings connect many domain-specific representations.
+
+- One infrastructure can move from problem to circuit.
+
+**MLIR offers a larger view.**
+:::
+
+::: {.motivation-layer-copy-state .fragment .instant-fragment data-fragment-index="3"}
+[This course lives here]{.motivation-state-label}
+
+- **Logic / RTL:** hardware structure, datapaths, and state.
+
+- **Circuits:** Boolean networks, synthesis, and cost.
+
+- **Hands-on:** lower arithmetic operations into explicit circuits.
+:::
+::::
+:::::
+::::::
+
 ## The free speedups ended {#motivation-specialization background-color="#ffffff"}
 
 ::: {.callout-note appearance="simple" icon=false}
@@ -29,44 +101,6 @@ Who has seen a version of this plot before?
 - **Arithmetic:** BF16, FP8, and smaller formats trade precision for more
   operations per watt [@micikevicius2022fp8].
 :::
-
-## From a problem to hardware freedom {#motivation-hardware-freedom}
-
-:::: {.columns}
-::: {.column width="47%"}
-::: {.r-stack .motivation-layer-states}
-![](assets/images/motivation/abstraction-layers-step-1.svg){.fragment .fade-out .instant-fragment data-fragment-index="0" fig-alt="Computer-science abstraction layers from problem and algorithm through software, ISA, RTL, circuits, devices, and physical implementation"}
-![](assets/images/motivation/abstraction-layers-step-3.svg){.fragment .instant-fragment data-fragment-index="0" fig-alt="Computer-science abstraction layers with arrows crossing the instruction-set boundary from compiler IRs to hardware logic"}
-:::
-:::
-
-::: {.column width="53%"}
-:::: {.r-stack .motivation-layer-copy}
-::: {.motivation-layer-copy-state .fragment .fade-out .instant-fragment data-fragment-index="0"}
-<div class="motivation-state-label">One intent, many representations</div>
-
-- Each level makes different decisions as the design becomes more physical.
-
-- A conventional compiler targets a **fixed machine and instruction set**.
-:::
-
-::: {.motivation-layer-copy-state .fragment .instant-fragment data-fragment-index="0"}
-<div class="motivation-state-label">Cross the ISA boundary</div>
-
-<div class="motivation-impact">
-  <span>More specialization</span>
-  <span class="motivation-impact-arrow">→</span>
-  <span>More opportunities for optimization</span>
-</div>
-
-- Choose operators, widths, parallelism, memories, and pipeline stages.
-
-- Specialize or fuse operations, then map them to LUTs, DSPs, or gates
-  [@dinechin2024asa].
-:::
-::::
-:::
-::::
 
 ## Promotion time! {#motivation-team-arithmetic}
 

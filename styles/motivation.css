@@ -44,6 +44,7 @@
 }
 
 .reveal .motivation-state-label {
+  display: block;
   margin-bottom: 0.55em;
   color: #24313a;
   font-size: 0.82em;
@@ -52,23 +53,6 @@
 
 .reveal .motivation-layer-copy-state ul {
   margin-top: 0.45em;
-}
-
-.reveal .motivation-impact {
-  margin: 0.3em 0 0.65em;
-  color: var(--course-accent);
-  font-size: 0.9em;
-  font-weight: 750;
-  line-height: 1.12;
-}
-
-.reveal .motivation-impact span {
-  display: block;
-}
-
-.reveal .motivation-impact .motivation-impact-arrow {
-  margin: 0.1em 0;
-  color: #52616e;
 }
 
 .reveal #motivation-e4m3-format .bit-layout {
