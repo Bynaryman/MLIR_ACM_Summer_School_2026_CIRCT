@@ -80,6 +80,16 @@ format:
 7. [Bonus: MLIR-based HLS](#hls)
 :::
 
+## Before we continue {#download-container}
+
+Start downloading the course image now:
+
+```bash
+docker pull ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
+```
+
+It can download while we begin.
+
 # `$ whoami` {#about .section-title .center .whoami-intro}
 
 ::: {.whoami-joke-line .fragment}
