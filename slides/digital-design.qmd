@@ -417,7 +417,9 @@ Same SystemVerilog. Very different consequences.
 :::
 ::::
 
-## I used a floorplan as a canvas {#dd-placement-art}
+## You can design chips in any shape you want {#dd-placement-art}
+
+**Why does everyone make them square?**
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -433,8 +435,7 @@ Same SystemVerilog. Very different consequences.
 :::
 ::::
 
-Each frame is a real OpenROAD placement iteration. Image-derived blockages
-shape the canvas; the placer arranges a synthesized arithmetic design.
+*Each dot is a transistor finding its place.*
 
 ## One Boolean function, three representations {#dd-asic-cells}
 
