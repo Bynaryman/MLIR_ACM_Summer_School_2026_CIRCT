@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 610" role="img" aria-labelledby="title description">
+  <title id="title">A simplified heterogeneous FPGA fabric</title>
+  <desc id="description">Configurable logic blocks, DSP multipliers, block RAM, input output blocks, and programmable routing form a modern FPGA fabric.</desc>
+  <style>
+    .frame { fill: #ffffff; stroke: #334155; stroke-width: 4; }
+    .clb { fill: #ecf7f5; stroke: #0f766e; stroke-width: 4; }
+    .dsp { fill: #fff7ed; stroke: #b45309; stroke-width: 4; }
+    .bram { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 4; }
+    .io { fill: #eff6ff; stroke: #2563eb; stroke-width: 4; }
+    .route { fill: none; stroke: #94a3b8; stroke-width: 3; }
+    .active { fill: none; stroke: #0f766e; stroke-width: 7; }
+    .label { fill: #111827; font: 750 25px Inter, Arial, sans-serif; text-anchor: middle; }
+    .small { fill: #475569; font: 600 18px Inter, Arial, sans-serif; text-anchor: middle; }
+    .legend { fill: #111827; font: 650 21px Inter, Arial, sans-serif; }
+    .accent { fill: #0f766e; font: 750 25px Inter, Arial, sans-serif; text-anchor: middle; }
+  </style>
+
+  <rect class="frame" x="95" y="45" width="900" height="520" rx="6"/>
+
+  <!-- Routing channels. -->
+  <path class="route" d="M125 175 H965 M125 305 H965 M125 435 H965"/>
+  <path class="route" d="M255 75 V535 M435 75 V535 M615 75 V535 M795 75 V535"/>
+  <path class="route" d="M165 110 H925 M165 500 H925"/>
+
+  <!-- I/O ring. -->
+  <rect class="io" x="25" y="115" width="70" height="105" rx="4"/><text class="label" x="60" y="177">I/O</text>
+  <rect class="io" x="25" y="375" width="70" height="105" rx="4"/><text class="label" x="60" y="437">I/O</text>
+  <rect class="io" x="995" y="115" width="70" height="105" rx="4"/><text class="label" x="1030" y="177">I/O</text>
+  <rect class="io" x="995" y="375" width="70" height="105" rx="4"/><text class="label" x="1030" y="437">I/O</text>
+
+  <!-- Resource tiles. -->
+  <g>
+    <rect class="clb" x="170" y="95" width="130" height="105" rx="5"/><text class="label" x="235" y="140">CLB</text><text class="small" x="235" y="171">LUT + FF</text>
+    <rect class="clb" x="350" y="95" width="130" height="105" rx="5"/><text class="label" x="415" y="140">CLB</text><text class="small" x="415" y="171">LUT + FF</text>
+    <rect class="dsp" x="530" y="95" width="130" height="105" rx="5"/><text class="label" x="595" y="140">DSP</text><text class="small" x="595" y="171">mul / MAC</text>
+    <rect class="clb" x="710" y="95" width="130" height="105" rx="5"/><text class="label" x="775" y="140">CLB</text><text class="small" x="775" y="171">LUT + FF</text>
+
+    <rect class="clb" x="170" y="225" width="130" height="105" rx="5"/><text class="label" x="235" y="270">CLB</text><text class="small" x="235" y="301">carry chain</text>
+    <rect class="bram" x="350" y="225" width="130" height="105" rx="5"/><text class="label" x="415" y="270">BRAM</text><text class="small" x="415" y="301">memory</text>
+    <rect class="clb" x="530" y="225" width="130" height="105" rx="5"/><text class="label" x="595" y="270">CLB</text><text class="small" x="595" y="301">LUT + FF</text>
+    <rect class="clb" x="710" y="225" width="130" height="105" rx="5"/><text class="label" x="775" y="270">CLB</text><text class="small" x="775" y="301">LUT + FF</text>
+
+    <rect class="clb" x="170" y="355" width="130" height="105" rx="5"/><text class="label" x="235" y="400">CLB</text><text class="small" x="235" y="431">LUT + FF</text>
+    <rect class="clb" x="350" y="355" width="130" height="105" rx="5"/><text class="label" x="415" y="400">CLB</text><text class="small" x="415" y="431">LUT + FF</text>
+    <rect class="dsp" x="530" y="355" width="130" height="105" rx="5"/><text class="label" x="595" y="400">DSP</text><text class="small" x="595" y="431">mul / MAC</text>
+    <rect class="bram" x="710" y="355" width="130" height="105" rx="5"/><text class="label" x="775" y="400">BRAM</text><text class="small" x="775" y="431">memory</text>
+  </g>
+
+  <!-- One configured path. -->
+  <path class="active" d="M95 175 H235 V305 H595 V175 H995"/>
+  <circle cx="235" cy="305" r="8" fill="#0f766e"/><circle cx="595" cy="305" r="8" fill="#0f766e"/>
+  <text class="accent" x="545" y="548">the bitstream selects logic contents and routing switches</text>
+
+  <g transform="translate(1095 105)">
+    <text class="label" x="90" y="0">real devices add</text>
+    <rect class="clb" x="0" y="35" width="36" height="30" rx="3"/><text class="legend" x="50" y="58">LUTs, FFs, carry</text>
+    <rect class="dsp" x="0" y="90" width="36" height="30" rx="3"/><text class="legend" x="50" y="113">DSP arithmetic</text>
+    <rect class="bram" x="0" y="145" width="36" height="30" rx="3"/><text class="legend" x="50" y="168">block memories</text>
+    <rect class="io" x="0" y="200" width="36" height="30" rx="3"/><text class="legend" x="50" y="223">I/O and clocks</text>
+    <text class="legend" x="0" y="290">Some devices also</text>
+    <text class="legend" x="0" y="322">contain CPU systems.</text>
+  </g>
+</svg>

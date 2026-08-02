@@ -1,20 +1,23 @@
 ## Quiz time {#dd-quiz}
 
-**Raise your hand if you have already used:**
+::: {.callout-note appearance="simple" icon=false}
+## Quiz
 
-::: {.incremental}
-- **VHDL**
+Who has already used **VHDL**, **Verilog or SystemVerilog**, an **FPGA**, or an
+**ASIC design flow**?
+:::
 
-- **Verilog or SystemVerilog**
+::: {.callout-note .fragment appearance="simple" icon=false}
+## One more question
 
-- an **FPGA**
+Who has **never heard of any of them**?
 
-- an **ASIC design flow**
+I need to know whether I should panic.
 :::
 
 ::: {.fragment}
-We will use short **SystemVerilog** examples. The concepts are independent of
-the HDL syntax.
+We will use short **SystemVerilog** examples. The concepts do not depend on that
+particular HDL syntax.
 :::
 
 ## Combinational logic: which line runs first? {#dd-combinational}
@@ -91,194 +94,272 @@ The extra carry exists only when the operands and result have room for it.
 
 ## Registers: when does `q` change? {#dd-registers}
 
-:::: {.columns}
-::: {.column width="35%"}
-```systemverilog
-always_ff @(posedge clk)
-  q <= d;
-```
-
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
 If `d` changes between two rising clock edges, when can `q` change?
 :::
-:::
-
-::: {.column width="65%"}
-![](assets/images/digital-design/register-timing.svg){.fragment data-fragment-index="0" fig-alt="Timing diagram in which d changes between clock edges and q takes each new value only on the following rising edge" width="100%"}
-
-::: {.fragment data-fragment-index="0"}
-**Answer:** at the next rising edge. Between edges, `q` keeps its previous value.
-:::
-
-::: {.fragment data-fragment-index="1"}
-A register introduces **state** and a **cycle boundary**. Combinational logic
-still propagates between registers.
-:::
-:::
-::::
-
-## Hierarchy: how many datapaths exist? {#dd-hierarchy}
 
 :::: {.columns}
-::: {.column width="54%"}
+::: {.column width="30%"}
 ```systemverilog
-module pair(
-  input  logic [3:0] a, b, c,
-  output logic [8:0] d0, d1
-);
-  mul_add4 u_left(
-    .a(a), .b(b), .c(c), .d(d0));
-
-  mul_add4 u_right(
-    .a(a), .b(c), .c(b), .d(d1));
-endmodule
+always_ff @(posedge clk)
+  q <= d;
 ```
 :::
 
-::: {.column width="46%"}
+::: {.column width="70%"}
+![](assets/images/digital-design/register-timing.svg){.fragment data-fragment-index="0" fig-alt="Timing diagram in which d changes between clock edges and q takes each new value only on the following rising edge" width="100%"}
+:::
+::::
+
+::: {.fragment data-fragment-index="0"}
+**Answer:** at the next rising edge. A register introduces **state** and a
+**cycle boundary**; between edges, `q` keeps its previous value.
+:::
+
+## Clock quiz: what does 2 GHz mean? {#dd-clock}
+
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-Does `pair` call `mul_add4` twice, or create **two datapaths**?
+A processor is clocked at **2 GHz**. How much time separates two rising edges?
+:::
+
+:::: {.columns}
+::: {.column width="32%"}
+::: {.fragment data-fragment-index="0"}
+$$
+T = \frac{1}{f}
+  = \frac{1}{2\,\text{GHz}}
+  = 0.5\,\text{ns}
+$$
+
+The usable logic delay is slightly smaller once register and clock timing are
+included.
+:::
+:::
+
+::: {.column width="68%"}
+![](assets/images/digital-design/clocked-datapath.svg){.fragment data-fragment-index="0" fig-alt="A source register feeding combinational multiply and add logic before a destination register, with a common clock" width="100%"}
+:::
+::::
+
+::: {.fragment data-fragment-index="1"}
+The clock says **when state advances**. It does not serialize the gates between
+registers; that combinational logic propagates concurrently.
+:::
+
+## Hierarchy: instance or function call? {#dd-hierarchy .smaller}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Is instantiating `mul4` inside `mac4` equivalent to calling a software function?
+:::
+
+![](assets/images/digital-design/hierarchy-bottom-up.svg){.fragment fig-alt="A multiplier module reused inside a multiply-accumulate module, which is reused inside a processing element" width="100%"}
+
+::: {.fragment}
+**No.** Each instance elaborates hardware. Hierarchy names and reuses structure;
+synthesis may later flatten those boundaries into one netlist.
+:::
+
+## Generate quiz: how much hardware? {#dd-generate .smaller}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+After elaboration, how many `pe` instances exist?
+:::
+
+:::: {.columns}
+::: {.column width="38%"}
+```systemverilog
+genvar row, col;
+generate
+  for (row = 0; row < 4; row++)
+    for (col = 0; col < 4; col++)
+      pe u_pe(/* neighbours */);
+endgenerate
+```
+
+::: {.fragment}
+**16 processing elements.**
+
+The loops generate structure during elaboration. They do not execute at run
+time.
+:::
+:::
+
+::: {.column width="62%"}
+![](assets/images/digital-design/systolic-array-4x4.svg){.fragment fig-alt="Four by four systolic array in which A values flow horizontally and B values flow vertically through sixteen processing elements" width="100%"}
+:::
+::::
+
+::: {.fragment}
+**Voila: matrix-multiplication hardware. Easy.**
+
+*Memory, control, routing, timing, and verification are left as details.*
+:::
+
+## FPGA: two ways to be programmable {#dd-fpga-models .smaller}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+When the application changes, what changes inside a CPU and inside an FPGA?
+:::
+
+![](assets/images/digital-design/computing-models.svg){.fragment data-fragment-index="0" fig-align="center" fig-alt="A Turing machine leading to a von Neumann computer and a cellular automaton leading to an FPGA fabric" width="82%"}
+
+::: {.fragment data-fragment-index="1"}
+**CPU:** change the instruction stream. **FPGA:** change the circuit itself
+[@popoff2026frugality].
+:::
+
+## FPGA: why "field-programmable"? {#dd-fpga-history}
+
+:::: {.columns}
+::: {.column width="56%"}
+![Xilinx XC2064 package. [@ledoux2024thesis]](assets/images/digital-design/xc2064-package.png){fig-alt="Xilinx XC2064 FPGA in a ceramic dual in-line package" width="100%"}
+:::
+
+::: {.column width="44%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Was the first commercial FPGA programmed only at the factory?
 :::
 
 ::: {.fragment}
-**Answer: two datapaths:** two multipliers and two adders.
+**No. The field is wherever the user is.**
 
-- A `module` defines a reusable boundary.
-- Each instance creates hardware.
-- Ports connect signals between instances.
-- A hierarchy boundary adds no clock cycle.
+- 1984: Altera EP300, an early reprogrammable logic device.
+- 1985: Xilinx XC2064, the first commercially viable FPGA.
+- 64 configurable logic blocks, each with two 3-input LUTs.
+
+The configuration could be changed after manufacturing [@ledoux2024thesis].
 :::
 :::
 ::::
 
-## FPGA: what must be configurable? {#dd-fpga-analogy}
+## LUT6 quiz: how many bits? {#dd-fpga-lut6 .smaller}
 
-:::: {.columns}
-::: {.column width="59%"}
-![Left: a cellular automaton. Right: a simple FPGA. Adapted from [@popoff2026frugality].](assets/images/digital-design/fpga-cellular-automaton.svg){fig-align="center" fig-alt="A cellular automaton grid beside a simple FPGA grid with configurable cells and richer programmable interconnect" width="100%"}
-:::
-
-::: {.column width="41%"}
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-If one chip can become many circuits, which parts must be configurable?
+How many configuration bits are needed to represent **any Boolean function of
+six one-bit inputs**?
 :::
 
-::: {.incremental}
-- **Logic:** LUT truth tables
+![](assets/images/digital-design/lut6-rom.svg){.fragment data-fragment-index="0" fig-alt="Six LUT inputs forming an address that selects one of sixty-four stored truth-table bits" width="94%"}
 
-- **State:** registers
+::: {.fragment data-fragment-index="1"}
+**$2^6 = 64$ bits.** The six inputs are an address; the selected stored bit is
+the output. A LUT is a tiny addressable ROM containing a truth table.
+:::
 
-- **Connections:** routing switches
+## LUT quiz: what about seven inputs? {#dd-fpga-lut7}
 
-- **Device:** manufactured once, configured for many circuits
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Can one LUT6 represent every Boolean function of seven inputs?
+:::
+
+:::: {.columns}
+::: {.column width="69%"}
+![](assets/images/digital-design/lut7-compose.svg){.fragment fig-alt="Two six-input lookup tables feeding a multiplexer selected by the seventh input" width="100%"}
+:::
+
+::: {.column width="31%"}
+::: {.fragment}
+**No.** Split the truth table:
+
+- one LUT stores the half for `x[6] = 0`;
+- one stores the half for `x[6] = 1`;
+- a mux selects the result.
+
+Networks of LUTs implement larger functions.
 :::
 :::
 ::::
 
-## FPGA: program or configured circuit? {#dd-fpga-configuration}
+## FPGA: what the bitstream configures {#dd-fpga-fabric .smaller}
 
 :::: {.columns}
-::: {.column width="55%"}
-![Left: a configurable logic cell containing a LUT and register. Right: one configured path through an FPGA. Adapted from [@popoff2026frugality].](assets/images/digital-design/fpga-lut-configured.svg){fig-align="center" fig-alt="A lookup-table cell with a one-bit register beside an FPGA fabric whose selected cells and routes are highlighted" width="100%"}
+::: {.column width="68%"}
+![](assets/images/digital-design/fpga-fabric.svg){fig-alt="Simplified FPGA fabric containing configurable logic blocks, DSPs, block RAMs, IO blocks, and programmable routing" width="100%"}
 :::
 
-::: {.column width="45%"}
+::: {.column width="32%"}
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-Is the bitstream executed one instruction at a time?
+Is a bitstream executed one instruction at a time?
 :::
 
 ::: {.fragment}
 **No. It configures structure.**
 
-- Place and route choose cells and connections.
-- A 4-input LUT stores $2^4=16$ truth-table bits.
-- The bitstream sets LUTs, registers, and routing switches.
+- LUT truth tables and register options
+- routing switches
+- hard blocks such as DSPs and memories
 :::
 
 ::: {.fragment}
-During execution, connections stay fixed: signals propagate through
-combinational paths and registers sample on clock edges.
+Once loaded, connections stay fixed and signals propagate through the configured
+circuit [@popoff2026frugality; @ledoux2024thesis].
 :::
 :::
 ::::
 
-## FPGA: LUTs or a DSP block? {#dd-fpga-resources}
-
-:::: {.columns}
-::: {.column width="36%"}
-```systemverilog
-assign product = a * b;
-```
+## Same HDL, different target {#dd-targets .smaller}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-Where can this multiplier be built?
-:::
-:::
-
-::: {.column width="64%"}
-::: {.fragment}
-| FPGA resource | Hardware role |
-|---|---|
-| LUT + register | Boolean logic and state |
-| routing | wires between resources |
-| DSP block | hard multiplier or MAC |
-| block RAM | on-chip storage |
+Which result can still be reconfigured after the chip has been manufactured?
 :::
 
-::: {.fragment}
-The multiplier may use LUT logic or a hard DSP block. The target and synthesis
-flow choose the resource; the arithmetic meaning stays the same
-[@popoff2026frugality].
-:::
-:::
-::::
+![](assets/images/digital-design/fpga-asic-targets.svg){.fragment data-fragment-index="0" fig-alt="SystemVerilog synthesized either into FPGA configuration data or fixed ASIC cell and metal geometry" width="100%"}
 
-::: {.fragment}
-Modern devices also integrate I/O and, on some families, a CPU system.
+::: {.fragment data-fragment-index="1"}
+**The FPGA.** An ASIC has no generic LUT fabric or programmable routing left in
+the product. Same SystemVerilog, though. One small mercy.
 :::
 
-## ASIC: what becomes fixed? {#dd-asic-cells}
-
-::: {.callout-note appearance="simple" icon=false}
-## Question
-
-Which parts of this OR gate can be reconfigured after fabrication?
-:::
+## ASIC: logic becomes geometry {#dd-asic-cells}
 
 :::: {.columns}
-::: {.column width="31%"}
+::: {.column width="30%"}
 **RTL**
 
 ```systemverilog
 assign y = a | b;
 ```
+
+::: {.fragment}
+Synthesis maps the operation directly to cells from a technology library.
+:::
 :::
 
 ::: {.column width="34%"}
 ![Logic schematic of a SKY130 OR2 standard cell. [@ledoux2024thesis]](assets/images/digital-design/sky130-or2-schematic.svg){fig-align="center" fig-alt="Schematic representation of a two-input OR standard cell" width="100%"}
 :::
 
-::: {.column width="35%"}
+::: {.column width="36%"}
 ![Physical layout of the same SKY130 OR2 cell. [@ledoux2024thesis]](assets/images/digital-design/sky130-or2-layout-cropped.svg){fig-align="center" fig-alt="Colored GDSII geometry for a two-input OR standard cell" height="350"}
 :::
 ::::
 
 ::: {.fragment}
-**Answer: none.** Logic synthesis chooses cells; place and route assigns their
-coordinates and wires; fabrication fixes the geometry.
+Place and route assigns coordinates and metal wires. Fabrication fixes that
+geometry.
 :::
 
-## Physical design: what determines cost? {#dd-asic-layout}
+## Physical design: equivalent is not identical {#dd-asic-layout}
 
 :::: {.columns}
 ::: {.column width="58%"}
@@ -289,59 +370,62 @@ coordinates and wires; fabrication fixes the geometry.
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-Must two logically equivalent layouts have the same delay and area?
+Must two logically equivalent layouts have the same delay, area, and power?
 :::
 
 ::: {.fragment}
 **No.** Physical cost depends on:
 
-- Cells occupy **area**.
-
-- Wires have **length, delay, and congestion**.
-
-- Clock and power need their own networks.
+- cell choices and placement;
+- wire length and congestion;
+- clock and power networks;
+- the target manufacturing process.
 :::
 :::
 ::::
 
-## At chip scale: what are the colored regions? {#dd-floorplan}
+## The best animation I have found for this part {#dd-video}
+
+[![](assets/images/digital-design/transistors-video.jpg){fig-alt="Thumbnail for a Branch Education animation about transistors, logic gates, and CPU construction" width="68%"}](https://www.youtube.com/watch?v=_Pqfjer8-O4)
+
+**How do Transistors Work? How are Transistors Assembled Inside a CPU?**
+
+I could add another 80 slides about fabrication. This 27-minute animation does
+it better.
+
+## If you want to build a real chip {#dd-learn-more}
 
 :::: {.columns}
-::: {.column width="63%"}
-![Labelled Intel Core i9-13900K die shot. JmsDoug and Fritzchens Fritz, CC0.](assets/images/intel-i9-13900k-labelled-die.jpg){fig-align="center" fig-alt="Labelled Intel Core i9-13900K die showing processor cores, cache arrays, interconnect, graphics, media engines, and I/O logic" height="560"}
+::: {.column width="50%"}
+[![](assets/images/digital-design/tinytapeout-logo.svg){fig-alt="Tiny Tapeout logo" height="260"}](https://tinytapeout.com/)
+
+### [Tiny Tapeout](https://tinytapeout.com/)
+
+Put a small design on a shared fabrication shuttle.
 :::
 
-::: {.column width="37%"}
-::: {.callout-note appearance="simple" icon=false}
-## Question
+::: {.column width="50%"}
+[![](assets/images/digital-design/zero-to-asic-logo.png){fig-alt="Zero to ASIC logo" height="260"}](https://www.zerotoasiccourse.com/)
 
-What from the hardware description is visible in this die photograph?
-:::
+### [Zero to ASIC](https://www.zerotoasiccourse.com/)
 
-::: {.incremental}
-- Repeated instances
-
-- Large modules and memories
-
-- Interconnect and I/O
-
-- A floorplan that gives hierarchy coordinates
-:::
+Learn the complete open-source digital ASIC flow.
 :::
 ::::
 
 ## Keep the questions explicit {#dd-vocabulary}
 
-| Question from the example | Hardware concept | Compiler boundary |
+| Question | Hardware concept | CIRCT boundary |
 |---|---|---|
 | Which line runs first? | combinational dataflow | `comb` |
 | Where does the carry go? | bit-vector width | `comb` types |
-| When does `q` change? | register and clock | `seq` |
-| How many datapaths exist? | module and instance | `hw` |
-| Program or configured circuit? | LUT and DSP mapping | synthesis target |
-| What becomes fixed? | cells, wires, floorplan | implementation |
+| When does state advance? | register and clock | `seq` |
+| Instance or function call? | elaborated hierarchy | `hw` |
+| How many generated PEs? | replicated structure | `hw` |
+| Bitstream or instructions? | configured target | synthesis |
+| What becomes fixed? | cells, wires, geometry | implementation |
 
 ::: {.fragment}
-CIRCT keeps the first four distinctions explicit in `hw`, `comb`, and `seq`.
-Later passes choose target resources and physical implementation.
+CIRCT gives these distinctions explicit IR vocabulary before later tools choose
+FPGA resources or ASIC cells.
 :::

@@ -20,7 +20,7 @@ decisions at different levels**.
 | SystemVerilog example | CIRCT vocabulary | Preserved meaning |
 |---|---|---|
 | `module mul_add4` | [`hw.module`](https://circt.llvm.org/docs/Dialects/HW/) | module boundary and ports |
-| `mul_add4 u_left (...)` | `hw.instance` | one hardware instance |
+| `mul4 u_mul (...)` | `hw.instance` | one elaborated hardware instance |
 | `assign product = a * b` | [`comb.mul`](https://circt.llvm.org/docs/Dialects/Comb/) | typed combinational dataflow |
 | `always_ff @(posedge clk)` | [`seq.compreg`](https://circt.llvm.org/docs/Dialects/Seq/) | clocked state |
 

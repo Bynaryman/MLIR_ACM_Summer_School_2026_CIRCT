@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 440" role="img" aria-labelledby="title description">
+  <title id="title">A synchronous register-to-register datapath</title>
+  <desc id="description">A source register drives combinational multiply and add logic, which settles before a destination register samples it at the next rising clock edge.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <style>
+    .wire { fill: none; stroke: #334155; stroke-width: 5; marker-end: url(#arrow); }
+    .clock { fill: none; stroke: #0f766e; stroke-width: 5; }
+    .block { fill: #ffffff; stroke: #334155; stroke-width: 5; }
+    .logic { fill: #ecf7f5; stroke: #0f766e; stroke-width: 5; }
+    .gate { fill: #ffffff; stroke: #0f766e; stroke-width: 4; }
+    .label { fill: #111827; font: 700 34px Inter, Arial, sans-serif; text-anchor: middle; }
+    .small { fill: #475569; font: 600 25px Inter, Arial, sans-serif; text-anchor: middle; }
+    .accent { fill: #0f766e; font: 750 28px Inter, Arial, sans-serif; text-anchor: middle; }
+    .mono { fill: #111827; font: 700 31px ui-monospace, SFMono-Regular, Menlo, monospace; text-anchor: middle; }
+  </style>
+
+  <text class="accent" x="700" y="42">one cycle: data must settle before the next edge</text>
+  <line x1="252" y1="68" x2="1148" y2="68" stroke="#0f766e" stroke-width="3"/>
+  <line x1="252" y1="54" x2="252" y2="82" stroke="#0f766e" stroke-width="3"/>
+  <line x1="1148" y1="54" x2="1148" y2="82" stroke="#0f766e" stroke-width="3"/>
+
+  <rect class="block" x="125" y="125" width="220" height="185" rx="6"/>
+  <path d="M125 252 l24 18 -24 18" fill="none" stroke="#334155" stroke-width="5"/>
+  <text class="label" x="235" y="198">register</text>
+  <text class="mono" x="235" y="250">Q</text>
+
+  <rect class="logic" x="470" y="105" width="460" height="225" rx="6"/>
+  <text class="label" x="700" y="153">combinational logic</text>
+  <circle class="gate" cx="610" cy="230" r="48"/>
+  <text class="mono" x="610" y="241">*</text>
+  <circle class="gate" cx="790" cy="230" r="48"/>
+  <text class="mono" x="790" y="241">+</text>
+  <line class="wire" x1="659" y1="230" x2="732" y2="230"/>
+  <text class="small" x="700" y="304">gates propagate continuously</text>
+
+  <rect class="block" x="1055" y="125" width="220" height="185" rx="6"/>
+  <path d="M1055 252 l24 18 -24 18" fill="none" stroke="#334155" stroke-width="5"/>
+  <text class="label" x="1165" y="198">register</text>
+  <text class="mono" x="1165" y="250">D</text>
+
+  <line class="wire" x1="345" y1="218" x2="462" y2="218"/>
+  <line class="wire" x1="930" y1="218" x2="1047" y2="218"/>
+
+  <path class="clock" d="M65 385 H1335"/>
+  <path class="clock" d="M235 385 V315"/>
+  <path class="clock" d="M1165 385 V315"/>
+  <path d="M65 385 h45 l18 -32 18 64 18 -32 h60" fill="none" stroke="#0f766e" stroke-width="5"/>
+  <text class="accent" x="700" y="424">clock: all registers advance on the same edge</text>
+</svg>
