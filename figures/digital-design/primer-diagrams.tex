@@ -16,6 +16,9 @@
   data/.style={line, -{Latex[length=1.65mm,width=1.05mm]}},
   bidata/.style={line, {Latex[length=1.45mm,width=0.95mm]}-{Latex[length=1.45mm,width=0.95mm]}},
   clock/.style={draw=muted, line width=0.62pt, line cap=round},
+  datapath line/.style={draw=ink, line width=1.15pt, line cap=round, line join=round},
+  datapath data/.style={datapath line, -{Latex[length=1.9mm,width=1.2mm]}},
+  datapath clock/.style={draw=muted, line width=1.0pt, line cap=round, line join=round},
   label/.style={font=\sffamily\small, text=ink},
   small label/.style={font=\sffamily\scriptsize, text=ink},
   mono label/.style={font=\ttfamily\small, text=ink},
@@ -80,33 +83,33 @@
 \newcommand{\ClockedDatapath}{%
   \path[use as bounding box] (0,0) rectangle (15.4,6.0);
 
-  \node[register] (r0) at (2.55,3.55) {register};
-  \node[register] (r1) at (12.85,3.55) {register};
+  \node[register, line width=1.15pt] (r0) at (2.55,3.55) {register};
+  \node[register, line width=1.15pt] (r1) at (12.85,3.55) {register};
 
-  \draw[line] ($(r0.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
-  \draw[line] ($(r1.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
+  \draw[datapath line] ($(r0.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
+  \draw[datapath line] ($(r1.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
 
-  \node[draw=muted!72, dashed, rounded corners=2pt, line width=0.58pt,
+  \node[draw=muted!72, dashed, rounded corners=2pt, line width=0.95pt,
     minimum width=6.45cm, minimum height=2.55cm,
     label={[label, text=muted]above:combinational logic}] (comb) at (7.70,3.55) {};
-  \node[operator] (mul) at (6.45,3.55) {$\times$};
-  \node[operator] (add) at (8.95,3.55) {$+$};
+  \node[operator, line width=1.15pt] (mul) at (6.45,3.55) {$\times$};
+  \node[operator, line width=1.15pt] (add) at (8.95,3.55) {$+$};
 
-  \draw[data] (0.45,3.55) -- (r0.west);
-  \draw[data] (r0.east) -- (mul.west);
-  \draw[data] (mul.east) -- (add.west);
-  \draw[data] (add.east) -- (r1.west);
-  \draw[data] (r1.east) -- (14.95,3.55);
+  \draw[datapath data] (0.45,3.55) -- (r0.west);
+  \draw[datapath data] (r0.east) -- (mul.west);
+  \draw[datapath data] (mul.east) -- (add.west);
+  \draw[datapath data] (add.east) -- (r1.west);
+  \draw[datapath data] (r1.east) -- (14.95,3.55);
 
   \node[small label, anchor=south] at (6.45,4.08) {multiply};
   \node[small label, anchor=south] at (8.95,4.08) {add};
 
-  \draw[clock] (1.25,0.95) -- (13.20,0.95);
+  \draw[datapath clock] (1.25,0.95) -- (13.20,0.95);
   \node[mono label, anchor=east, text=muted] at (1.05,0.95) {clk};
-  \draw[clock] (2.20,0.95) |- ($(r0.south west)+(0.12,0.18)$);
-  \draw[clock] (12.50,0.95) |- ($(r1.south west)+(0.12,0.18)$);
+  \draw[datapath clock] (2.20,0.95) |- ($(r0.south west)+(0.12,0.18)$);
+  \draw[datapath clock] (12.50,0.95) |- ($(r1.south west)+(0.12,0.18)$);
 
-  \draw[decorate, decoration={brace, amplitude=4pt}, draw=ink, line width=0.55pt]
+  \draw[decorate, decoration={brace, amplitude=4pt}, draw=ink, line width=0.9pt]
     (3.25,5.32) -- (12.15,5.32)
     node[midway, yshift=0.38cm, label] {one clock period: 0.5 ns at 2 GHz};
 }
