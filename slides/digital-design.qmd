@@ -495,16 +495,18 @@ Learn the complete open-source digital ASIC flow.
 :::
 ::::
 
-## The vocabulary CIRCT needs {#dd-vocabulary}
+## The same circuit lives in several representations {#dd-vocabulary}
 
-| Hardware idea | What we just observed | CIRCT representation |
-|---|---|---|
-| combinational dataflow | no implicit execution order | `comb` |
-| exact wire widths | overflow is explicit | integer types |
-| modules and instances | reusable elaborated structure | `hw` |
-| registers and clocks | state advances at an edge | `seq` |
+We have just seen the same hardware concepts living together at several levels:
+
+- **SystemVerilog / RTL:** modules, connections, combinational logic, and
+  registers.
+- **Gate-level netlists:** gates or cells and their connectivity.
+- **Physical design:** placed cells and routed wires.
 
 ::: {.fragment}
-CIRCT keeps these hardware choices explicit in IR before later tools map them
-to FPGA resources or ASIC cells.
+Each level keeps different decisions explicit. This is a natural fit for
+**MLIR's multi-level IR model**.
+
+**CIRCT extends MLIR with hardware IRs and transformations.**
 :::
