@@ -277,7 +277,6 @@
 </g>
 </mask>
 </defs>
-<rect x="-24.4" y="-16.4" width="292.8" height="196.8" fill="rgb(100%, 100%, 100%)" fill-opacity="1"/>
 <path fill="none" stroke-width="0.79701" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(19.999695%, 29.998779%, 39.99939%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -85.865219 -64.041656 L 100.150406 -64.041656 " transform="matrix(1, 0, 0, -1, 125.041, 9.306)"/>
 <g fill="rgb(19.999695%, 29.998779%, 39.99939%)" fill-opacity="1">
 <use xlink:href="#glyph-0-0" x="221.936" y="67.87"/>

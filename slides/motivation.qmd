@@ -58,7 +58,7 @@
 :::
 
 ::: {.motivation-layer-copy-state .fragment .instant-fragment data-fragment-index="3"}
-[This course lives here]{.motivation-state-label}
+[This presentation lives here]{.motivation-state-label}
 
 - **Logic / RTL:** hardware structure, datapaths, and state.
 
