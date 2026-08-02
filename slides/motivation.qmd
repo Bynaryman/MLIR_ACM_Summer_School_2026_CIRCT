@@ -70,7 +70,7 @@
 :::::
 ::::::
 
-## The free speedups ended {#motivation-specialization background-color="#ffffff"}
+## The free speedups ended {#motivation-specialization}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Quiz time
