@@ -39,6 +39,12 @@ We will use tiny **SystemVerilog** examples only to make the hardware visible.
 
 ## Combinational logic {#dd-combinational}
 
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Which line runs first?
+:::
+
 :::: {.columns}
 ::: {.column width="56%"}
 ```systemverilog
@@ -58,12 +64,6 @@ endmodule
 :::
 
 ::: {.column width="44%"}
-::: {.callout-note appearance="simple" icon=false}
-## Question
-
-Which line runs first?
-:::
-
 ::: {.fragment}
 **Neither line runs first.**
 
