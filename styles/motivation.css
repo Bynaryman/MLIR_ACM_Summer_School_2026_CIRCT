@@ -51,6 +51,11 @@
   font-weight: 750;
 }
 
+.reveal .motivation-state-label-impact {
+  width: fit-content;
+  font-size: 1.08em;
+}
+
 .reveal #motivation-fp8-gpu .motivation-machine-image {
   display: block;
   width: 100%;

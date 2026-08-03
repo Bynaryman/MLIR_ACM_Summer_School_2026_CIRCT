@@ -70,7 +70,7 @@ This section explains why [modern compiler techniques]{.marker} must reach into 
 :::
 
 ::: {.motivation-layer-copy-state .fragment .instant-fragment data-fragment-index="3"}
-[This presentation lives here]{.motivation-state-label}
+[This presentation lives here!]{.motivation-state-label .motivation-state-label-impact .marker}
 
 - **Logic / RTL:** hardware structure, datapaths, and state.
 
