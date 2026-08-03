@@ -264,13 +264,15 @@ The period is a **budget for the longest register-to-register path**.
 
 :::: {.columns}
 ::: {.column width="55%"}
-```systemverilog
+```{.systemverilog code-line-numbers="1-2,8-9"}
+// Declaration of a new module.
 module mac4(
   input  logic [3:0] a, b, c,
   output logic [8:0] y
 );
   logic [7:0] product;
 
+  // Instantiation of an existing module.
   mul4 u_mul(
     .a(a), .b(b), .p(product));
 
@@ -281,10 +283,9 @@ endmodule
 :::
 
 ::: {.column width="45%"}
-- `module mac4` is a reusable **definition**.
-- `mul4 u_mul` creates one hardware **instance**.
+- `mac4` becomes a reusable hardware **definition**.
+- `u_mul` names this **instance** of `mul4`.
 - Port connections become **wires**.
-- An instance boundary adds **no clock cycle**.
 
 ::: {.fragment}
 Hierarchy organizes the description. Synthesis may later flatten it or optimize
