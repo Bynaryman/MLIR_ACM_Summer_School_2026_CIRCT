@@ -539,6 +539,8 @@ connects them into one circuit.
 ::: {.fragment}
 Millions of configurable resources, memories, DSPs, and wires become the
 circuit described by one bitstream.
+
+[Compilation can take several days.]{.marker}
 :::
 :::
 ::::
