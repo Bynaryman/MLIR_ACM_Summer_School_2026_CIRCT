@@ -1,193 +1,154 @@
 ## From hardware concepts to CIRCT {#circt-route}
 
-This section gives the primer's concepts explicit MLIR representations.
+[CIRCT](https://circt.llvm.org/) extends MLIR with hardware dialects,
+transformations, and tools. Keep one circuit in view: the integer multiply-add
+from the primer.
 
 ::: {.incremental}
-1. **Dialects:** represent structure, combinational logic, and state with `hw`,
-   `comb`, and `seq`.
+1. **Read:** give modules, combinational logic, and state explicit operations.
 
-2. **Entry points:** import SystemVerilog or lower numerical operations.
+2. **Import:** let `circt-verilog` construct those operations from RTL.
 
-3. **Datapaths:** make the structure of arithmetic explicit.
+3. **Locate:** place `hw`, `comb`, and `seq` in the multi-level path.
 
-4. **Lowering:** preserve intent long enough to choose the circuit.
+4. **Continue:** inspect, transform, prove, and export the same circuit.
 :::
 
-## CIRCT continues MLIR toward hardware {#circt-continuation}
-
-[CIRCT](https://circt.llvm.org/) adds representations and transformations for
-the lower part of the abstraction stack.
-
-| Level | What the IR must make explicit |
-|---|---|
-| numerical intent | operations, types, and mathematical semantics |
-| hardware architecture | resources, communication, and scheduling |
-| RTL | modules, combinational logic, state, and clocks |
-| implementation | gates, cells, placement, and wires |
-
-::: {.fragment}
-It is not one hardware IR. It is a set of **dialects that preserve useful
-decisions at different levels**.
-:::
-
-## The examples have direct CIRCT vocabulary {#circt-dialects}
-
-| SystemVerilog example | CIRCT vocabulary | Preserved meaning |
-|---|---|---|
-| `module mul_add4` | [`hw.module`](https://circt.llvm.org/docs/Dialects/HW/) | module boundary and ports |
-| `mul4 u_mul (...)` | `hw.instance` | one elaborated hardware instance |
-| `assign product = a * b` | [`comb.mul`](https://circt.llvm.org/docs/Dialects/Comb/) | typed combinational dataflow |
-| `always_ff @(posedge clk)` | [`seq.compreg`](https://circt.llvm.org/docs/Dialects/Seq/) | clocked state |
-
-::: {.fragment}
-Passes can now ask the primer's questions directly: **what is structural, what
-is combinational, and what crosses a clock edge?**
-:::
-
-## One multiplier, two ways into CIRCT {#circt-two-entrances .smaller}
+## The same multiply-add, now in CIRCT {#circt-same-multiply-add .smaller}
 
 :::: {.columns}
-::: {.column width="48%"}
-**A complete architecture in SystemVerilog**
+::: {.column width="43%"}
+**SystemVerilog**
 
 ```systemverilog
-module e4m3fn_mul(
-  input  logic [7:0] lhs, rhs,
-  output logic [7:0] result
+module ex1_fma (
+  input  wire [3:0] a, b, c,
+  output wire [8:0] d
 );
-  // Decode fields.
-  // Multiply significands.
-  // Normalize and round.
-  // Pack zeros, subnormals and NaNs.
+  assign d =
+      (a * b) + (c * 1'd1);
+endmodule
+```
+:::
+
+::: {.column width="57%"}
+**CIRCT IR**
+
+```mlir
+hw.module @ex1_fma(
+    in %a : i4, in %b : i4, in %c : i4,
+    out d : i9) {
+  %zero = hw.constant 0 : i5
+  %a9 = comb.concat %zero, %a : i5, i4
+  %b9 = comb.concat %zero, %b : i5, i4
+  %product = comb.mul %a9, %b9 : i9
+  %c9 = comb.concat %zero, %c : i5, i4
+  %d = comb.add %product, %c9 : i9
+  hw.output %d : i9
+}
+```
+:::
+::::
+
+::: {.fragment}
+Same ports. Same multiply-add. The width extensions from the primer are now
+explicit `comb.concat` operations.
+:::
+
+## The primer's concepts become operations {#circt-dialects .smaller}
+
+| Primer concept | SystemVerilog | CIRCT operation | What remains explicit |
+|---|---|---|---|
+| module boundary | `module mul_add4` | [`hw.module`](https://circt.llvm.org/docs/Dialects/HW/) | ports and hierarchy |
+| instantiation | `mul4 u_mul (...)` | `hw.instance` | one hardware instance |
+| combinational dataflow | `assign d = p + c` | [`comb.add`](https://circt.llvm.org/docs/Dialects/Comb/) | typed wires and operators |
+| clocked state | `always_ff @(posedge clk)` | [`seq.compreg`](https://circt.llvm.org/docs/Dialects/Seq/) | value after a clock edge |
+| repeated structure | `generate` | elaborated operations and instances | the constructed hardware |
+
+::: {.fragment}
+These are operations in an SSA IR. A pass can ask directly what is structural,
+what is combinational, and what crosses a clock edge.
+:::
+
+## Import the decisions already present in RTL {#circt-import-rtl}
+
+:::: {.columns}
+::: {.column width="47%"}
+**Input**
+
+```systemverilog
+module ex1_fma (...);
+  assign d = (a * b) + c;
 endmodule
 ```
 
-`circt-verilog` imports the decisions already present in the RTL.
+The module boundary, operators, and widths have already been chosen.
 :::
 
-::: {.column width="52%"}
-**The numerical operation in `arith`**
+::: {.column width="53%"}
+**Import**
 
-```mlir
-hw.module @e4m3fn_mul(
-    in %lhs : i8, in %rhs : i8,
-    out result : i8) {
-  %lhsf = arith.bitcast %lhs
-      : i8 to f8E4M3FN
-  %rhsf = arith.bitcast %rhs
-      : i8 to f8E4M3FN
-  %product = arith.mulf %lhsf, %rhsf
-      : f8E4M3FN
-  %result = arith.bitcast %product
-      : f8E4M3FN to i8
-  hw.output %result : i8
-}
-```
-:::
-::::
-
-## Importing RTL exposes the architecture {#circt-imported-datapath .smaller}
-
-:::: {.columns}
-::: {.column width="56%"}
-```mlir
-%lhsExp = comb.extract %lhs from 3
-    : (i8) -> i4
-%lhsFrac = comb.extract %lhs from 0
-    : (i8) -> i3
-%lhsSign = comb.extract %lhs from 7
-    : (i8) -> i1
-
-%resultSign = comb.xor %lhsSign, %rhsSign : i1
-%lhsSig = comb.concat %zero4, %lhsNormal,
-    %lhsFrac : i4, i1, i3
-%rhsSig = comb.concat %zero4, %rhsNormal,
-    %rhsFrac : i4, i1, i3
-%sigProduct = comb.mul %lhsSig, %rhsSig : i8
-```
-:::
-
-::: {.column width="44%"}
-::: {.incremental}
-- `hw.module` preserves the eight-bit interface.
-
-- `comb.extract` gives names to the packed fields.
-
-- `comb.mul` is now a **four-bit significand multiplier**, not a floating-point
-  operation.
-
-- Muxes and comparisons make exceptional behavior structural.
-:::
-:::
-::::
-
-## Floating-point multiplication is a datapath {#circt-multiplier-parts}
-
-:::: {.columns}
-::: {.column width="59%"}
-![](assets/images/digital-design/yosys/e4m3_mul_parts.svg){fig-align="center" fig-alt="Word-level schematic separating sign, exponent, and significand paths of an E4M3 multiplier" width="100%"}
-:::
-
-::: {.column width="41%"}
-::: {.incremental}
-1. **Decode** sign, exponent, fraction, zero, and NaN.
-
-2. **Multiply** the four-bit significands.
-
-3. **Normalize** the eight-bit product.
-
-4. **Round** back to three fraction bits.
-
-5. **Select and pack** the final E4M3 encoding.
-:::
-:::
-::::
-
-## State and control retain their own structure {#circt-state-control .smaller}
-
-:::: {.columns}
-::: {.column width="50%"}
-**A register is not an arithmetic operation**
-
-```mlir
-%product = comb.mul %a, %b : i8
-%product_q = seq.compreg %product, %clk : i8
+```bash
+circt-verilog rtl/ex1_fma.sv \
+  -o rtl/ex1_fma.mlir
 ```
 
-`seq` records that a value exists **after a clock edge**.
-:::
-
-::: {.column width="50%"}
-**A controller can remain an FSM**
-
-```mlir
-fsm.state @idle transitions {
-  fsm.transition @run guard {
-    fsm.return %start
-  }
-}
-fsm.state @run transitions {
-  fsm.transition @idle
-}
-```
-
-`fsm` preserves states and transitions until lowering them is useful.
+`circt-verilog` parses and elaborates the RTL, then emits `hw` and `comb`
+operations for `circt-opt` and other CIRCT tools.
 :::
 ::::
-
-## Lowering is where intent becomes a circuit {#circt-lowering-decision}
-
-::: {.incremental}
-- `arith.mulf` says **what numerical operation** must be preserved.
-
-- `hw` and `comb` say **which bit-vector network** implements it.
-
-- `seq` says **when values are available**.
-
-- Synthesis decides **which gates or LUTs** realize the network.
-:::
 
 ::: {.fragment}
-The tutorial will traverse those views in one direction, prove that they agree,
-then return to `arith.mulf` to write our own lowering.
+[The first hands-on starts from `rtl/ex1_fma.sv` and this command.]{.marker}
+:::
+
+## CIRCT connects several representation levels {#circt-multilevel}
+
+| Level | Representation | Decisions made explicit |
+|---|---|---|
+| numerical intent | `func` + `arith` | operations and types |
+| explicit circuit | `hw` + `comb` + `seq` | hierarchy, bit-vector dataflow, and state |
+| RTL exchange | SystemVerilog | interface to downstream EDA tools |
+| implementation | gates or LUTs | cost on a target technology |
+
+::: {.fragment}
+At the explicit-circuit level, `hw`, `comb`, and `seq` **coexist**. A lowering
+moves between levels when enough implementation decisions are known.
+:::
+
+## Two entry points meet at explicit hardware {#circt-two-entry-points}
+
+:::: {.columns}
+::: {.column width="50%"}
+**Import an existing circuit**
+
+```text
+SystemVerilog
+    |
+    | circt-verilog
+    v
+hw + comb + seq
+```
+
+The RTL already contains the architecture.
+:::
+
+::: {.column width="50%"}
+**Construct a circuit from numerical intent**
+
+```text
+func + arith
+    |
+    | lowering pass
+    v
+hw + comb + seq
+```
+
+The pass must choose the architecture.
+:::
+::::
+
+::: {.fragment}
+The tool tour follows the **left path**. The arithmetic hands-on later builds
+the missing lowering on the **right path**.
 :::

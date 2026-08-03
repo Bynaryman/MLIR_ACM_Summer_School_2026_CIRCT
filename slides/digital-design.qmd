@@ -691,10 +691,10 @@ We have just seen the same hardware concepts living together at several levels:
 - **Physical design:** placed cells and routed wires.
 
 ::: {.fragment data-fragment-index="0"}
-Each level keeps different decisions explicit. This is a natural fit for
-**MLIR's multi-level IR model**.
+Can compiler passes see a **module**, a **combinational operator**, or a
+**register** directly, without rediscovering those concepts from syntax?
 
-**CIRCT extends MLIR with hardware IRs and transformations.**
+**CIRCT gives those hardware concepts explicit MLIR operations.**
 :::
 :::
 
