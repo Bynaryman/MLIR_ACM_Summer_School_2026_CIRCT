@@ -1,6 +1,6 @@
 ## From pressure to specialization {#motivation-route}
 
-This section explains why modern compiler techniques must reach into hardware.
+This section explains why [modern compiler techniques]{.marker} must reach into hardware.
 
 ::: {.incremental}
 1. **Layers:** follow arithmetic choices from programs toward circuits.
