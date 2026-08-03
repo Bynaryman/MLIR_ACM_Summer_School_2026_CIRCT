@@ -46,7 +46,7 @@ format:
     center: false
     center-title-slide: true
     auto-stretch: false
-    parallax-background-image: assets/images/background.png
+    parallax-background-image: assets/images/background.webp
     parallax-background-size: "3200px 1800px"
     code-copy: true
     code-overflow: scroll
