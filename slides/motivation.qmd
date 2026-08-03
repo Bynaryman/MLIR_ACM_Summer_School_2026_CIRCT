@@ -82,24 +82,24 @@ Who has seen a version of this plot before?
 
 ## Some machines are experts at specialization {#motivation-fp8-gpu}
 
+::: {.callout-note appearance="simple" icon=false}
+## Quiz time
+
+Who knows these machines?
+:::
+
 :::: {.columns}
 ::: {.column width="50%"}
-![NVIDIA H100 SXM5 GPU module. [@nvidia2022hopper]](assets/images/motivation/nvidia-h100-sxm5.png){fig-align="center" fig-alt="NVIDIA H100 SXM5 GPU module with the central Hopper GPU and surrounding HBM stacks" height="250"}
+![**GPU:** matrix-multiply instructions backed by dedicated Tensor Core hardware. [@nvidia2022hopper]](assets/images/motivation/nvidia-h100-sxm5.png){.motivation-machine-image fig-align="center" fig-alt="NVIDIA H100 SXM5 GPU module with the central Hopper GPU and surrounding HBM stacks"}
 :::
 
 ::: {.column width="50%"}
-![Google's first TPU board and TPUs deployed in a datacenter. [@google2017tpu]](assets/images/motivation/google-tpu-v1.png){fig-align="center" fig-alt="Google's first Tensor Processing Unit on a circuit board beside racks of deployed TPU servers" height="250"}
+![**TPU:** a processor built around matrix-multiply hardware. [@google2017cloudtpu; @jouppi2020tpu]](assets/images/motivation/google-tpu-v2-hero.webp){.motivation-machine-image fig-align="center" fig-alt="Google second-generation Cloud TPU board connected by colored high-speed interconnect cables"}
 :::
 ::::
 
-::: {.incremental}
-- **Pressure:** AI makes matrix multiplication the hot loop.
-
-- **Machines:** Tensor Cores and TPUs put matrix engines on silicon
-  [@jouppi2017tpu; @jouppi2020tpu].
-
-- **Arithmetic:** BF16, FP8, and smaller formats trade precision for more
-  operations per watt [@micikevicius2022fp8].
+::: {.motivation-machine-takeaway}
+**Specialization puts [more of the problem directly into the machine]{.marker}.**
 :::
 
 ## Promotion time! {#motivation-team-arithmetic}

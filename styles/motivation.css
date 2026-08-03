@@ -51,6 +51,27 @@
   font-weight: 750;
 }
 
+.reveal #motivation-fp8-gpu .motivation-machine-image {
+  display: block;
+  width: 100%;
+  height: 245px;
+  object-fit: cover;
+  object-position: center;
+  filter: drop-shadow(0 0.18em 0.28em rgb(15 23 42 / 24%));
+}
+
+.reveal #motivation-fp8-gpu figcaption {
+  min-height: 2.6em;
+  margin-top: 0.35em;
+  font-size: 0.65em;
+  line-height: 1.25;
+}
+
+.reveal #motivation-fp8-gpu .motivation-machine-takeaway {
+  margin-top: 0.45em;
+  text-align: center;
+}
+
 .reveal .motivation-layer-copy-state ul {
   margin-top: 0.45em;
 }

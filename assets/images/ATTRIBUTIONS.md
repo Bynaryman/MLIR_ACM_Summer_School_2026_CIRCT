@@ -64,6 +64,16 @@
 - Copyright: Google; reproduced in this educational presentation with source
   attribution
 
+## Google Cloud TPU v2
+
+- Local file: `motivation/google-tpu-v2-hero.webp`
+- Description: Google's second-generation Cloud TPU board connected by
+  high-speed interconnect cables
+- Authors: Jeff Dean and Urs Hölzle
+- Source: <https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/google-cloud-offer-tpus-machine-learning/>
+- Copyright: Google; reproduced in this educational presentation with source
+  attribution
+
 ## Microprocessor trend data
 
 - Local files: `motivation/rupp-50-years-processor-trend.png` and
