@@ -48,6 +48,13 @@
   font-size: 2.35em;
 }
 
+.reveal section.slide.level2.section-title h2 {
+  align-self: center;
+  margin: 0;
+  font-size: 2.35em;
+  text-align: center;
+}
+
 .reveal section:not(.title-slide):not(.section-title) {
   text-align: left;
 }
@@ -63,9 +70,25 @@
     grid-template-rows: max-content minmax(0, 1fr);
   }
 
+  .reveal .slides section.slide.level2.section-title.present {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .reveal section.slide.level2.section-title > .slide-body {
+    display: none;
+  }
+
   .reveal section.slide.level2 > h2:first-child {
     align-self: start;
     margin-top: 0;
+  }
+
+  .reveal section.slide.level2.section-title > h2:first-child {
+    align-self: center;
+    margin: 0;
   }
 
   .reveal section.slide.level2 > .slide-body {

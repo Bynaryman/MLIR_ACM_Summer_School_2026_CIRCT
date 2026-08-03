@@ -1,3 +1,15 @@
+## The arithmetic hands-on {#arithmetic-route}
+
+This section builds one floating-point lowering step by step.
+
+::: {.incremental}
+1. **Exercise 6:** lower integer `arith.muli` into `hw` and `comb`.
+
+2. **Exercise 7:** construct an E4M3 multiplier.
+
+3. **Exercise 8 (optional):** recognize squaring and build a cheaper datapath.
+:::
+
 ## Exercise 6: start from generic MLIR {#arithmetic-objective}
 
 :::: {.columns}

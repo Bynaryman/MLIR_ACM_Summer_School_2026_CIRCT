@@ -1,3 +1,15 @@
+## From pressure to specialization {#motivation-route}
+
+This section explains why modern compiler techniques must reach into hardware.
+
+::: {.incremental}
+1. **Layers:** follow arithmetic choices from programs toward circuits.
+
+2. **Scaling limits:** understand why performance no longer arrives for free.
+
+3. **Specialization:** connect GPUs, TPUs, and new number formats.
+:::
+
 ## Arithmetic optimization spans the stack {#motivation-hardware-freedom}
 
 :::::: {.columns}

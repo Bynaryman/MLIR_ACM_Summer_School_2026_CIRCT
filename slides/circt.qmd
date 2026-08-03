@@ -1,3 +1,18 @@
+## From hardware concepts to CIRCT {#circt-route}
+
+This section gives the primer's concepts explicit MLIR representations.
+
+::: {.incremental}
+1. **Dialects:** represent structure, combinational logic, and state with `hw`,
+   `comb`, and `seq`.
+
+2. **Entry points:** import SystemVerilog or lower numerical operations.
+
+3. **Datapaths:** make the structure of arithmetic explicit.
+
+4. **Lowering:** preserve intent long enough to choose the circuit.
+:::
+
 ## CIRCT continues MLIR toward hardware {#circt-continuation}
 
 [CIRCT](https://circt.llvm.org/) adds representations and transformations for

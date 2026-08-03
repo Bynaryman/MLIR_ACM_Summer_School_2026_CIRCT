@@ -1,3 +1,17 @@
+## The digital-design primer {#dd-route}
+
+These concepts become CIRCT vocabulary in the next section.
+
+::: {.incremental}
+1. **Logic:** combinational operations and bit widths.
+
+2. **Time:** registers, clocks, and timing.
+
+3. **Structure:** modules, instances, and repeated hardware.
+
+4. **Targets:** FPGA fabrics and ASIC geometry.
+:::
+
 ## Quiz time {#dd-quiz}
 
 ::: {.callout-note appearance="simple" icon=false}
@@ -419,6 +433,8 @@ that runs while the circuit operates.
 :::
 ::::
 
+## FPGA {#dd-fpga-separator .section-title .center}
+
 ## FPGA means configurable after manufacture {#dd-fpga-history}
 
 :::: {.columns}
@@ -565,6 +581,8 @@ Which target can become a different circuit after manufacturing?
 ::: {.fragment}
 Same SystemVerilog. Very different consequences.
 :::
+
+## ASIC {#dd-asic-separator .section-title .center}
 
 ## ASIC: the circuit becomes geometry {#dd-asic-flow}
 
