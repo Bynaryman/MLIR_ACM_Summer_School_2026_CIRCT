@@ -214,7 +214,7 @@ Edge, reset timing, and reset polarity are hardware choices.<br>
 :::
 :::
 
-## Clock quiz: what does 2 GHz mean? {#dd-clock}
+## Clock quiz: what does 2 GHz mean? {#dd-clock auto-animate=true auto-animate-id="clock-timing"}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
@@ -243,21 +243,37 @@ $$
 
 :::: {.column width="58%"}
 ![](assets/images/digital-design/clocked-datapath.svg){.fragment data-fragment-index="0" fig-alt="Source register, combinational multiplier and adder, and destination register connected to a common clock" width="100%"}
-
-::: {.source-strip .fragment data-fragment-index="1"}
-Sky130 HD Liberty: TT / 25 °C / 1.8 V, 10 ps slew, 0.5 fF load;
-FloPoCo Kintex-7 model from Vivado timing reports. Routing is excluded.
-:::
 ::::
 :::::
 
-::: {.fragment .smaller data-fragment-index="2"}
+::: {.fragment .smaller data-fragment-index="2" data-id="clock-budget"}
 $$
 t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
   + t_{\text{setup}} + t_{\text{skew}} < 500\,\text{ps}
 $$
 
 The period is a **budget for the longest register-to-register path**.
+:::
+
+## Meeting a 500 ps clock period {#dd-clock-pipeline .top-body auto-animate=true auto-animate-id="clock-timing"}
+
+::: {.smaller data-id="clock-budget"}
+$$
+t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
+  + t_{\text{setup}} + t_{\text{skew}} < 500\,\text{ps}
+$$
+
+The period is a **budget for the longest register-to-register path**.
+:::
+
+**CPU example.** Intel reports **3 cycles** of latency for floating-point add on
+Gracemont and **2 cycles** for selected vector adds on Sapphire Rapids
+[@intel2022gracemont; @intel2024intrinsics]. Pipeline registers split the FPU
+datapath so each stage can meet the clock period.
+
+::: {.fragment}
+**A compiler pass could analyze the critical path, split it with registers, and
+balance the resulting stages.**
 :::
 
 ## Modules name and reuse structure {#dd-hierarchy}

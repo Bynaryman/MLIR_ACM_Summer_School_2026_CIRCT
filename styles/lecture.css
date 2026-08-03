@@ -74,6 +74,10 @@
     min-width: 0;
     max-height: 100%;
   }
+
+  .reveal section.slide.level2.top-body > .slide-body {
+    align-self: start;
+  }
 }
 
 .reveal p,
