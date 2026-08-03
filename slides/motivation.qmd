@@ -78,7 +78,7 @@
 Who has seen a version of this plot before?
 :::
 
-![Fifty years of microprocessor trends. [@rupp2022microprocessor]](assets/images/motivation/rupp-50-years-processor-trend.png){fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021" height="570"}
+![Fifty years of microprocessor trends. [@rupp2022microprocessor]](assets/images/motivation/rupp-50-years-processor-trend-annotated.svg){fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021, annotated with a Moore's law guide and a boundary between the single-core free-gains era and the many-core and specialized-architecture era" height="570"}
 
 ## Some machines are experts at specialization {#motivation-fp8-gpu}
 

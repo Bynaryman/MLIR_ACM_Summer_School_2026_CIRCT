@@ -66,8 +66,10 @@
 
 ## Microprocessor trend data
 
-- Local file: `motivation/rupp-50-years-processor-trend.png`
-- Description: the original author-rendered plot used in the course
+- Local files: `motivation/rupp-50-years-processor-trend.png` and
+  `motivation/rupp-50-years-processor-trend-annotated.svg`
+- Description: the original author-rendered plot and the course version with
+  scaling-era annotations
 - Author: Karl Rupp; original data through 2010 by Mark Horowitz, Fred Labonte,
   Ofer Shacham, Kunle Olukotun, Lance Hammond, and Chris Batten
 - Source: <https://github.com/karlrupp/microprocessor-trend-data>
