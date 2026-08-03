@@ -96,6 +96,24 @@
   margin: 0;
 }
 
+.reveal #dd-fpga-fabric figure {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.reveal #dd-fpga-fabric img {
+  box-sizing: border-box;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0.16em;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 0.18em 0.36em rgb(15 23 42 / 22%);
+  filter: none;
+}
+
 .reveal .narrative-question {
   margin: 0.7em auto 0;
   max-width: 25ch;
