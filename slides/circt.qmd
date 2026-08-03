@@ -1,52 +1,26 @@
-## CIRCT is an ecosystem, not one IR {#circt-route}
+## CIRCT {#circt-route}
 
 :::: {.columns}
-::: {.column width="36%"}
-[CIRCT](https://circt.llvm.org/) extends MLIR with an ecosystem for hardware:
-
-- dialects at several abstraction levels;
-- analyses, transformations, and conversions;
-- import, simulation, verification, and export tools.
-
-::: {.fragment}
-Different projects follow different paths through this graph.
-
-[Today, we need only a small part of it.]{.marker}
-:::
-:::
-
-::: {.column width="64%"}
-![CIRCT dialects, frontends, lowerings, and outputs.](assets/images/digital-design/circt-dialects.svg){fig-align="center" fig-alt="Full overview of CIRCT dialects, their frontends, lowerings, and hardware outputs" height="730"}
+::: {.column width="68%"}
+![](assets/images/digital-design/circt-dialects-core.svg){fig-align="center" fig-alt="Overview of CIRCT with the core dialects highlighted" height="730"}
 
 ::: {.source-strip}
 [CIRCT, *Getting Started with the CIRCT Project*](https://circt.llvm.org/docs/GettingStarted/)
 :::
 :::
-::::
 
-## The core dialects we need today {#circt-core}
+::: {.column width="32%"}
+The highlighted dialects match the concepts from the digital-design primer:
 
-:::: {.columns}
-::: {.column width="60%"}
-- **`hw` - structure:** modules, ports, instances, and hardware types.
-
-- **`comb` - logic:** pure combinational operations on bit vectors.
-
-- **`seq` - time:** registers and other clocked state.
-
-- **`sv` - SystemVerilog:** constructs needed while lowering and emitting RTL.
-:::
-
-::: {.column width="40%"}
-These core dialects can coexist in the same design.
+**`hw`** structure<br>
+**`comb`** combinational logic<br>
+**`seq`** state
 
 ::: {.fragment}
-The wider CIRCT ecosystem also models pipelines, scheduling, handshakes,
-finite-state machines, services, simulation, and more.
-:::
+CIRCT also contains other hardware dialects, transformations, analyses, and
+tools.
 
-::: {.fragment}
-[Next, we will play with CIRCT through its tools.]{.marker}
+[Next: use the tools.]{.marker}
 :::
 :::
 ::::

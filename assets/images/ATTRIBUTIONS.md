@@ -118,9 +118,11 @@
 
 ## CIRCT dialect overview
 
-- Local file: `digital-design/circt-dialects.svg`
+- Local files: `digital-design/circt-dialects.svg` and
+  `digital-design/circt-dialects-core.svg`
 - Description: official overview of CIRCT dialects, their interactions, and
-  their paths from frontend languages to hardware outputs
+  their paths from frontend languages to hardware outputs; the `-core` variant
+  locally highlights the official Core dialects cluster
 - Source: CIRCT, *Getting Started with the CIRCT Project*,
   <https://circt.llvm.org/docs/GettingStarted/>
 - Original SVG: <https://circt.llvm.org/includes/img/dialects.svg>
