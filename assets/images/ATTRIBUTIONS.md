@@ -127,6 +127,16 @@
   <https://circt.llvm.org/docs/GettingStarted/>
 - Original SVG: <https://circt.llvm.org/includes/img/dialects.svg>
 
+## Hardware compiler explorers
+
+- Local files: `circt/compiler-explorer-circt.jpg` and
+  `circt/synthexplorer.jpg`
+- Description: screenshots of Compiler Explorer running CIRCT and Synth
+  Explorer showing an RTL design beside its synthesized schematic
+- Sources: <https://circt.godbolt.org/> and <https://www.synthexplorer.dev/>
+- Captured: 2026-08-03
+- Project licenses: Compiler Explorer BSD-2-Clause; Synth Explorer Apache-2.0
+
 ## FPGA background figures
 
 - Local files: `digital-design/fpga-cellular-automaton.svg` and

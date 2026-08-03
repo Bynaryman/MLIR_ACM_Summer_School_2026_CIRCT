@@ -8,6 +8,30 @@ This section follows the [ARITH 2026 CIRCT Tutorial](https://github.com/cowardsa
 2. **Synthesis & Reports:** `circt-synth`, AIGER export, and area estimation.
 :::
 
+## Compiler explorers {#tools-compiler-explorers}
+
+:::: {.columns}
+::: {.column width="50%"}
+### [Compiler Explorer (Godbolt)](https://circt.godbolt.org/)
+
+[![](assets/images/circt/compiler-explorer-circt.jpg){fig-alt="Compiler Explorer running CIRCT opt on a small CIRCT module" width="100%"}](https://circt.godbolt.org/)
+
+`CIRCT IR` $\rightarrow$ `circt-opt` $\rightarrow$ transformed IR
+:::
+
+::: {.column width="50%"}
+### [Synth Explorer](https://www.synthexplorer.dev/)
+
+[![](assets/images/circt/synthexplorer.jpg){fig-alt="Synth Explorer showing Verilog beside its synthesized gate schematic" width="100%"}](https://www.synthexplorer.dev/)
+
+RTL $\rightarrow$ Yosys or Vivado $\rightarrow$ schematic and reports
+:::
+::::
+
+::: {.fragment}
+Useful for quick experiments. For the exercises, we use a pinned container.
+:::
+
 ## Start the environment {#tools-setup}
 
 Pull and enter the pre-built course image:
