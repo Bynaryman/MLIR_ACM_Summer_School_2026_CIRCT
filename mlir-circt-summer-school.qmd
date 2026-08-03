@@ -33,7 +33,7 @@ format:
       - styles/code-mlir.css
       - styles/code-python.css
     slide-level: 2
-    navigation-mode: vertical
+    navigation-mode: linear
     view: slide
     scroll-view:
       activate: false
