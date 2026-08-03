@@ -284,12 +284,15 @@ balance the resulting stages.**
 In software, how do we reuse code? What is the hardware equivalent?
 :::
 
-::::: {.fragment}
+::: {.fragment data-fragment-index="0"}
 **Software:** functions. **Hardware:** modules.
+:::
 
 :::: {.columns}
 ::: {.column width="55%"}
-```{.systemverilog code-line-numbers="|1-2,8-9"}
+:::: {.r-stack}
+::: {.fragment .fade-out .instant-fragment data-fragment-index="0"}
+```{.systemverilog code-line-numbers="true"}
 // Declaration of a new module.
 module mac4(
   input  logic [3:0] a, b, c,
@@ -307,7 +310,29 @@ endmodule
 ```
 :::
 
+::: {.fragment .instant-fragment data-fragment-index="0"}
+```{.systemverilog code-line-numbers="1-2,8-9"}
+// Declaration of a new module.
+module mac4(
+  input  logic [3:0] a, b, c,
+  output logic [8:0] y
+);
+  logic [7:0] product;
+
+  // Instantiation of an existing module.
+  mul4 u_mul(
+    .a(a), .b(b), .p(product));
+
+  assign y =
+    {1'b0, product} + {5'b0, c};
+endmodule
+```
+:::
+::::
+:::
+
 ::: {.column width="45%"}
+::: {.fragment data-fragment-index="0"}
 - `mac4` becomes a reusable hardware **definition**.
 - `u_mul` names this **instance** of `mul4`.
 - Port connections become **wires**.
@@ -315,8 +340,8 @@ endmodule
 Hierarchy organizes the description. Synthesis may later flatten it or optimize
 across its boundaries.
 :::
+:::
 ::::
-:::::
 
 ## Build bottom-up {#dd-bottom-up}
 
