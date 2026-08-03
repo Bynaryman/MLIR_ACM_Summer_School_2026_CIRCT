@@ -10,6 +10,15 @@
   color: var(--course-accent);
 }
 
+.reveal .slides img {
+  filter: drop-shadow(0 0.18em 0.28em rgb(15 23 42 / 24%));
+}
+
+/* A layered stack is one visual; shadowing each layer creates dark duplicates. */
+.reveal .slides .r-stack img {
+  filter: none;
+}
+
 .reveal :is(.marker, mark) {
   padding: 0 0.08em;
   color: var(--course-accent);

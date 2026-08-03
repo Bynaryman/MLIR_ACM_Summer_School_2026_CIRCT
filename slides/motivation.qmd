@@ -78,7 +78,11 @@
 Who has seen a version of this plot before?
 :::
 
-![Fifty years of microprocessor trends. [@rupp2022microprocessor]](assets/images/motivation/rupp-50-years-processor-trend-annotated.svg){fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021, annotated with a Moore's law guide and a boundary between the single-core free-gains era and the many-core and specialized-architecture era" height="570"}
+![](assets/images/motivation/rupp-50-years-processor-trend-annotated.svg){.motivation-trend-image fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021, annotated with a Moore's law guide and a boundary between the single-core free-gains era and the many-core and specialized-architecture era" height="550"}
+
+::: {.motivation-trend-caption}
+Fifty years of microprocessor trends. [@rupp2022microprocessor]
+:::
 
 ## Some machines are experts at specialization {#motivation-fp8-gpu}
 
@@ -90,15 +94,25 @@ Who knows these machines?
 
 :::: {.columns}
 ::: {.column width="50%"}
-![**GPU:** matrix-multiply instructions backed by dedicated Tensor Core hardware. [@nvidia2022hopper]](assets/images/motivation/nvidia-h100-sxm5.png){.motivation-machine-image fig-align="center" fig-alt="NVIDIA H100 SXM5 GPU module with the central Hopper GPU and surrounding HBM stacks"}
+![](assets/images/motivation/nvidia-h100-sxm5.png){.motivation-machine-image fig-align="center" fig-alt="NVIDIA H100 SXM5 GPU module with the central Hopper GPU and surrounding HBM stacks"}
+
+::: {.motivation-machine-caption .fragment data-fragment-index="0"}
+**GPU:** matrix-multiply instructions backed by dedicated Tensor Core hardware.
+[@nvidia2022hopper]
+:::
 :::
 
 ::: {.column width="50%"}
-![**TPU:** a processor built around matrix-multiply hardware. [@google2017cloudtpu; @jouppi2020tpu]](assets/images/motivation/google-tpu-v2-hero.webp){.motivation-machine-image fig-align="center" fig-alt="Google second-generation Cloud TPU board connected by colored high-speed interconnect cables"}
+![](assets/images/motivation/google-tpu-v2-hero.webp){.motivation-machine-image fig-align="center" fig-alt="Google second-generation Cloud TPU board connected by colored high-speed interconnect cables"}
+
+::: {.motivation-machine-caption .fragment data-fragment-index="0"}
+**TPU:** a processor built around matrix-multiply hardware.
+[@google2017cloudtpu; @jouppi2020tpu]
+:::
 :::
 ::::
 
-::: {.motivation-machine-takeaway}
+::: {.motivation-machine-takeaway .fragment data-fragment-index="1"}
 **Specialization puts [more of the problem directly into the machine]{.marker}.**
 :::
 

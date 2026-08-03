@@ -57,18 +57,25 @@
   height: 245px;
   object-fit: cover;
   object-position: center;
-  filter: drop-shadow(0 0.18em 0.28em rgb(15 23 42 / 24%));
 }
 
-.reveal #motivation-fp8-gpu figcaption {
+.reveal #motivation-fp8-gpu .motivation-machine-caption {
   min-height: 2.6em;
   margin-top: 0.35em;
   font-size: 0.65em;
   line-height: 1.25;
+  text-align: center;
 }
 
 .reveal #motivation-fp8-gpu .motivation-machine-takeaway {
   margin-top: 0.45em;
+  text-align: center;
+}
+
+.reveal #motivation-specialization .motivation-trend-caption {
+  margin-top: 0.25em;
+  color: #52616b;
+  font-size: 0.58em;
   text-align: center;
 }
 
