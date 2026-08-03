@@ -276,11 +276,20 @@ datapath so each stage can meet the clock period.
 balance the resulting stages.**
 :::
 
-## Modules name and reuse structure {#dd-hierarchy}
+## Quiz: how do we reuse a design? {#dd-hierarchy}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+In software, how do we reuse code? What is the hardware equivalent?
+:::
+
+::::: {.fragment}
+**Software:** functions. **Hardware:** modules.
 
 :::: {.columns}
 ::: {.column width="55%"}
-```{.systemverilog code-line-numbers="1-2,8-9"}
+```{.systemverilog code-line-numbers="|1-2,8-9"}
 // Declaration of a new module.
 module mac4(
   input  logic [3:0] a, b, c,
@@ -303,12 +312,11 @@ endmodule
 - `u_mul` names this **instance** of `mul4`.
 - Port connections become **wires**.
 
-::: {.fragment}
 Hierarchy organizes the description. Synthesis may later flatten it or optimize
 across its boundaries.
 :::
-:::
 ::::
+:::::
 
 ## Build bottom-up {#dd-bottom-up}
 
