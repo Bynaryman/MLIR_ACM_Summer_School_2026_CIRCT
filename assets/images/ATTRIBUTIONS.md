@@ -140,7 +140,10 @@
 ## Digital-design primer figures
 
 - Local files: `digital-design/register-timing-question.svg`,
-  `digital-design/register-timing.svg`,
+  `digital-design/register-timing-rising.svg`,
+  `digital-design/register-timing-negedge.svg`,
+  `digital-design/register-timing-sync-reset.svg`,
+  `digital-design/register-timing-async-reset.svg`,
   `digital-design/clocked-datapath.svg`,
   `digital-design/stored-program-models.svg`, and
   `digital-design/spatial-models.svg`

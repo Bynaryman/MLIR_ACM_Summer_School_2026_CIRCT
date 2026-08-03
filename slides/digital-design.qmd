@@ -99,37 +99,119 @@ The carry exists only when the wires have room for it. **Width is behavior.**
 
 ## Registers: when does `q` change? {#dd-registers}
 
-::: {.callout-note appearance="simple" icon=false}
+::: {.r-stack .dd-ff-heading-stack}
+::: {.callout-note .fragment .fade-out .instant-fragment data-fragment-index="0" appearance="simple" icon=false}
 ## Question
 
 This register samples `d` on a rising edge. If `d` changes between two edges,
 when can `q` change?
 :::
 
-:::: {.columns}
-::: {.column width="28%"}
+::: {.dd-ff-stage-heading .fragment .fade-in-then-out .instant-fragment data-fragment-index="0"}
+**Basic D-Q flip-flop:** sample `d` on each rising edge.
+:::
+
+::: {.dd-ff-stage-heading .fragment .fade-in-then-out .instant-fragment data-fragment-index="1"}
+**Falling-edge flip-flop:** move the sampling instant.
+:::
+
+::: {.dd-ff-stage-heading .fragment .fade-in-then-out .instant-fragment data-fragment-index="2"}
+**Synchronous reset:** observe reset on the clock edge.
+:::
+
+::: {.dd-ff-stage-heading .fragment .instant-fragment data-fragment-index="3"}
+**Asynchronous, active-low reset:** reset immediately when `rst_n` falls.
+:::
+:::
+
+::::: {.columns .dd-ff-layout}
+:::: {.column width="40%"}
+::: {.r-stack .dd-ff-code-stack}
+::: {.fragment .fade-out .instant-fragment data-fragment-index="0"}
 ```systemverilog
 always_ff @(posedge clk)
   q <= d;
 ```
 :::
 
-::: {.column width="72%"}
-::: {.r-stack}
-::: {.fragment .fade-out data-fragment-index="0" style="width: 100%;"}
+::: {.fragment .fade-in-then-out .instant-fragment data-fragment-index="0"}
+```systemverilog
+// Basic D-Q Flip-Flop (FF).
+always_ff @(posedge clk)
+  q <= d;
+```
+:::
+
+::: {.fragment .fade-in-then-out .instant-fragment data-fragment-index="1"}
+```systemverilog
+// Falling-edge FF.
+always_ff @(negedge clk)
+  q <= d;
+```
+:::
+
+::: {.fragment .fade-in-then-out .instant-fragment data-fragment-index="2"}
+```systemverilog
+// Synchronous active-high reset.
+always_ff @(posedge clk)
+  if (rst) q <= 1'b0;
+  else     q <= d;
+```
+:::
+
+::: {.fragment .instant-fragment data-fragment-index="3"}
+```systemverilog
+// Asynchronous active-low reset.
+always_ff @(posedge clk or negedge rst_n)
+  if (!rst_n) q <= 1'b0;
+  else        q <= d;
+```
+:::
+:::
+::::
+
+:::: {.column width="57%"}
+::: {.r-stack .dd-ff-waveform-stack}
+::: {.fragment .fade-out .instant-fragment data-fragment-index="0"}
 ![](assets/images/digital-design/register-timing-question.svg){fig-alt="Timing diagram showing clock and d waveforms while the q waveform remains unknown" width="100%"}
 :::
 
-::: {.fragment data-fragment-index="0" style="width: 100%;"}
-![](assets/images/digital-design/register-timing.svg){fig-alt="Completed timing diagram in which d changes between clock edges and q samples it only at rising edges" width="100%"}
+::: {.fragment .fade-in-then-out .instant-fragment data-fragment-index="0"}
+![](assets/images/digital-design/register-timing-rising.svg){fig-alt="Completed timing diagram in which d changes between clock edges and q samples it only at rising edges" width="100%"}
+:::
+
+::: {.fragment .fade-in-then-out .instant-fragment data-fragment-index="1"}
+![](assets/images/digital-design/register-timing-negedge.svg){fig-alt="Timing diagram in which q samples d only at falling clock edges" width="100%"}
+:::
+
+::: {.fragment .fade-in-then-out .instant-fragment data-fragment-index="2"}
+![](assets/images/digital-design/register-timing-sync-reset.svg){fig-alt="Timing diagram in which an active-high synchronous reset changes q only at a rising clock edge" width="100%"}
+:::
+
+::: {.fragment .instant-fragment data-fragment-index="3"}
+![](assets/images/digital-design/register-timing-async-reset.svg){fig-alt="Timing diagram in which an active-low asynchronous reset changes q immediately when asserted" width="100%"}
 :::
 :::
 :::
 ::::
 
-::: {.fragment data-fragment-index="0"}
-**At the next rising edge.** Between edges, `q` keeps its previous value. A
-register introduces **state** and a **cycle boundary**.
+::: {.r-stack .dd-ff-copy-stack}
+::: {.dd-ff-stage-copy .fragment .fade-in-then-out .instant-fragment data-fragment-index="0"}
+At the next rising edge. Between edges, `q` stores its previous value.
+:::
+
+::: {.dd-ff-stage-copy .fragment .fade-in-then-out .instant-fragment data-fragment-index="1"}
+Changing `posedge` to `negedge` changes when the state may update.
+:::
+
+::: {.dd-ff-stage-copy .fragment .fade-in-then-out .instant-fragment data-fragment-index="2"}
+Reset may assert between edges, but this flip-flop applies it only at the next rising edge.
+:::
+
+::: {.dd-ff-stage-copy .fragment .instant-fragment data-fragment-index="3"}
+Edge, reset timing, and reset polarity are hardware choices.<br>
+**Compiler analyses can help match them to the target library.**
+:::
 :::
 
 ## Clock quiz: what does 2 GHz mean? {#dd-clock}

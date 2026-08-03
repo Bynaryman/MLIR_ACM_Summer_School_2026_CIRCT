@@ -9,6 +9,7 @@
 \definecolor{ink}{HTML}{20282D}
 \definecolor{muted}{HTML}{7B858C}
 \definecolor{accent}{HTML}{0F766E}
+\definecolor{reset}{HTML}{9F3347}
 
 \tikzset{
   line/.style={draw=ink, line width=0.72pt, line cap=round, line join=round},
@@ -22,6 +23,7 @@
   label/.style={font=\sffamily\small, text=ink},
   small label/.style={font=\sffamily\scriptsize, text=ink},
   mono label/.style={font=\ttfamily\small, text=ink},
+  timing label/.style={font=\ttfamily\normalsize, text=ink},
   register/.style={draw=ink, fill=white, line width=0.72pt, minimum width=1.35cm,
     minimum height=2.05cm, inner sep=2pt, font=\sffamily\small, text=ink},
   operator/.style={draw=ink, fill=white, line width=0.72pt, circle,
@@ -38,46 +40,109 @@
 \newcommand{\RegisterTimingInputs}{%
   \path[use as bounding box] (0,0) rectangle (15.4,5.5);
 
-  \node[mono label, anchor=east] at (1.15,4.55) {clk};
-  \node[mono label, anchor=east] at (1.15,2.95) {d};
-  \node[mono label, anchor=east] at (1.15,1.35) {q};
+  \node[timing label, anchor=east] at (1.15,4.55) {clk};
+  \node[timing label, anchor=east] at (1.15,3.20) {d};
+  \node[timing label, anchor=east] at (1.15,0.70) {q};
 
-  \draw[draw=ink, line width=1.15pt, line cap=round, line join=round]
+  \draw[draw=ink, line width=1.55pt, line cap=round, line join=round]
     (1.45,4.20) -- (2.25,4.20) -- (2.25,4.90) -- (4.15,4.90)
     -- (4.15,4.20) -- (6.05,4.20) -- (6.05,4.90) -- (7.95,4.90)
     -- (7.95,4.20) -- (9.85,4.20) -- (9.85,4.90) -- (11.75,4.90)
     -- (11.75,4.20) -- (13.65,4.20) -- (13.65,4.90) -- (15.05,4.90);
 
-  \foreach \x in {2.25,6.05,9.85,13.65} {
-    \draw[draw=muted!72, line width=0.85pt, dashed, line cap=round]
-      (\x,0.82) -- (\x,5.12);
-  }
+  \draw[draw=ink, line width=1.65pt, line cap=round, line join=round]
+    (1.45,2.85) -- (3.55,2.85) -- (3.55,3.55) -- (7.00,3.55)
+    -- (7.00,2.85) -- (11.35,2.85) -- (11.35,3.55) -- (15.05,3.55);
+}
 
-  \draw[draw=ink, line width=1.25pt, line cap=round, line join=round]
-    (1.45,2.60) -- (3.55,2.60) -- (3.55,3.30) -- (8.05,3.30)
-    -- (8.05,2.60) -- (11.35,2.60) -- (11.35,3.30) -- (15.05,3.30);
+\newcommand{\RisingEdgeGuides}{%
+  \foreach \x in {2.25,6.05,9.85,13.65} {
+    \draw[draw=muted!72, line width=1.0pt, dashed, line cap=round]
+      (\x,0.18) -- (\x,5.12);
+  }
+}
+
+\newcommand{\FallingEdgeGuides}{%
+  \foreach \x in {4.15,7.95,11.75} {
+    \draw[draw=muted!72, line width=1.0pt, dashed, line cap=round]
+      (\x,0.18) -- (\x,5.12);
+  }
 }
 
 \newcommand{\RegisterTiming}{%
   \RegisterTimingInputs
+  \RisingEdgeGuides
 
-  \draw[draw=accent, line width=1.4pt, line cap=round, line join=round]
-    (1.45,1.00) -- (6.05,1.00) -- (6.05,1.70) -- (9.85,1.70)
-    -- (9.85,1.00) -- (13.65,1.00) -- (13.65,1.70) -- (15.05,1.70);
+  \draw[draw=accent, line width=1.75pt, line cap=round, line join=round]
+    (1.45,0.35) -- (6.05,0.35) -- (6.05,1.05) -- (9.85,1.05)
+    -- (9.85,0.35) -- (13.65,0.35) -- (13.65,1.05) -- (15.05,1.05);
 
-  \foreach \x/\y in {2.25/1.00,6.05/1.70,9.85/1.00,13.65/1.70} {
+  \foreach \x/\y in {2.25/0.35,6.05/1.05,9.85/0.35,13.65/1.05} {
     \fill[white] (\x,\y) circle[radius=2.6pt];
-    \draw[accent, line width=1.1pt] (\x,\y) circle[radius=2.6pt];
+    \draw[accent, line width=1.25pt] (\x,\y) circle[radius=2.8pt];
   }
-
-  \node[small label, anchor=west, text=accent] at (1.45,0.46)
-    {q samples d only at a rising edge};
 }
 
 \newcommand{\RegisterTimingQuestion}{%
   \RegisterTimingInputs
 
-  \node[font=\sffamily\bfseries\Large, text=accent] at (8.25,1.35) {?};
+  \node[font=\sffamily\bfseries\Large, text=accent] at (8.25,0.70) {?};
+}
+
+\newcommand{\RegisterTimingNegedge}{%
+  \RegisterTimingInputs
+  \FallingEdgeGuides
+
+  \draw[draw=accent, line width=1.75pt, line cap=round, line join=round]
+    (1.45,0.35) -- (4.15,0.35) -- (4.15,1.05) -- (7.95,1.05)
+    -- (7.95,0.35) -- (11.75,0.35) -- (11.75,1.05) -- (15.05,1.05);
+
+  \foreach \x/\y in {4.15/1.05,7.95/0.35,11.75/1.05} {
+    \fill[white] (\x,\y) circle[radius=2.6pt];
+    \draw[accent, line width=1.25pt] (\x,\y) circle[radius=2.8pt];
+  }
+}
+
+\newcommand{\RegisterTimingSyncReset}{%
+  \RegisterTimingInputs
+  \RisingEdgeGuides
+  \node[timing label, anchor=east, text=reset] at (1.15,2.00) {rst};
+
+  \draw[draw=reset, line width=1.65pt, line cap=round, line join=round]
+    (1.45,1.65) -- (7.00,1.65) -- (7.00,2.35) -- (10.80,2.35)
+    -- (10.80,1.65) -- (15.05,1.65);
+
+  \draw[draw=accent, line width=1.75pt, line cap=round, line join=round]
+    (1.45,0.35) -- (6.05,0.35) -- (6.05,1.05) -- (9.85,1.05)
+    -- (9.85,0.35) -- (13.65,0.35) -- (13.65,1.05) -- (15.05,1.05);
+
+  \foreach \x/\y in {2.25/0.35,6.05/1.05,9.85/0.35,13.65/1.05} {
+    \fill[white] (\x,\y) circle[radius=2.6pt];
+    \draw[accent, line width=1.25pt] (\x,\y) circle[radius=2.8pt];
+  }
+}
+
+\newcommand{\RegisterTimingAsyncReset}{%
+  \RegisterTimingInputs
+  \RisingEdgeGuides
+  \node[timing label, anchor=east, text=reset] at (1.15,2.00) {rst\_n};
+
+  \draw[draw=reset, line width=1.65pt, line cap=round, line join=round]
+    (1.45,2.35) -- (7.00,2.35) -- (7.00,1.65) -- (10.80,1.65)
+    -- (10.80,2.35) -- (15.05,2.35);
+  \draw[draw=reset!72, line width=1.0pt, dashed, line cap=round]
+    (7.00,0.18) -- (7.00,5.12);
+
+  \draw[draw=accent, line width=1.75pt, line cap=round, line join=round]
+    (1.45,0.35) -- (6.05,0.35) -- (6.05,1.05) -- (7.00,1.05)
+    -- (7.00,0.35) -- (13.65,0.35) -- (13.65,1.05) -- (15.05,1.05);
+
+  \foreach \x/\y in {2.25/0.35,6.05/1.05,9.85/0.35,13.65/1.05} {
+    \fill[white] (\x,\y) circle[radius=2.6pt];
+    \draw[accent, line width=1.25pt] (\x,\y) circle[radius=2.8pt];
+  }
+  \fill[white] (7.00,0.35) circle[radius=2.6pt];
+  \draw[reset, line width=1.25pt] (7.00,0.35) circle[radius=2.8pt];
 }
 
 \newcommand{\ClockedDatapath}{%
@@ -204,6 +269,12 @@
     \RegisterTimingQuestion
   \or
     \RegisterTiming
+  \or
+    \RegisterTimingNegedge
+  \or
+    \RegisterTimingSyncReset
+  \or
+    \RegisterTimingAsyncReset
   \or
     \ClockedDatapath
   \or
