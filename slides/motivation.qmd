@@ -140,8 +140,7 @@ Who knows these machines?
 floating-point formats**.
 
 ::: {.incremental}
-- **Emeraude:** make number formats and operators part of the design space
-  [@uguen2020hls; @dinechin2024asa].
+- **Emeraude:** make number formats and operators part of the design space.
 
 - **FloPoCo:** generate arithmetic operators for a target, a frequency, and a
   numerical contract.
