@@ -379,24 +379,26 @@ The same physical chip can implement many different digital circuits.
 
 ## Quiz: which function is in this LUT? {#dd-fpga-lut}
 
-:::: {.columns}
-::: {.column width="50%"}
-![A 2-input lookup table. [@ledoux2024thesis]](assets/images/digital-design/thesis-lut2.svg){fig-alt="Two input bits address one of four stored output bits in a lookup table" width="100%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+Which two-input gate is stored here?
 :::
 
-::: {.column width="50%"}
+:::: {.columns}
+::: {.column width="54%"}
+![A 2-input lookup table.](assets/images/digital-design/thesis-lut2.svg){fig-alt="Two input bits address one of four stored output bits in a lookup table" width="96%"}
+:::
+
+::: {.column width="46%"}
+**Truth table**
+
 | `a` | `b` | stored output |
 |---:|---:|---:|
 | 0 | 0 | 0 |
 | 0 | 1 | 1 |
 | 1 | 0 | 1 |
 | 1 | 1 | 1 |
-
-::: {.callout-note appearance="simple" icon=false}
-## Question
-
-Which two-input gate is stored here?
-:::
 
 ::: {.fragment}
 **OR.** A LUT2 stores $2^2=4$ bits; a LUT6 stores $2^6=64$ bits.
