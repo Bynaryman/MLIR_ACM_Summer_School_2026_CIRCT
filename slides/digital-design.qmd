@@ -321,18 +321,18 @@ systolic_array
 :::
 ::::
 
-## Quiz: one PE or nine? {#dd-generate}
+## Quiz: one processing element or nine? {#dd-generate}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-In the finished circuit, does this code create **one `pe` reused nine times** or
-**nine `pe` instances operating in parallel**?
+In the finished circuit, does this code create one **Processing Element (PE)**
+reused nine times or **nine PE instances operating in parallel**?
 :::
 
 :::: {.columns}
 ::: {.column width="38%"}
-```systemverilog
+```{.systemverilog code-line-numbers="1-2,6"}
 genvar row, col;
 generate
   for (row = 0; row < 3; row++)
@@ -341,18 +341,18 @@ generate
 endgenerate
 ```
 
-::: {.fragment}
-**Nine separate PEs, operating in parallel.**
+::: {.fragment data-fragment-index="0"}
+**Nine separate Processing Elements (PEs), operating in parallel.**
 
 `generate` repeats hardware while the circuit is being built. It is not a loop
 that runs while the circuit operates.
-
-3 by 3 output-stationary array [@ledoux2024thesis].
 :::
 :::
 
 ::: {.column width="62%"}
-![](assets/images/digital-design/thesis-systolic-array.svg){.fragment fig-alt="Three by three systolic array with nine processing elements and local diagonal data connections" width="96%"}
+::: {.fragment data-fragment-index="0"}
+![3 $\times$ 3 matrix-multiplication engine. [@ledoux2024thesis]](assets/images/digital-design/thesis-systolic-array.svg){fig-alt="Three by three systolic array with nine processing elements and local diagonal data connections" width="93%"}
+:::
 :::
 ::::
 
