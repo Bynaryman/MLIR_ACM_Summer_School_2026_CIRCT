@@ -76,6 +76,12 @@ endmodule
 
 ## Bit widths: where does the carry go? {#dd-widths}
 
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+For `a = 15` and `b = 1`, what values reach `wrapped` and `exact`?
+:::
+
 :::: {.columns}
 ::: {.column width="52%"}
 ```systemverilog
@@ -90,12 +96,6 @@ assign exact =
 :::
 
 ::: {.column width="48%"}
-::: {.callout-note appearance="simple" icon=false}
-## Question
-
-For `a = 15` and `b = 1`, what values reach `wrapped` and `exact`?
-:::
-
 ::: {.fragment}
 ```text
 wrapped = 4'b0000   // 0
