@@ -349,7 +349,7 @@ across its boundaries.
 ::: {.column width="42%"}
 1. **Multiplier** produces the **wire `p`**: $p = a \times b$
 2. **MAC** connects that **same wire `p`** to its adder: $y = p + c$
-3. **Processing element**: MAC + registers
+3. **Processing Element (PE)**: MAC + registers
 4. **Array**: many connected PEs
 
 ::: {.fragment}
@@ -370,18 +370,19 @@ systolic_array
 :::
 ::::
 
-## Quiz: one processing element or nine? {#dd-generate}
+## Quiz: how many PEs? {#dd-generate}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-In the finished circuit, does this code create one **Processing Element (PE)**
-reused nine times or **nine PE instances operating in parallel**?
+In the following hardware code: **one PE or nine PEs?**
 :::
 
 :::: {.columns}
 ::: {.column width="38%"}
-```{.systemverilog code-line-numbers="1-2,6"}
+:::: {.r-stack}
+::: {.fragment .fade-out .instant-fragment data-fragment-index="0"}
+```{.systemverilog code-line-numbers="true"}
 genvar row, col;
 generate
   for (row = 0; row < 3; row++)
@@ -389,9 +390,22 @@ generate
       pe u_pe(/* neighbours */);
 endgenerate
 ```
+:::
+
+::: {.fragment .instant-fragment data-fragment-index="0"}
+```{.systemverilog code-line-numbers="3-5"}
+genvar row, col;
+generate
+  for (row = 0; row < 3; row++)
+    for (col = 0; col < 3; col++)
+      pe u_pe(/* neighbours */);
+endgenerate
+```
+:::
+::::
 
 ::: {.fragment data-fragment-index="0"}
-**Nine separate Processing Elements (PEs), operating in parallel.**
+**Nine PEs, operating in parallel.**
 
 `generate` repeats hardware while the circuit is being built. It is not a loop
 that runs while the circuit operates.
@@ -400,7 +414,7 @@ that runs while the circuit operates.
 
 ::: {.column width="62%"}
 ::: {.fragment data-fragment-index="0"}
-![3 $\times$ 3 matrix-multiplication engine. [@ledoux2024thesis]](assets/images/digital-design/thesis-systolic-array.svg){fig-alt="Three by three systolic array with nine processing elements and local diagonal data connections" width="93%"}
+![3 $\times$ 3 matrix-multiplication engine.](assets/images/digital-design/thesis-systolic-array.svg){fig-alt="Three by three systolic array with nine processing elements and local diagonal data connections" width="93%"}
 :::
 :::
 ::::
