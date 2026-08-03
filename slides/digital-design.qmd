@@ -423,7 +423,7 @@ that runs while the circuit operates.
 
 :::: {.columns}
 ::: {.column width="54%"}
-![Xilinx XC2064 package. [@ledoux2024thesis]](assets/images/digital-design/xc2064-package.png){fig-alt="Xilinx XC2064 FPGA in a 48-pin dual in-line package" width="100%"}
+![Xilinx XC2064 package.](assets/images/digital-design/xc2064-package.png){fig-alt="Xilinx XC2064 FPGA in a 48-pin dual in-line package" width="100%"}
 :::
 
 ::: {.column width="46%"}
@@ -431,7 +431,7 @@ that runs while the circuit operates.
 
 - The chip is manufactured first.
 - Its logic and connections are configured later, in the **field**.
-- 1985: Xilinx XC2064, the first commercially viable FPGA.
+- 1985: Xilinx XC2064, one of the first commercial FPGAs.
 - 64 configurable logic blocks, each containing two 3-input LUTs.
 
 ::: {.fragment}
