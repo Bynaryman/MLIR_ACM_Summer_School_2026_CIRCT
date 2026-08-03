@@ -90,6 +90,10 @@ exact   = 5'b10000  // 16
 
 The carry exists only when the wires have room for it. **Width is behavior.**
 :::
+
+::: {.fragment}
+*(And this could be an analysis pass...)*
+:::
 :::
 ::::
 
