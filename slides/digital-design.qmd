@@ -298,8 +298,8 @@ across its boundaries.
 
 :::: {.columns}
 ::: {.column width="42%"}
-1. **Multiplier**: $p = a \times b$
-2. **MAC**: $y = p + c$
+1. **Multiplier** produces the **wire `p`**: $p = a \times b$
+2. **MAC** connects that **same wire `p`** to its adder: $y = p + c$
 3. **Processing element**: MAC + registers
 4. **Array**: many connected PEs
 
@@ -313,16 +313,11 @@ sequence of software calls.
 ```text
 systolic_array
 `-- pe [rows x columns]
-    |-- mac
-    |   |-- multiplier
-    |   `-- adder
+    |-- mac: y = p + c
+    |   |-- multiplier: p = a * b
+    |   `-- adder: consumes p and c
     `-- registers
 ```
-
-::: {.fragment}
-The module boundary tells us **what is reused**; connections tell us how data
-moves between instances.
-:::
 :::
 ::::
 
