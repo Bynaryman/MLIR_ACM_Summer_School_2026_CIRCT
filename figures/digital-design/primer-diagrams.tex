@@ -2,7 +2,7 @@
 
 \usepackage{lmodern}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,positioning}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,positioning,shadows.blur}
 
 \providecommand{\DiagramLayer}{0}
 
@@ -20,14 +20,18 @@
   datapath line/.style={draw=ink, line width=1.15pt, line cap=round, line join=round},
   datapath data/.style={datapath line, -{Latex[length=1.9mm,width=1.2mm]}},
   datapath clock/.style={draw=muted, line width=1.0pt, line cap=round, line join=round},
+  soft shadow/.style={blur shadow={shadow blur steps=5, shadow opacity=18,
+    shadow xshift=0.7mm, shadow yshift=-0.7mm}},
   label/.style={font=\sffamily\small, text=ink},
   small label/.style={font=\sffamily\scriptsize, text=ink},
   mono label/.style={font=\ttfamily\small, text=ink},
   timing label/.style={font=\ttfamily\normalsize, text=ink},
-  register/.style={draw=ink, fill=white, line width=0.72pt, minimum width=1.35cm,
-    minimum height=2.05cm, inner sep=2pt, font=\sffamily\small, text=ink},
+  register/.style={draw=ink, fill=white, line width=0.9pt, minimum width=1.55cm,
+    minimum height=2.10cm, inner sep=2pt, font=\sffamily\small, text=ink,
+    soft shadow},
   operator/.style={draw=ink, fill=white, line width=0.72pt, circle,
-    minimum size=0.86cm, inner sep=0pt, font=\sffamily\large, text=ink},
+    minimum size=0.90cm, inner sep=0pt, font=\sffamily\large, text=ink,
+    soft shadow},
   machine/.style={draw=ink, fill=white, line width=0.72pt, rounded corners=1pt,
     minimum width=2.45cm, minimum height=1.65cm, align=center,
     font=\sffamily\small, text=ink},
@@ -148,15 +152,11 @@
 \newcommand{\ClockedDatapath}{%
   \path[use as bounding box] (0,0) rectangle (15.4,6.0);
 
-  \node[register, line width=1.15pt] (r0) at (2.55,3.55) {register};
-  \node[register, line width=1.15pt] (r1) at (12.85,3.55) {register};
-
-  \draw[datapath line] ($(r0.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
-  \draw[datapath line] ($(r1.south west)+(0.12,0)$) -- ++(0.22,0.18) -- ++(-0.22,0.18);
-
   \node[draw=muted!72, dashed, rounded corners=2pt, line width=0.95pt,
     minimum width=6.45cm, minimum height=2.55cm,
     label={[label, text=muted]above:combinational logic}] (comb) at (7.70,3.55) {};
+  \node[register, line width=1.15pt] (r0) at (2.55,3.55) {register};
+  \node[register, line width=1.15pt] (r1) at (12.85,3.55) {register};
   \node[operator, line width=1.15pt] (mul) at (6.45,3.55) {$\times$};
   \node[operator, line width=1.15pt] (add) at (8.95,3.55) {$+$};
 
@@ -169,14 +169,21 @@
   \node[small label, anchor=south] at (6.45,4.08) {multiply};
   \node[small label, anchor=south] at (8.95,4.08) {add};
 
-  \draw[datapath clock] (1.25,0.95) -- (13.20,0.95);
+  \coordinate (clk0) at ($(r0.west)+(0,-0.62)$);
+  \coordinate (clk1) at ($(r1.west)+(0,-0.62)$);
+  \draw[datapath clock, line width=1.2pt] (1.25,0.95) -- (13.20,0.95);
   \node[mono label, anchor=east, text=muted] at (1.05,0.95) {clk};
-  \draw[datapath clock] (2.20,0.95) |- ($(r0.south west)+(0.12,0.18)$);
-  \draw[datapath clock] (12.50,0.95) |- ($(r1.south west)+(0.12,0.18)$);
+  \draw[datapath clock, line width=1.2pt] (1.45,0.95) |- (clk0);
+  \draw[datapath clock, line width=1.2pt] (11.75,0.95) |- (clk1);
+
+  \draw[datapath line, fill=white]
+    ($(clk0)+(0,-0.19)$) -- ($(clk0)+(0.30,0)$) -- ($(clk0)+(0,0.19)$) -- cycle;
+  \draw[datapath line, fill=white]
+    ($(clk1)+(0,-0.19)$) -- ($(clk1)+(0.30,0)$) -- ($(clk1)+(0,0.19)$) -- cycle;
 
   \draw[decorate, decoration={brace, amplitude=4pt}, draw=ink, line width=0.9pt]
     (3.25,5.32) -- (12.15,5.32)
-    node[midway, yshift=0.38cm, label] {one clock period: 0.5 ns at 2 GHz};
+    node[midway, yshift=0.38cm, label] {one clock period: 0.5 ns = 500 ps at 2 GHz};
 }
 
 \newcommand{\StoredProgramModels}{%

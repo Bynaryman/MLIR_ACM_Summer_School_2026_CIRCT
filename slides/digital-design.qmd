@@ -222,28 +222,42 @@ Edge, reset timing, and reset polarity are hardware choices.<br>
 A processor is clocked at **2 GHz**. How much time separates two rising edges?
 :::
 
-:::: {.columns}
-::: {.column width="30%"}
+::::: {.columns}
+:::: {.column width="40%"}
 ::: {.fragment data-fragment-index="0"}
 $$
 T = \frac{1}{f}
   = \frac{1}{2\,\text{GHz}}
   = 0.5\,\text{ns}
+  = \mathbf{500\,\text{ps}}
 $$
-
-The combinational path has slightly less than one period once register and
-clock timing are included.
-:::
 :::
 
-::: {.column width="70%"}
-![](assets/images/digital-design/clocked-datapath.svg){.fragment data-fragment-index="0" fig-alt="Source register, combinational multiplier and adder, and destination register connected to a common clock" width="100%"}
+::: {.fragment .smaller data-fragment-index="1"}
+**Example cell delays**
+
+- Sky130 HD `OR2_1`: **61 / 189 ps** (rise / fall).
+- Kintex-7 `LUT6`: **119 ps** (no routing).
 :::
 ::::
 
-::: {.fragment data-fragment-index="1"}
-The clock determines **when state advances**. The gates between the registers
-still propagate concurrently.
+:::: {.column width="58%"}
+![](assets/images/digital-design/clocked-datapath.svg){.fragment data-fragment-index="0" fig-alt="Source register, combinational multiplier and adder, and destination register connected to a common clock" width="100%"}
+
+::: {.source-strip .fragment data-fragment-index="1"}
+Sky130 HD Liberty: TT / 25 °C / 1.8 V, 10 ps slew, 0.5 fF load;
+FloPoCo Kintex-7 model from Vivado timing reports. Routing is excluded.
+:::
+::::
+:::::
+
+::: {.fragment .smaller data-fragment-index="2"}
+$$
+t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
+  + t_{\text{setup}} + t_{\text{skew}} < 500\,\text{ps}
+$$
+
+The period is a **budget for the longest register-to-register path**.
 :::
 
 ## Modules name and reuse structure {#dd-hierarchy}
