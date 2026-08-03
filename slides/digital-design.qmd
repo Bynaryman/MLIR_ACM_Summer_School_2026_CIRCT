@@ -3,8 +3,12 @@
 ::: {.callout-note appearance="simple" icon=false}
 ## Quick show of hands
 
-Who has already **written VHDL**, **written Verilog or SystemVerilog**, **used an
-FPGA**, or **seen an ASIC design flow**?
+Who has already:
+
+- **written VHDL**;
+- **written Verilog or SystemVerilog**;
+- **used an FPGA**;
+- **seen an ASIC design flow**?
 :::
 
 ::: {.callout-note .fragment appearance="simple" icon=false}
@@ -19,7 +23,7 @@ Who has **never heard any of those words**?
 We will use tiny **SystemVerilog** examples only to make the hardware visible.
 :::
 
-## Combinational logic: which line runs first? {#dd-combinational}
+## Combinational logic {#dd-combinational}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -43,8 +47,7 @@ endmodule
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-The assignment to `d` is written first. Does the **adder** execute before the
-**multiplier**?
+Which line runs first?
 :::
 
 ::: {.fragment}
