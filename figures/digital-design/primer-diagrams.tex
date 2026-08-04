@@ -19,7 +19,7 @@
   clock/.style={draw=muted, line width=0.62pt, line cap=round},
   datapath line/.style={draw=ink, line width=1.15pt, line cap=round, line join=round},
   datapath data/.style={datapath line, -{Latex[length=1.9mm,width=1.2mm]}},
-  datapath clock/.style={draw=muted, line width=1.0pt, line cap=round, line join=round},
+  datapath clock/.style={draw=accent, line width=1.6pt, line cap=round, line join=round},
   soft shadow/.style={blur shadow={shadow blur steps=5, shadow opacity=18,
     shadow xshift=0.7mm, shadow yshift=-0.7mm}},
   label/.style={font=\sffamily\small, text=ink},
@@ -171,10 +171,11 @@
 
   \coordinate (clk0) at ($(r0.west)+(0,-0.62)$);
   \coordinate (clk1) at ($(r1.west)+(0,-0.62)$);
-  \draw[datapath clock, line width=1.2pt] (1.25,0.95) -- (13.20,0.95);
-  \node[mono label, anchor=east, text=muted] at (1.05,0.95) {clk};
-  \draw[datapath clock, line width=1.2pt] (1.45,0.95) |- (clk0);
-  \draw[datapath clock, line width=1.2pt] (11.75,0.95) |- (clk1);
+  \draw[datapath clock] (1.25,0.95) -- (13.20,0.95);
+  \node[mono label, anchor=east, text=accent, font=\ttfamily\normalsize]
+    at (1.05,0.95) {clk};
+  \draw[datapath clock] (1.45,0.95) |- (clk0);
+  \draw[datapath clock] (11.75,0.95) |- (clk1);
 
   \draw[datapath line, fill=white]
     ($(clk0)+(0,-0.19)$) -- ($(clk0)+(0.30,0)$) -- ($(clk0)+(0,0.19)$) -- cycle;
@@ -183,7 +184,8 @@
 
   \draw[decorate, decoration={brace, amplitude=4pt}, draw=ink, line width=0.9pt]
     (3.25,5.32) -- (12.15,5.32)
-    node[midway, yshift=0.38cm, label] {one clock period: 0.5 ns = 500 ps at 2 GHz};
+    node[midway, yshift=0.40cm, font=\sffamily\large, text=ink]
+      {one clock period: 0.5 ns = 500 ps at 2 GHz};
 }
 
 \newcommand{\StoredProgramModels}{%
