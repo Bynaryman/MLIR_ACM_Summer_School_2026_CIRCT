@@ -133,7 +133,7 @@ But also an [artist]{.marker}.
   </figure>
 </div>
 
-## Electronics {#artist-electronics}
+## Crafting synthesizers {#artist-electronics}
 
 <div class="artist-gallery artist-gallery-wide artist-gallery-captioned">
   <figure>

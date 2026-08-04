@@ -140,6 +140,10 @@ Who knows these machines?
 **Specialization puts [more of the problem directly into the machine]{.marker}.**
 :::
 
+::: {.motivation-machine-takeaway .fragment data-fragment-index="2"}
+New accelerators, new compiler stacks: one origin of [MLIR](https://storage.googleapis.com/gweb-research2023-media/pubtools/5945.pdf#page=2).
+:::
+
 ## Promotion time! {#motivation-team-arithmetic}
 
 :::: {.columns}
