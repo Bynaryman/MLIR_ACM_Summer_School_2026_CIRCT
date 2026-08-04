@@ -180,22 +180,13 @@ New accelerators, new compiler stacks: one origin of [MLIR](https://storage.goog
 ::: {.column width="66%"}
 **Emeraude**, my Inria team, works on:
 
-- **Arithmetic**
-
-- Audio [compilation]{.marker} with [Faust](https://faust.grame.fr/), including
-  an LLVM backend
-
-- **Optimization**
-
-:::: {.r-stack .motivation-generator-stack}
-::: {.motivation-generator-state .fragment .fade-out data-fragment-index="0"}
-**FloPoCo:** a C++ generator of VHDL for arithmetic circuits.
-:::
-
-::: {.motivation-generator-state .fragment .fade-in data-fragment-index="0"}
-**HAriCo:** a C++ IR-based circuit generator.
-:::
-::::
+<ul>
+  <li><strong>Arithmetic</strong></li>
+  <li>Audio <span class="marker">compilation</span> with <a href="https://faust.grame.fr/">Faust</a>, including an LLVM backend</li>
+  <li><strong>Optimization</strong></li>
+  <li><strong>FloPoCo:</strong> a C++ generator of VHDL for arithmetic circuits</li>
+  <li class="fragment" data-fragment-index="0"><strong>HAriCo</strong> <code>[NEW]</code>: a C++ IR-based circuit generator with MLIR connections</li>
+</ul>
 
 ::: {.fragment data-fragment-index="1"}
 **Today:** MLIR + hardware design through **arithmetic circuits**.
