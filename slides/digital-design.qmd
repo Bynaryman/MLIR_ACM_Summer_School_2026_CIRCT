@@ -75,7 +75,7 @@ endmodule
 ::: {.callout-tip .dd-compiler-takeaway .fragment appearance="simple" icon=false}
 ## Compiler takeaway
 
-A dependency analysis sees one combinational graph, independent of source order.
+Dependency analysis recovers the graph, independent of source order.
 :::
 :::
 ::::
@@ -237,7 +237,7 @@ Edge, reset timing, and reset polarity are hardware choices.
 ::: {.callout-tip .dd-compiler-takeaway .fragment .instant-fragment data-fragment-index="4" appearance="simple" icon=false}
 ## Compiler takeaway
 
-Analyses can match these explicit semantics to the flip-flops available in the target library.
+Analyses can match these semantics to flip-flops in the target library.
 :::
 :::
 
@@ -287,8 +287,8 @@ The period is a **budget for the longest register-to-register path**.
 ::: {.callout-tip .dd-compiler-takeaway appearance="simple" icon=false}
 ## Compiler takeaway
 
-**Analyze** the critical path $\rightarrow$ **split** it with registers
-$\rightarrow$ **balance** the pipeline stages.
+**Analyze** the critical path $\rightarrow$ **insert** registers
+$\rightarrow$ **balance** stages.
 :::
 
 ## Quiz: how do we reuse a design? {#dd-hierarchy}
@@ -359,7 +359,7 @@ across its boundaries.
 ::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
 ## Compiler takeaway
 
-Hierarchy analysis finds every instance; transforms can flatten or specialize them.
+Analyze instances. Flatten or specialize them.
 :::
 :::
 ::::
@@ -435,7 +435,7 @@ that runs while the circuit operates.
 ::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
 ## Compiler takeaway
 
-An elaboration pass expands the loop into nine explicit parallel instances.
+Elaboration expands the loop into nine parallel instances.
 :::
 :::
 
@@ -529,7 +529,7 @@ seven-input OR?
 ::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
 ## Compiler takeaway
 
-Technology mapping decomposes logic into the LUTs available on the target FPGA.
+Technology mapping decomposes logic into target LUTs.
 :::
 :::
 ::::
@@ -665,7 +665,7 @@ The intended Boolean function.
 ::: {.callout-tip .dd-compiler-takeaway .fragment appearance="simple" icon=false}
 ## Compiler takeaway
 
-Lowering changes the representation while preserving the Boolean function.
+Lowering changes representation while preserving behavior.
 :::
 
 ## The best animation I have found for this part {#dd-video}
