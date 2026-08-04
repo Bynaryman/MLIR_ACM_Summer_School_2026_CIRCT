@@ -710,6 +710,34 @@
   font-weight: 700;
 }
 
+.reveal .artist-gallery {
+  height: 13.2em;
+  margin: 0.65em auto 0;
+}
+
+.reveal .artist-gallery p {
+  display: flex;
+  gap: 0.55em;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .artist-gallery img {
+  flex: 0 0 auto;
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  max-height: 100%;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 0.2em 0.55em rgba(24, 35, 43, 0.22);
+}
+
 .reveal .edition-banner {
   width: max-content;
   margin: 0 auto 0.65em;

@@ -108,12 +108,21 @@ It can download while we begin.
   <li>Postdoctoral researcher at INSA Lyon and Inria, Emeraude.</li>
   <li>I design <span class="marker">arithmetic circuits</span> and circuit generators with MLIR and CIRCT.</li>
   <li>Incoming Associate Professor at University of Rennes, IRISA and Inria, working on <span class="marker">systolic arrays</span> and <span class="marker">small floating-point formats</span>.</li>
-  <li>Outside work: embedded audio, Eurorack, installation art, and the <span class="marker">dog</span> in the picture.</li>
 </ul>
 
-<div class="whoami-links">More work and links: <a href="https://bynaryman.github.io">bynaryman.github.io</a></div>
+<div class="whoami-links">More work and links: <a href="https://bynaryman.github.io">bynaryman.github.io</a> · <a href="https://github.com/Bynaryman">github.com/Bynaryman</a></div>
 :::
 :::
+
+## ars similis cassus {#artist}
+
+But also an [artist]{.marker}.
+
+<div class="artist-gallery">
+  <img src="assets/images/whoami/ars-similis-cassus.webp" alt="Abstract digital structure reflected over water under a gold sky">
+  <img src="assets/images/whoami/electromechanical-installation.webp" alt="Electromechanical installation assembled from disk-drive mechanisms and control electronics">
+  <img src="assets/images/whoami/ada-modular-synth.webp" alt="Ada beside a modular synthesizer">
+</div>
 
 # From problems to electron flow {#motivation .section-title .center}
 
