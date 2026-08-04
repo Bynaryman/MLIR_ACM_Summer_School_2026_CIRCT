@@ -648,21 +648,30 @@
 
 .reveal .whoami-portrait {
   min-height: 0;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
 }
 
-.reveal .whoami-portrait p,
-.reveal .whoami-portrait img {
+.reveal .whoami-portrait figure,
+.reveal .whoami-portrait p {
   width: 100%;
-  height: 100%;
   margin: 0;
 }
 
 .reveal .whoami-portrait img {
   display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0;
   object-fit: cover;
   object-position: 58% 18%;
+}
+
+.reveal .whoami-portrait figcaption {
+  margin-top: 0.35em;
+  color: #52616e;
+  font-size: 0.42em;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .reveal .whoami-copy {
@@ -688,6 +697,17 @@
 
 .reveal .whoami-list li::marker {
   color: var(--course-accent);
+}
+
+.reveal .whoami-links {
+  margin-top: 0.9em;
+  color: #52616e;
+  font-size: 0.5em;
+}
+
+.reveal .whoami-links a {
+  color: var(--course-accent);
+  font-weight: 700;
 }
 
 .reveal .edition-banner {
