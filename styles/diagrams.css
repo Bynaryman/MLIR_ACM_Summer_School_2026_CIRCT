@@ -96,6 +96,11 @@
   margin: 0;
 }
 
+.reveal #dd-registers .dd-ff-takeaway {
+  font-size: 0.64em;
+  text-align: left;
+}
+
 .reveal #dd-fpga-fabric figure {
   margin-right: auto;
   margin-left: auto;

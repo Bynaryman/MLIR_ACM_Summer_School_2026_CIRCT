@@ -222,9 +222,14 @@ Changing `posedge` to `negedge` changes when the state may update.
 Reset may assert between edges, but this flip-flop applies it only at the next rising edge.
 :::
 
-::: {.dd-ff-stage-copy .fragment .instant-fragment data-fragment-index="3"}
-Edge, reset timing, and reset polarity are hardware choices.<br>
-**Compiler analyses can help match them to the target library.**
+::: {.dd-ff-stage-copy .fragment .fade-in-then-out .instant-fragment data-fragment-index="3"}
+Edge, reset timing, and reset polarity are hardware choices.
+:::
+
+::: {.callout-tip .dd-ff-takeaway .fragment .instant-fragment data-fragment-index="4" appearance="simple" icon=false}
+## Compiler takeaway
+
+Analyses can match these explicit semantics to the flip-flops available in the target library.
 :::
 :::
 
