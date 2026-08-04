@@ -601,72 +601,78 @@ The source language can be the same; the implementation is not.
 
 ## ASIC {#dd-asic-separator .section-title .center}
 
-## ASIC: the circuit becomes geometry {#dd-asic-flow}
+## Quiz: what are we looking at? {#dd-asic-mystery}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+What hardware object is shown here?
+:::
+
+![](assets/images/digital-design/sky130-inverter-gds-3d.png){fig-align="center" fig-alt="Unlabelled layered three-dimensional rendering of a SKY130 standard cell" width="61%"}
+
+## Work upward from geometry {#dd-asic-inverter}
+
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+This standard cell has two transistors. Which Boolean operation does it implement?
+:::
 
 :::: {.columns}
-::: {.column width="68%"}
+::: {.column width="55%"}
+![GDSII polygons extruded by fabrication layer.](assets/images/digital-design/sky130-inverter-gds-3d.png){fig-alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell" width="100%"}
+:::
+
+::: {.column width="45%"}
+![CMOS transistor schematic.](assets/images/digital-design/cmos-inverter.svg){fig-align="center" fig-alt="CMOS circuit with one pMOS and one nMOS transistor driven by input a and producing output y" width="75%"}
+
+::: {.fragment}
+$a=0 \Rightarrow y=1$ and $a=1 \Rightarrow y=0$.
+
+**An inverter:** $y = \neg a$.
+:::
+:::
+::::
+
+## Yes: this line generated that geometry {#dd-asic-rtl}
+
+:::: {.columns}
+::: {.column width="36%"}
+**RTL**
+
+```{.systemverilog .code-emphasis code-line-numbers="false"}
+assign y = ~a;
+```
+
+- **Synthesis** selects an inverter cell.
+- **Physical design** turns that cell into fixed polygons.
+:::
+
+::: {.column width="64%"}
+![](assets/images/digital-design/sky130-inverter-gds-3d.png){fig-align="center" fig-alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell generated from an RTL inversion" width="100%"}
+:::
+::::
+
+## From RTL to GDSII {#dd-asic-flow}
+
+:::: {.columns}
+::: {.column width="70%"}
 ![Main stages of an ASIC physical-design flow. [@ledoux2024thesis]](assets/images/digital-design/thesis-asic-flow.svg){fig-alt="ASIC flow from synthesis through floorplanning, placement, clock-tree synthesis, routing, and GDSII generation" width="100%"}
 :::
 
-::: {.column width="32%"}
-1. Synthesize RTL into logic cells.
-2. Choose a floorplan.
-3. Place every cell.
-4. Build the clock network.
-5. Route metal wires.
-6. Verify and export GDSII.
-:::
-::::
-
-## You can design chips in any shape you want {#dd-placement-art}
-
-**Why does everyone make them square?**
-
-:::: {.columns}
-::: {.column width="50%"}
-![](assets/videos/digital-design/openroad-mlir-placement.mp4){aria-label="OpenROAD placement iterations converging toward the MLIR mark" width="560" autoplay=true loop=true muted=true playsinline=true}
-
-**MLIR**
-:::
-
-::: {.column width="50%"}
-![](assets/videos/digital-design/openroad-llvm-placement.mp4){aria-label="OpenROAD placement iterations converging toward the LLVM dragon" width="560" autoplay=true loop=true muted=true playsinline=true}
-
-**LLVM**
-:::
-::::
-
-*Each dot is a transistor finding its place.*
-
-## One Boolean function, three representations {#dd-asic-cells}
-
-:::: {.columns}
-::: {.column width="28%"}
-**RTL**
-
-```systemverilog
-assign y = a | b;
-```
+::: {.column width="30%"}
+1. Map RTL to logic cells.
+2. Floorplan and place them.
+3. Build the clock network.
+4. Route fixed metal wires.
+5. Verify and export GDSII.
 
 ::: {.fragment}
-The intended Boolean function.
+[RTL becomes geometry through a sequence of compiler passes and physical-design algorithms.]{.marker}
 :::
-:::
-
-::: {.column width="34%"}
-![Logic schematic of a SKY130 OR2 standard cell. [@ledoux2024thesis]](assets/images/digital-design/sky130-or2-schematic.svg){fig-align="center" fig-alt="Schematic representation of a two-input OR standard cell" width="100%"}
-:::
-
-::: {.column width="38%"}
-![Physical layout of the same SKY130 OR2 cell. [@ledoux2024thesis]](assets/images/digital-design/sky130-or2-layout-cropped.svg){fig-align="center" fig-alt="Colored GDSII geometry for a two-input OR standard cell" height="350"}
 :::
 ::::
-
-::: {.callout-tip .dd-compiler-takeaway .fragment appearance="simple" icon=false}
-## Compiler takeaway
-
-Lowering changes representation while preserving behavior.
-:::
 
 ## The best animation I have found for this part {#dd-video}
 

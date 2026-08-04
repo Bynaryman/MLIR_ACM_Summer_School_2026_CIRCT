@@ -150,6 +150,26 @@ But also an [artist]{.marker}.
   </figure>
 </div>
 
+## Crafting silicon {#artist-silicon}
+
+**Why does everyone make them square?**
+
+:::: {.columns}
+::: {.column width="50%"}
+![](assets/videos/digital-design/openroad-mlir-placement.mp4){aria-label="OpenROAD placement iterations converging toward the MLIR mark" width="560" autoplay=true loop=true muted=true playsinline=true}
+
+**MLIR**
+:::
+
+::: {.column width="50%"}
+![](assets/videos/digital-design/openroad-llvm-placement.mp4){aria-label="OpenROAD placement iterations converging toward the LLVM dragon" width="560" autoplay=true loop=true muted=true playsinline=true}
+
+**LLVM**
+:::
+::::
+
+*OpenROAD placement as a visual medium.*
+
 # From problems to electron flow {#motivation .section-title .center}
 
 {{< include slides/motivation.qmd >}}

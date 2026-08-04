@@ -14,6 +14,7 @@ DIAGRAMS=(
   clocked-datapath
   stored-program-models
   spatial-models
+  cmos-inverter
 )
 
 cleanup() {

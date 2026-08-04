@@ -31,6 +31,10 @@
   padding: 0.82em 0.95em;
 }
 
+.reveal .code-emphasis pre code {
+  font-size: 1.15em;
+}
+
 .reveal .cell-output div.sourceCode {
   margin-top: 0.55em;
 }

@@ -2,6 +2,7 @@
 
 \usepackage{lmodern}
 \usepackage{tikz}
+\usepackage{circuitikz}
 \usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,positioning,shadows.blur}
 
 \providecommand{\DiagramLayer}{0}
@@ -272,6 +273,33 @@
     {configuration chooses cell functions and routes};
 }
 
+\newcommand{\CmosInverter}{%
+  \path[use as bounding box] (0,0) rectangle (8.8,7.0);
+
+  \node[pmos, scale=1.35] (pmos) at (4.55,4.70) {};
+  \node[nmos, scale=1.35] (nmos) at (4.55,2.30) {};
+
+  \draw[line] (pmos.S) -- ++(0,0.85)
+    node[above, font=\ttfamily\small, text=ink] {VDD};
+  \draw[line] (pmos.D) -- (nmos.D);
+  \draw[line] (nmos.S) -- ++(0,-0.85) node[ground] {};
+
+  \coordinate (input) at (1.25,3.50);
+  \draw[line] (input) -- (2.35,3.50) |- (pmos.G);
+  \draw[line] (2.35,3.50) |- (nmos.G);
+  \fill[ink] (2.35,3.50) circle[radius=1.7pt];
+
+  \coordinate (output) at (7.60,3.50);
+  \coordinate (output-node) at ($(pmos.D)!0.5!(nmos.D)$);
+  \draw[line] (output-node) -- (output);
+  \fill[ink] (output-node) circle[radius=1.7pt];
+
+  \node[mono label, anchor=east] at (1.10,3.50) {a};
+  \node[mono label, anchor=west] at (7.75,3.50) {y};
+  \node[small label, anchor=west, text=muted] at (5.35,4.70) {pMOS};
+  \node[small label, anchor=west, text=muted] at (5.35,2.30) {nMOS};
+}
+
 \begin{document}
 \begin{tikzpicture}
   \ifcase\DiagramLayer
@@ -290,6 +318,8 @@
     \StoredProgramModels
   \or
     \SpatialModels
+  \or
+    \CmosInverter
   \fi
 \end{tikzpicture}
 \end{document}
