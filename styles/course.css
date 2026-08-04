@@ -152,31 +152,32 @@
 .reveal .course-toc .toc-hands-on,
 .reveal .course-toc .toc-quiz {
   display: inline-block;
-  margin-left: 0.4em;
-  font-size: 0.78em;
+  margin-left: 0.45em;
+  padding: 0.12em 0.42em;
+  border-radius: 0.12em;
+  color: #fff;
+  font-size: 0.68em;
   font-weight: 750;
-}
-
-.reveal .course-toc .toc-time::before,
-.reveal .course-toc .toc-hands-on::before,
-.reveal .course-toc .toc-quiz::before {
-  content: "·";
-  margin-right: 0.4em;
-  color: #94a3b8;
+  line-height: 1.25;
+  text-transform: uppercase;
+  vertical-align: 0.08em;
 }
 
 .reveal .course-toc .toc-time {
-  color: #52616e;
+  float: right;
+  min-width: 4.6em;
+  background: #263746;
   font-family: var(--r-code-font);
   font-variant-numeric: tabular-nums;
+  text-align: center;
 }
 
 .reveal .course-toc .toc-hands-on {
-  color: var(--course-accent);
+  background: var(--course-accent);
 }
 
 .reveal .course-toc .toc-quiz {
-  color: #9a5d00;
+  background: #a14f03;
 }
 
 .reveal .deck-kicker {
