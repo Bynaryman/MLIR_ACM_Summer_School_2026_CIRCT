@@ -82,7 +82,7 @@ This section explains why [modern compiler techniques]{.marker} must reach into 
 :::::
 ::::::
 
-## The free speedups ended {#motivation-specialization}
+## The free speedups ended {#motivation-specialization auto-animate=true auto-animate-id="processor-trends"}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Quiz time
@@ -90,6 +90,7 @@ This section explains why [modern compiler techniques]{.marker} must reach into 
 Who has seen a version of this plot before?
 :::
 
+::: {.motivation-trend-visual data-id="processor-trend-visual"}
 ::: {.motivation-trend-figure}
 ![](assets/images/motivation/rupp-50-years-processor-trend-annotated.svg){.motivation-trend-image fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021, annotated with a Moore's law guide and a boundary between the single-core free-gains era and the many-core and specialized-architecture era" height="550"}
 :::
@@ -97,8 +98,31 @@ Who has seen a version of this plot before?
 ::: {.motivation-trend-caption}
 Fifty years of microprocessor trends. [@rupp2022microprocessor]
 :::
+:::
 
-::: {.motivation-trend-quotes .fragment}
+## The free speedups ended {#motivation-specialization-adages auto-animate=true auto-animate-id="processor-trends"}
+
+:::: {.columns .motivation-trend-columns}
+::: {.column width="58%"}
+::: {.motivation-trend-visual data-id="processor-trend-visual"}
+::: {.motivation-trend-figure}
+![](assets/images/motivation/rupp-50-years-processor-trend-annotated.svg){.motivation-trend-image fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021, annotated with a Moore's law guide and a boundary between the single-core free-gains era and the many-core and specialized-architecture era" height="550"}
+:::
+
+::: {.motivation-trend-caption}
+Fifty years of microprocessor trends. [@rupp2022microprocessor]
+:::
+:::
+:::
+
+::: {.column width="42%"}
+::: {.callout-note appearance="simple" icon=false}
+## Quiz time
+
+Who has heard these adages?
+:::
+
+::: {.motivation-trend-adages}
 "Dark silicon era"
 
 "Memory wall"
@@ -107,6 +131,8 @@ Fifty years of microprocessor trends. [@rupp2022microprocessor]
 
 "End of the laws"
 :::
+:::
+::::
 
 ## Some machines are experts at specialization {#motivation-fp8-gpu}
 

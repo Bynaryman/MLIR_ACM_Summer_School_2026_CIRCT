@@ -77,36 +77,42 @@
   text-align: center;
 }
 
-.reveal #motivation-specialization .motivation-trend-caption {
+.reveal section[data-auto-animate-id="processor-trends"] .motivation-trend-caption {
   margin-top: 0.25em;
   color: #52616b;
   font-size: 0.58em;
   text-align: center;
 }
 
-.reveal #motivation-specialization .motivation-trend-figure,
-.reveal #motivation-specialization .motivation-trend-figure p {
+.reveal section[data-auto-animate-id="processor-trends"] .motivation-trend-figure,
+.reveal section[data-auto-animate-id="processor-trends"] .motivation-trend-figure p {
   margin: 0;
   line-height: 0;
 }
 
-.reveal #motivation-specialization .motivation-trend-image,
-.reveal #motivation-specialization .motivation-trend-quotes p,
-.reveal #motivation-specialization .motivation-trend-caption p {
+.reveal section[data-auto-animate-id="processor-trends"] .motivation-trend-image,
+.reveal section[data-auto-animate-id="processor-trends"] .motivation-trend-caption p {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.reveal #motivation-specialization .motivation-trend-quotes {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 1.15em;
-  margin: 0.2em 0 0;
+.reveal #motivation-specialization-adages .motivation-trend-columns {
+  align-items: center;
+  margin-top: 1.1em;
+}
+
+.reveal #motivation-specialization-adages .motivation-trend-adages {
+  display: grid;
+  gap: 0.55em;
+  margin-top: 1.2em;
   color: #24313a;
-  font-size: 0.64em;
+  font-size: 0.82em;
   font-style: italic;
-  white-space: nowrap;
+  text-align: center;
+}
+
+.reveal #motivation-specialization-adages .motivation-trend-adages p {
+  margin: 0;
 }
 
 .reveal .motivation-layer-copy-state ul {
