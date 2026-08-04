@@ -119,7 +119,7 @@ Fifty years of microprocessor trends. [@rupp2022microprocessor]
 ::: {.callout-note appearance="simple" icon=false}
 ## Quiz time
 
-Who has heard these adages?
+Who has heard these ADAges?
 :::
 
 ::: {.motivation-trend-adages}
@@ -170,25 +170,51 @@ Who knows these machines?
 New accelerators, new compiler stacks: one origin of [MLIR](https://storage.googleapis.com/gweb-research2023-media/pubtools/5945.pdf#page=2).
 :::
 
-## Promotion time! {#motivation-team-arithmetic}
+## Promotion time! {#motivation-team-arithmetic auto-animate=true auto-animate-id="arithmetic-team"}
 
 :::: {.columns}
 ::: {.column width="34%"}
-![*Application-Specific Arithmetic*, de Dinechin and Kumm, 2024. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover-hires.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
+::: {data-id="application-specific-arithmetic-book"}
+![*Application-Specific Arithmetic*. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover-hires.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
+:::
 :::
 
-::: {.column width="66%"}
-**Today's bias:** we will look at hardware through **arithmetic** and **small
-floating-point formats**.
+::: {.column width="66%" data-id="arithmetic-team-copy"}
+**Today's bias:** [hardware through arithmetic and small floating-point formats]{.marker}.
 
-::: {.incremental}
-- **Emeraude:** make number formats and operators part of the design space.
+::: {data-id="emeraude-description"}
+**Emeraude**, my Inria team: arithmetic + audio + optimization.
+:::
 
-- **FloPoCo:** generate arithmetic operators for a target, a frequency, and a
-  numerical contract.
+::: {data-id="circuit-generator-description"}
+**FloPoCo:** a C++ generator of VHDL for arithmetic circuits.
+:::
+:::
+::::
 
-- **Hands-on:** build an E4M3 multiplier; if time permits, specialize its
-  datapath into a squarer.
+## Promotion time! {#motivation-team-harico auto-animate=true auto-animate-id="arithmetic-team"}
+
+:::: {.columns}
+::: {.column width="34%"}
+::: {data-id="application-specific-arithmetic-book"}
+![*Application-Specific Arithmetic*. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover-hires.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
+:::
+:::
+
+::: {.column width="66%" data-id="arithmetic-team-copy"}
+**Today's bias:** [hardware through arithmetic and small floating-point formats]{.marker}.
+
+::: {data-id="emeraude-description"}
+**Emeraude**, my Inria team: arithmetic + audio + optimization.
+:::
+
+::: {data-id="circuit-generator-description"}
+**HAriCo:** a C++ IR-based circuit generator.
+:::
+
+::: {.fragment}
+That is why today we will look at **MLIR + hardware design** through the prism
+of **arithmetic circuits**.
 :::
 :::
 ::::
