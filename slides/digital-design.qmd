@@ -71,6 +71,12 @@ endmodule
 - The adder output settles after `product` reaches it.
 - With no register, there is no stored state or clock cycle.
 :::
+
+::: {.callout-tip .dd-compiler-takeaway .fragment appearance="simple" icon=false}
+## Compiler takeaway
+
+A dependency analysis sees one combinational graph, independent of source order.
+:::
 :::
 ::::
 
@@ -105,8 +111,10 @@ exact   = 5'b10000  // 16
 The carry exists only when the wires have room for it. **Width is behavior.**
 :::
 
-::: {.fragment}
-*(And this could be an analysis pass...)*
+::: {.callout-tip .dd-compiler-takeaway .fragment appearance="simple" icon=false}
+## Compiler takeaway
+
+Range analysis can prove smaller widths and narrow the circuit.
 :::
 :::
 ::::
@@ -226,7 +234,7 @@ Reset may assert between edges, but this flip-flop applies it only at the next r
 Edge, reset timing, and reset polarity are hardware choices.
 :::
 
-::: {.callout-tip .dd-ff-takeaway .fragment .instant-fragment data-fragment-index="4" appearance="simple" icon=false}
+::: {.callout-tip .dd-compiler-takeaway .fragment .instant-fragment data-fragment-index="4" appearance="simple" icon=false}
 ## Compiler takeaway
 
 Analyses can match these explicit semantics to the flip-flops available in the target library.
@@ -274,25 +282,13 @@ $$
 The period is a **budget for the longest register-to-register path**.
 :::
 
-## Meeting a 500 ps clock period {#dd-clock-pipeline .top-body auto-animate=true auto-animate-id="clock-timing"}
+## Critical paths can be a compiler job {#dd-clock-pipeline}
 
-::: {.smaller data-id="clock-budget"}
-$$
-t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
-  + t_{\text{setup}} + t_{\text{skew}} < 500\,\text{ps}
-$$
+::: {.callout-tip .dd-compiler-takeaway appearance="simple" icon=false}
+## Compiler takeaway
 
-The period is a **budget for the longest register-to-register path**.
-:::
-
-**CPU example.** Intel reports **3 cycles** of latency for floating-point add on
-Gracemont and **2 cycles** for selected vector adds on Sapphire Rapids
-[@intel2022gracemont; @intel2024intrinsics]. Pipeline registers split the FPU
-datapath so each stage can meet the clock period.
-
-::: {.fragment}
-**A compiler pass could analyze the critical path, split it with registers, and
-balance the resulting stages.**
+**Analyze** the critical path $\rightarrow$ **split** it with registers
+$\rightarrow$ **balance** the pipeline stages.
 :::
 
 ## Quiz: how do we reuse a design? {#dd-hierarchy}
@@ -358,6 +354,12 @@ endmodule
 
 Hierarchy organizes the description. Synthesis may later flatten it or optimize
 across its boundaries.
+:::
+
+::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
+## Compiler takeaway
+
+Hierarchy analysis finds every instance; transforms can flatten or specialize them.
 :::
 :::
 ::::
@@ -428,6 +430,12 @@ endgenerate
 
 `generate` repeats hardware while the circuit is being built. It is not a loop
 that runs while the circuit operates.
+:::
+
+::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
+## Compiler takeaway
+
+An elaboration pass expands the loop into nine explicit parallel instances.
 :::
 :::
 
@@ -511,13 +519,17 @@ One LUT6 can see at most six inputs. How could the FPGA implement this
 seven-input OR?
 :::
 
-::: {.fragment}
+::: {.fragment data-fragment-index="0"}
 **Connect several LUTs.** For example:
 
 1. one LUT computes `a | b | c | d | e | f`;
 2. another LUT combines that result with `g`.
+:::
 
-Synthesis performs this decomposition.
+::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
+## Compiler takeaway
+
+Technology mapping decomposes logic into the LUTs available on the target FPGA.
 :::
 :::
 ::::
@@ -650,9 +662,10 @@ The intended Boolean function.
 :::
 ::::
 
-::: {.fragment}
-The function remains $y=a\lor b$; the representation becomes progressively
-more physical and process-specific.
+::: {.callout-tip .dd-compiler-takeaway .fragment appearance="simple" icon=false}
+## Compiler takeaway
+
+Lowering changes the representation while preserving the Boolean function.
 :::
 
 ## The best animation I have found for this part {#dd-video}

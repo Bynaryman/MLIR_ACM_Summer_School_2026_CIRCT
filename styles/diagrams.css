@@ -96,12 +96,12 @@
   margin: 0;
 }
 
-.reveal #dd-registers .dd-ff-takeaway {
+.reveal .dd-compiler-takeaway {
   font-size: 0.8em;
   text-align: left;
 }
 
-.reveal #dd-registers .dd-ff-takeaway > .callout {
+.reveal .dd-compiler-takeaway > .callout {
   font-size: 1em;
 }
 
