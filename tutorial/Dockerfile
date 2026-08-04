@@ -7,12 +7,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     ca-certificates \
-    clang \
     cmake \
     git \
     iverilog \
     less \
-    lld \
     nano \
     ninja-build \
     python3 \
@@ -48,8 +46,8 @@ ENV VIRTUAL_ENV="/opt/mlir-python"
 ENV PATH="/opt/mlir-python/bin:/opt/circt/bin:/workspace/build/bin:${PATH}"
 ENV CMAKE_PREFIX_PATH="/opt/circt"
 ENV LD_LIBRARY_PATH="/opt/circt/lib"
-ENV CC=clang
-ENV CXX=clang++
+ENV CC=gcc
+ENV CXX=g++
 
 WORKDIR /workspace
 COPY . /workspace

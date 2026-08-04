@@ -23,7 +23,7 @@ docker run -it mlir-summer-school-2026-circt
 
 No setup or activation is needed inside the image. Its `/opt/mlir-python`
 virtual environment is already on `PATH`; it isolates the pinned upstream MLIR
-Python bindings used by Exercises 7-8. CIRCT, CMake, Ninja, Clang, Icarus
+Python bindings used by Exercises 7-8. CIRCT, CMake, Ninja, GCC, Icarus
 Verilog, Z3, and the remaining tools are installed in the same image.
 
 ## Files
