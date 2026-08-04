@@ -4,10 +4,10 @@ subtitle: "From hardware IRs to application-specific arithmetic<br><span class='
 author:
   - name: "Louis Ledoux"
     affiliations:
-      - name: "INSA Lyon · Inria, Emeraude"
-      - name: "University of Rennes · IRISA · Inria"
+      - name: "INSA Lyon · INRIA, Emeraude"
+      - name: "University of Rennes · IRISA · INRIA, Taran"
 date: "2026-08-10"
-date-format: "D MMMM YYYY"
+date-format: "D[–14] MMMM YYYY"
 bibliography: references.bib
 
 filters:

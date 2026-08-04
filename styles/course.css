@@ -18,7 +18,7 @@
 .reveal #title-slide::after {
   content: "";
   width: min(100%, 1150px);
-  height: 2.25em;
+  height: 2.5em;
   margin-top: 1em;
   flex: 0 0 auto;
   background-image:
