@@ -90,7 +90,19 @@ This section explains why [modern compiler techniques]{.marker} must reach into 
 Who has seen a version of this plot before?
 :::
 
+::: {.motivation-trend-figure}
 ![](assets/images/motivation/rupp-50-years-processor-trend-annotated.svg){.motivation-trend-image fig-align="center" fig-alt="Karl Rupp's plot of transistor count, single-thread performance, frequency, power, and logical core count from 1970 to 2021, annotated with a Moore's law guide and a boundary between the single-core free-gains era and the many-core and specialized-architecture era" height="550"}
+:::
+
+::: {.motivation-trend-quotes}
+["Dark silicon era"]{.fragment data-fragment-index="0"}
+
+["Memory wall"]{.fragment data-fragment-index="1"}
+
+["Communication dominates arithmetic"]{.fragment data-fragment-index="2"}
+
+["End of the laws"]{.fragment data-fragment-index="3"}
+:::
 
 ::: {.motivation-trend-caption}
 Fifty years of microprocessor trends. [@rupp2022microprocessor]
