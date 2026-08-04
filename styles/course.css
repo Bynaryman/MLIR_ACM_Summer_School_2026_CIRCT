@@ -721,7 +721,8 @@
 }
 
 .reveal .artist-gallery-works {
-  height: auto;
+  gap: 1em;
+  height: 15em;
 }
 
 .reveal .artist-gallery-captioned {
@@ -738,7 +739,8 @@
 }
 
 .reveal .artist-gallery-works figure {
-  width: 11em;
+  position: relative;
+  width: auto;
 }
 
 .reveal .artist-gallery.artist-gallery-captioned img {
@@ -749,8 +751,17 @@
 }
 
 .reveal .artist-gallery.artist-gallery-works img {
-  height: 12.2em;
-  max-width: 100%;
+  height: 13.2em;
+  max-width: none;
+}
+
+.reveal .artist-gallery-works figcaption {
+  position: absolute;
+  top: calc(100% + 0.35em);
+  left: 50%;
+  width: 8.8em;
+  margin-top: 0;
+  transform: translateX(-50%);
 }
 
 .reveal .artist-gallery-captioned figcaption {
