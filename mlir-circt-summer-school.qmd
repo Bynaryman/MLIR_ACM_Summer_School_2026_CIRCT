@@ -78,6 +78,8 @@ format:
 5. [CIRCT in practice](#circt-tools) [hands-on: 5 exercises]{.toc-hands-on} [quiz]{.toc-quiz} [~45 min]{.toc-time}
 6. [Arithmetic becomes hardware](#arithmetic) [hands-on: 3 exercises + 1 optional]{.toc-hands-on} [quiz]{.toc-quiz} [~50 min]{.toc-time}
 7. [Bonus: HLS with MLIR and CIRCT](#hls) [~20 min]{.toc-time}
+
+<div class="toc-total"><strong>Total</strong><span>~2 h 40 min</span></div>
 :::
 
 ## Before we continue {#download-container}
