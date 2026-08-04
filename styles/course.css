@@ -720,6 +720,10 @@
   margin-top: 2.1em;
 }
 
+.reveal .artist-gallery-works {
+  height: auto;
+}
+
 .reveal .artist-gallery-captioned {
   display: flex;
   gap: 0.55em;
@@ -733,11 +737,19 @@
   text-align: center;
 }
 
+.reveal .artist-gallery-works figure {
+  width: 9.5em;
+}
+
 .reveal .artist-gallery.artist-gallery-captioned img {
   width: auto;
   height: 10.2em;
   max-width: none;
   max-height: none;
+}
+
+.reveal .artist-gallery.artist-gallery-works img {
+  max-width: 100%;
 }
 
 .reveal .artist-gallery-captioned figcaption {
