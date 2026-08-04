@@ -126,10 +126,19 @@ But also an [artist]{.marker}.
 
 ## Electronics {#artist-electronics}
 
-<div class="artist-gallery artist-gallery-wide">
-  <img src="assets/images/whoami/electronics-pcb-assembly.webp" alt="A large assembled printed circuit board on an electronics workbench">
-  <img src="assets/images/whoami/electronics-panel-drink.webp" alt="A hand-wired electronics panel on a workbench beside a green drink">
-  <img src="assets/images/whoami/electronics-busboard-drink.webp" alt="An electronics busboard being assembled beside a dark drink">
+<div class="artist-gallery artist-gallery-wide artist-gallery-captioned">
+  <figure>
+    <img src="assets/images/whoami/electronics-pcb-assembly.webp" alt="A large assembled printed circuit board on an electronics workbench">
+    <figcaption>Isopropyl alcohol</figcaption>
+  </figure>
+  <figure>
+    <img src="assets/images/whoami/electronics-panel-drink.webp" alt="A hand-wired electronics panel on a workbench beside a green drink">
+    <figcaption>Heineken</figcaption>
+  </figure>
+  <figure>
+    <img src="assets/images/whoami/electronics-busboard-drink.webp" alt="An electronics busboard being assembled beside a dark drink">
+    <figcaption>Guinness</figcaption>
+  </figure>
 </div>
 
 # From problems to electron flow {#motivation .section-title .center}

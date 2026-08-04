@@ -716,8 +716,35 @@
 }
 
 .reveal .artist-gallery-wide {
-  height: 10.2em;
+  height: auto;
   margin-top: 2.1em;
+}
+
+.reveal .artist-gallery-captioned {
+  display: flex;
+  gap: 0.55em;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.reveal .artist-gallery-captioned figure {
+  flex: 0 0 auto;
+  margin: 0;
+  text-align: center;
+}
+
+.reveal .artist-gallery.artist-gallery-captioned img {
+  width: auto;
+  height: 10.2em;
+  max-width: none;
+  max-height: none;
+}
+
+.reveal .artist-gallery-captioned figcaption {
+  margin-top: 0.35em;
+  color: #52616e;
+  font-size: 0.42em;
+  line-height: 1.2;
 }
 
 .reveal .artist-gallery p {
