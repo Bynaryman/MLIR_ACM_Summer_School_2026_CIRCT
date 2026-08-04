@@ -291,16 +291,16 @@ The period is a **budget for the longest register-to-register path**.
 $\rightarrow$ **balance** stages.
 :::
 
-## Quiz: how do we reuse a design? {#dd-hierarchy}
+## Quiz: from function call to hardware {#dd-hierarchy}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-In software, how do we reuse code? What is the hardware equivalent?
+Software calls a **function**. What does hardware instantiate?
 :::
 
 ::: {.fragment data-fragment-index="0"}
-**Software:** functions. **Hardware:** modules.
+**Software:** call a function. **Hardware:** instantiate a module.
 :::
 
 :::: {.columns}
