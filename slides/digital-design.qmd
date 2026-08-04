@@ -388,12 +388,12 @@ systolic_array
 :::
 ::::
 
-## Quiz: how many PEs? {#dd-generate}
+## Quiz: one Processing Element (PE), or nine? {#dd-generate}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-In the following hardware code: **one PE or nine PEs?**
+**Nine calls to one Processing Element (PE)**, or **nine independent PEs**?
 :::
 
 :::: {.columns}
@@ -423,10 +423,9 @@ endgenerate
 ::::
 
 ::: {.fragment data-fragment-index="0"}
-**Nine PEs, operating in parallel.**
+**Nine independent PEs, operating in parallel.**
 
-`generate` repeats hardware while the circuit is being built. It is not a loop
-that runs while the circuit operates.
+`generate` repeats structure during elaboration, before the circuit operates.
 :::
 
 ::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
