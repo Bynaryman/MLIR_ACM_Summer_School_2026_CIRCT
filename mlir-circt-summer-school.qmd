@@ -71,13 +71,13 @@ format:
 ## Course outline {#contents}
 
 ::: {.course-toc}
-1. [`$ whoami`](#about) - ~5 min
-2. [From problems to electron flow](#motivation) - ~10 min *(contains quizzes)*
-3. [Digital design primer](#digital-design) - ~20 min *(contains quizzes)*
-4. [CIRCT: MLIR toward hardware](#circt) - ~10 min
-5. [CIRCT in practice](#circt-tools) - ~45 min *(hands-on, 5 exercises; contains quizzes)*
-6. [Arithmetic becomes hardware](#arithmetic) - ~50 min *(hands-on, 3 exercises, one optional; contains a quiz)*
-7. [Bonus: HLS with MLIR and CIRCT](#hls) - ~20 min
+1. [`$ whoami`](#about) [~5 min]{.toc-time}
+2. [From problems to electron flow](#motivation) [~10 min]{.toc-time} [quizzes]{.toc-quiz}
+3. [Digital design primer](#digital-design) [~20 min]{.toc-time} [quizzes]{.toc-quiz}
+4. [CIRCT: MLIR toward hardware](#circt) [~10 min]{.toc-time}
+5. [CIRCT in practice](#circt-tools) [~45 min]{.toc-time} [hands-on · 5 exercises]{.toc-hands-on} [quizzes]{.toc-quiz}
+6. [Arithmetic becomes hardware](#arithmetic) [~50 min]{.toc-time} [hands-on · 3 exercises + 1 optional]{.toc-hands-on} [quiz]{.toc-quiz}
+7. [Bonus: HLS with MLIR and CIRCT](#hls) [~20 min]{.toc-time}
 :::
 
 ## Before we continue {#download-container}
