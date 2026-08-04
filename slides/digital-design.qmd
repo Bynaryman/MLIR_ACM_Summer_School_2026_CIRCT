@@ -574,15 +574,19 @@ circuit described by one bitstream.
 :::
 ::::
 
-## Same HDL, different substrate {#dd-targets}
+## From FPGA to ASIC {#dd-targets}
 
 ::: {.callout-note appearance="simple" icon=false}
-## Question
+## One last FPGA quiz
 
-Which target can become a different circuit after manufacturing?
+Which can implement a different circuit **after manufacturing**: an FPGA or an ASIC?
 :::
 
-::: {.fragment}
+::: {.fragment data-fragment-index="0"}
+**The FPGA.** Its configuration can be rewritten.
+
+The source language can be the same; the implementation is not.
+
 | | FPGA | ASIC |
 |---|---|---|
 | logic | configurable LUTs | fixed logic cells |
@@ -591,8 +595,8 @@ Which target can become a different circuit after manufacturing?
 | reconfigurable | **yes** | **no** |
 :::
 
-::: {.fragment}
-Same SystemVerilog. Very different consequences.
+::: {.fragment data-fragment-index="1"}
+[Next: in an ASIC, logic and wires become fixed geometry.]{.marker}
 :::
 
 ## ASIC {#dd-asic-separator .section-title .center}
