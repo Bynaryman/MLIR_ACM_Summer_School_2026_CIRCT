@@ -115,6 +115,24 @@
   margin: 0;
 }
 
+.reveal #motivation-team-arithmetic .motivation-generator-stack {
+  display: grid !important;
+  min-height: 2.1em;
+  margin-top: 0.8em;
+  place-items: start;
+}
+
+.reveal #motivation-team-arithmetic .motivation-generator-state {
+  width: 100%;
+  margin: 0;
+  grid-area: 1 / 1;
+  text-align: left;
+}
+
+.reveal #motivation-team-arithmetic .motivation-generator-state p {
+  margin: 0;
+}
+
 .reveal .motivation-layer-copy-state ul {
   margin-top: 0.45em;
 }

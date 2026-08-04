@@ -170,51 +170,35 @@ Who knows these machines?
 New accelerators, new compiler stacks: one origin of [MLIR](https://storage.googleapis.com/gweb-research2023-media/pubtools/5945.pdf#page=2).
 :::
 
-## Promotion time! {#motivation-team-arithmetic auto-animate=true auto-animate-id="arithmetic-team"}
+## Promotion time! {#motivation-team-arithmetic}
 
 :::: {.columns}
 ::: {.column width="34%"}
-::: {data-id="application-specific-arithmetic-book"}
 ![*Application-Specific Arithmetic*. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover-hires.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
 :::
-:::
 
-::: {.column width="66%" data-id="arithmetic-team-copy"}
-**Today's bias:** [hardware through arithmetic and small floating-point formats]{.marker}.
+::: {.column width="66%"}
+**Emeraude**, my Inria team, works on:
 
-::: {data-id="emeraude-description"}
-**Emeraude**, my Inria team: arithmetic + audio + optimization.
-:::
+- **Arithmetic**
 
-::: {data-id="circuit-generator-description"}
+- Audio [compilation]{.marker} with [Faust](https://faust.grame.fr/), including
+  an LLVM backend
+
+- **Optimization**
+
+:::: {.r-stack .motivation-generator-stack}
+::: {.motivation-generator-state .fragment .fade-out data-fragment-index="0"}
 **FloPoCo:** a C++ generator of VHDL for arithmetic circuits.
 :::
+
+::: {.motivation-generator-state .fragment .fade-in data-fragment-index="0"}
+**HAriCo:** a C++ IR-based circuit generator.
 :::
 ::::
 
-## Promotion time! {#motivation-team-harico auto-animate=true auto-animate-id="arithmetic-team"}
-
-:::: {.columns}
-::: {.column width="34%"}
-::: {data-id="application-specific-arithmetic-book"}
-![*Application-Specific Arithmetic*. [@dinechin2024asa]](assets/images/motivation/application-specific-arithmetic-cover-hires.jpg){fig-align="center" fig-alt="Cover of Application-Specific Arithmetic by Florent de Dinechin and Martin Kumm" height="520"}
-:::
-:::
-
-::: {.column width="66%" data-id="arithmetic-team-copy"}
-**Today's bias:** [hardware through arithmetic and small floating-point formats]{.marker}.
-
-::: {data-id="emeraude-description"}
-**Emeraude**, my Inria team: arithmetic + audio + optimization.
-:::
-
-::: {data-id="circuit-generator-description"}
-**HAriCo:** a C++ IR-based circuit generator.
-:::
-
-::: {.fragment}
-That is why today we will look at **MLIR + hardware design** through the prism
-of **arithmetic circuits**.
+::: {.fragment data-fragment-index="1"}
+**Today:** MLIR + hardware design through **arithmetic circuits**.
 :::
 :::
 ::::
