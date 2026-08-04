@@ -351,15 +351,12 @@ endmodule
 - `mac4` becomes a reusable hardware **definition**.
 - `u_mul` names this **instance** of `mul4`.
 - Port connections become **wires**.
-
-Hierarchy organizes the description. Synthesis may later flatten it or optimize
-across its boundaries.
 :::
 
 ::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
 ## Compiler takeaway
 
-Analyze instances. Flatten or specialize them.
+A module hierarchy is a static instance graph that compiler analyses can traverse.
 :::
 :::
 ::::
