@@ -431,7 +431,7 @@ endgenerate
 ::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
 ## Compiler takeaway
 
-Elaboration expands the loop into nine parallel instances.
+Analyses see nine connected PE instances, not a loop.
 :::
 :::
 
