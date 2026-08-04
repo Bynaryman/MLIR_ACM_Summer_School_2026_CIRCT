@@ -184,30 +184,6 @@
   background: #a14f03;
 }
 
-.reveal .course-toc .toc-total {
-  display: flex;
-  width: fit-content;
-  margin: 0.7em 0 0 auto;
-  padding-top: 0.3em;
-  border-top: 0.08em solid #263746;
-  align-items: center;
-  gap: 0.55em;
-  color: #263746;
-  font-size: 0.62em;
-  text-transform: uppercase;
-}
-
-.reveal .course-toc .toc-total span {
-  min-width: 6.5em;
-  padding: 0.12em 0.42em;
-  border-radius: 0.12em;
-  background: #263746;
-  color: #fff;
-  font-family: var(--r-code-font);
-  font-weight: 750;
-  text-align: center;
-}
-
 .reveal .deck-kicker {
   margin: 0 0 0.35em;
   color: var(--course-accent);
