@@ -97,8 +97,12 @@
 }
 
 .reveal #dd-registers .dd-ff-takeaway {
-  font-size: 0.64em;
+  font-size: 0.8em;
   text-align: left;
+}
+
+.reveal #dd-registers .dd-ff-takeaway > .callout {
+  font-size: 1em;
 }
 
 .reveal #dd-fpga-fabric figure {
