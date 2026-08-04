@@ -738,7 +738,7 @@
 }
 
 .reveal .artist-gallery-works figure {
-  width: 9.5em;
+  width: 11em;
 }
 
 .reveal .artist-gallery.artist-gallery-captioned img {
@@ -749,6 +749,7 @@
 }
 
 .reveal .artist-gallery.artist-gallery-works img {
+  height: 12.2em;
   max-width: 100%;
 }
 
