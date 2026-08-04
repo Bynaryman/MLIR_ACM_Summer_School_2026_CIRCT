@@ -715,6 +715,11 @@
   margin: 0.65em auto 0;
 }
 
+.reveal .artist-gallery-wide {
+  height: 10.2em;
+  margin-top: 2.1em;
+}
+
 .reveal .artist-gallery p {
   display: flex;
   gap: 0.55em;
