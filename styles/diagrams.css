@@ -283,6 +283,31 @@
   text-underline-offset: 0.12em;
 }
 
+.reveal .circt-dialects-figure {
+  width: min(100%, 12.4em);
+  margin: 0 auto;
+}
+
+.reveal .circt-dialects-figure figure,
+.reveal .circt-dialects-figure figure > p {
+  margin: 0;
+}
+
+.reveal .circt-dialects-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.reveal .circt-dialects-figure figcaption {
+  margin-top: 0.35em;
+  color: #52616e;
+  font-size: 0.42em;
+  line-height: 1.2;
+  text-align: center;
+}
+
 .reveal .narrative-question {
   margin: 0.7em auto 0;
   max-width: 25ch;

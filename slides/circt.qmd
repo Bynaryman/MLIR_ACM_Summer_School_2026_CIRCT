@@ -1,26 +1,24 @@
 ## Can we do this with MLIR? {#circt-route}
 
 :::: {.columns}
-::: {.column width="68%"}
-![](assets/images/digital-design/circt-dialects-core.svg){fig-align="center" fig-alt="Overview of CIRCT with the core dialects highlighted" height="700"}
-
-::: {.source-strip}
-[CIRCT, *Getting Started with the CIRCT Project*](https://circt.llvm.org/docs/GettingStarted/)
-:::
-:::
-
-::: {.column width="32%"}
+::: {.column width="36%"}
 The CIRCT core dialects make the concepts we just used explicit:
 
-**`hw`** structure and hierarchy<br>
-**`comb`** combinational logic<br>
-**`seq`** state
+- **`hw`**: structure and hierarchy
+- **`comb`**: combinational logic
+- **`seq`**: state
 
 ::: {.fragment}
 CIRCT also contains other hardware dialects, transformations, analyses, and
 tools.
 
 [Next: use the tools.]{.marker}
+:::
+:::
+
+::: {.column width="64%"}
+::: {.circt-dialects-figure}
+![CIRCT dialect map. [Source](https://circt.llvm.org/docs/GettingStarted/)](assets/images/digital-design/circt-dialects-core.svg){fig-align="center" fig-alt="Overview of CIRCT with the core dialects highlighted" width="100%"}
 :::
 :::
 ::::
