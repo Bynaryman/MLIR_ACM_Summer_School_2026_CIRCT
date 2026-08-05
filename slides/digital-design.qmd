@@ -601,7 +601,7 @@ The source language can be the same; the implementation is not.
 
 ## ASIC {#dd-asic-separator .section-title .center}
 
-## Quiz: what are we looking at? {#dd-asic-mystery}
+## Quiz: what are we looking at? {#dd-asic-mystery auto-animate=true auto-animate-id="asic-inverter-reveal"}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
@@ -609,31 +609,53 @@ The source language can be the same; the implementation is not.
 What hardware object is shown here?
 :::
 
-![](assets/images/digital-design/sky130-inverter-gds-3d.png){fig-align="center" fig-alt="Unlabelled layered three-dimensional rendering of a SKY130 standard cell" width="61%"}
+<div class="asic-reveal-stage asic-mystery-stage" data-id="asic-reveal-stage">
+<div class="asic-render-frame" data-id="asic-render-frame">
+<img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of an unlabelled SKY130 standard cell with input A, output Y, power, and ground pins">
+</div>
+</div>
 
-## Work upward from geometry {#dd-asic-inverter}
+## Look through the layers {#dd-asic-cmos auto-animate=true auto-animate-id="asic-inverter-reveal"}
 
-::: {.callout-note appearance="simple" icon=false}
-## Question
+<div class="asic-reveal-stage asic-pair-stage" data-id="asic-reveal-stage">
+<div class="asic-render-frame" data-id="asic-render-frame">
+<img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 standard cell">
+</div>
 
-This standard cell has two transistors. Which Boolean operation does it implement?
-:::
+<div class="asic-cmos-column" data-id="asic-cmos-column" data-auto-animate-delay="0.38">
+<div class="asic-kind-of">See? It kind of looks like this.</div>
+<div class="r-stack asic-cmos-stack" data-id="asic-cmos-stack">
+<img class="fragment fade-out instant-fragment" data-fragment-index="0" data-id="asic-cmos-neutral" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS circuit with a pMOS above an nMOS transistor">
+<img class="fragment fade-in-then-out instant-fragment" data-fragment-index="0" src="assets/images/digital-design/cmos-inverter-low.svg" alt="With input zero, the pMOS path drives the output high">
+<img class="fragment instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter-high.svg" alt="With input one, the nMOS path drives the output low">
+</div>
+</div>
+</div>
 
-:::: {.columns}
-::: {.column width="55%"}
-![GDSII polygons extruded by fabrication layer.](assets/images/digital-design/sky130-inverter-gds-3d.png){fig-alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell" width="100%"}
-:::
+## From geometry to logic {#dd-asic-inverter auto-animate=true auto-animate-id="asic-inverter-reveal"}
 
-::: {.column width="45%"}
-![CMOS transistor schematic.](assets/images/digital-design/cmos-inverter.svg){fig-align="center" fig-alt="CMOS circuit with one pMOS and one nMOS transistor driven by input a and producing output y" width="75%"}
+<div class="asic-reveal-stage asic-answer-stage" data-id="asic-reveal-stage">
+<div class="asic-answer-item">
+<div class="asic-render-frame asic-answer-media" data-id="asic-render-frame">
+<img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 inverter standard cell">
+</div>
+<div class="asic-answer-caption fragment" data-fragment-index="0">SKY130 <code>inv_2</code> render by <a href="https://github.com/mbalestrini/GDS-Cell-Library-Render">Matias Balestrini</a></div>
+</div>
 
-::: {.fragment}
-$a=0 \Rightarrow y=1$ and $a=1 \Rightarrow y=0$.
+<div class="asic-answer-item" data-id="asic-cmos-column">
+<div class="r-stack asic-cmos-stack asic-answer-media" data-id="asic-cmos-stack">
+<img data-id="asic-cmos-neutral" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS implementation using one pMOS and one nMOS transistor">
+</div>
+<div class="asic-answer-caption fragment" data-fragment-index="0">Complementary pMOS + nMOS pair</div>
+</div>
 
-**An inverter:** $y = \neg a$.
-:::
-:::
-::::
+<div class="asic-answer-item">
+<div class="asic-answer-media">
+<img src="assets/images/digital-design/logic-inverter.svg" alt="Logic symbol for an inverter with input a and output y">
+</div>
+<div class="asic-answer-caption fragment" data-fragment-index="0"><strong>Inverter:</strong> y = &not;a</div>
+</div>
+</div>
 
 ## Yes: this line generated that geometry {#dd-asic-rtl}
 
@@ -650,7 +672,7 @@ assign y = ~a;
 :::
 
 ::: {.column width="64%"}
-![](assets/images/digital-design/sky130-inverter-gds-3d.png){fig-align="center" fig-alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell generated from an RTL inversion" width="100%"}
+![](assets/images/digital-design/sky130-inverter-mbalestrini.jpg){fig-align="center" fig-alt="Perspective rendering of a SKY130 inverter standard cell selected for an RTL inversion" width="100%"}
 :::
 ::::
 

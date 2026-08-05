@@ -117,8 +117,9 @@ in `assets/images/ATTRIBUTIONS.md`.
 ### Digital-design schematics
 
 `figures/digital-design/primer-diagrams.tex` defines the register timing,
-clocked datapath, stored-program, and spatial-computing figures used by the
-primer. The figures share thin strokes, one accent color, and one font family.
+clocked datapath, stored-program, spatial-computing, and inverter figures used
+by the primer. The figures share thin strokes, one accent color, and one font
+family.
 Regenerate their SVGs with:
 
 ```bash

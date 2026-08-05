@@ -157,8 +157,12 @@
   `digital-design/register-timing-sync-reset.svg`,
   `digital-design/register-timing-async-reset.svg`,
   `digital-design/clocked-datapath.svg`,
-  `digital-design/stored-program-models.svg`, and
-  `digital-design/spatial-models.svg`
+  `digital-design/stored-program-models.svg`,
+  `digital-design/spatial-models.svg`,
+  `digital-design/cmos-inverter.svg`,
+  `digital-design/cmos-inverter-low.svg`,
+  `digital-design/cmos-inverter-high.svg`, and
+  `digital-design/logic-inverter.svg`
 - Editable source: `figures/digital-design/primer-diagrams.tex`
 - Generator: `scripts/generate-digital-design-primer-diagrams.sh`
 - Description: TikZ figures for clocked computation and the
@@ -166,6 +170,14 @@
 - Visual reference for the computing models: *Frugalit\'e et conception de
   circuits pour le traitement du signal audio num\'erique*, 2026
 - License: presenter and co-author-owned course material
+
+- Local file: `digital-design/sky130-inverter-mbalestrini.jpg`
+- Source: Matias Balestrini,
+  [`GDS-Cell-Library-Render`](https://github.com/mbalestrini/GDS-Cell-Library-Render),
+  `sky130_fd_sc_hd__inv_2_PERSPECTIVE.jpg`
+- Description: perspective Blender render of the SKY130 HD `inv_2` standard
+  cell
+- License: Apache-2.0
 
 - Local files: `digital-design/thesis-systolic-array.svg`,
   `digital-design/thesis-lut2.svg`, `digital-design/thesis-fpga-island.svg`, and

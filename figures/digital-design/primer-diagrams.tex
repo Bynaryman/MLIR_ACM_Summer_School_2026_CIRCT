@@ -273,31 +273,65 @@
     {configuration chooses cell functions and routes};
 }
 
-\newcommand{\CmosInverter}{%
-  \path[use as bounding box] (0,0) rectangle (8.8,7.0);
+\newcommand{\CmosInverterCore}[5]{%
+  \path[use as bounding box] (0,0) rectangle (7.2,7.0);
 
-  \node[pmos, scale=1.35] (pmos) at (4.55,4.70) {};
-  \node[nmos, scale=1.35] (nmos) at (4.55,2.30) {};
+  \coordinate (input-junction) at (2.15,3.50);
+  \coordinate (output-node) at (4.05,3.50);
 
-  \draw[line] (pmos.S) -- ++(0,0.85)
-    node[above, font=\ttfamily\small, text=ink] {VDD};
-  \draw[line] (pmos.D) -- (nmos.D);
-  \draw[line] (nmos.S) -- ++(0,-0.85) node[ground] {};
+  \draw[draw=#1, line width=0.86pt, line cap=round]
+    (4.05,5.00) -- (4.05,6.05)
+    node[above, font=\ttfamily\normalsize, text=#1] {VDD};
+  \draw[draw=#1, line width=0.86pt, line cap=round]
+    (3.45,5.00) -- (4.05,5.00)
+    (3.45,4.30) -- (4.05,4.30) -- (output-node);
+  \draw[draw=#1, line width=1.05pt, line cap=round]
+    (3.45,4.22) -- (3.45,5.08)
+    (3.15,4.22) -- (3.15,5.08);
+  \draw[draw=#1, fill=white, line width=0.86pt]
+    (3.02,4.65) circle[radius=0.13];
 
-  \coordinate (input) at (1.25,3.50);
-  \draw[line] (input) -- (2.35,3.50) |- (pmos.G);
-  \draw[line] (2.35,3.50) |- (nmos.G);
-  \fill[ink] (2.35,3.50) circle[radius=1.7pt];
+  \draw[draw=#2, line width=0.86pt, line cap=round]
+    (output-node) -- (4.05,2.70) -- (3.45,2.70)
+    (3.45,2.00) -- (4.05,2.00) -- (4.05,0.95);
+  \draw[draw=#2, line width=1.05pt, line cap=round]
+    (3.45,1.92) -- (3.45,2.78)
+    (3.15,1.92) -- (3.15,2.78);
+  \draw[draw=#2, line width=0.86pt, line cap=round]
+    (4.05,0.95) -- (4.05,0.83) node[ground, color=#2] {};
 
-  \coordinate (output) at (7.60,3.50);
-  \coordinate (output-node) at ($(pmos.D)!0.5!(nmos.D)$);
-  \draw[line] (output-node) -- (output);
-  \fill[ink] (output-node) circle[radius=1.7pt];
+  \draw[draw=#3, line width=0.86pt, line cap=round, line join=round]
+    (0.85,3.50) -- (input-junction) |- (2.89,4.65);
+  \draw[draw=#3, line width=0.86pt, line cap=round, line join=round]
+    (input-junction) |- (3.15,2.35);
+  \fill[#3] (input-junction) circle[radius=1.9pt];
 
-  \node[mono label, anchor=east] at (1.10,3.50) {a};
-  \node[mono label, anchor=west] at (7.75,3.50) {y};
-  \node[small label, anchor=west, text=muted] at (5.35,4.70) {pMOS};
-  \node[small label, anchor=west, text=muted] at (5.35,2.30) {nMOS};
+  \draw[draw=#3, line width=0.86pt, line cap=round]
+    (output-node) -- (5.85,3.50);
+  \fill[#3] (output-node) circle[radius=1.9pt];
+
+  \node[font=\ttfamily\normalsize, text=#3, anchor=east] at (0.70,3.50) {#4};
+  \node[font=\ttfamily\normalsize, text=#3, anchor=west] at (6.00,3.50) {#5};
+  \node[font=\sffamily\normalsize\bfseries, text=#1, anchor=west]
+    at (4.85,4.65) {pMOS};
+  \node[font=\sffamily\normalsize\bfseries, text=#2, anchor=west]
+    at (4.85,2.35) {nMOS};
+}
+
+\newcommand{\CmosInverter}{\CmosInverterCore{ink}{ink}{ink}{a}{y}}
+\newcommand{\CmosInverterLow}{\CmosInverterCore{accent}{ink}{accent}{a=0}{y=1}}
+\newcommand{\CmosInverterHigh}{\CmosInverterCore{ink}{reset}{reset}{a=1}{y=0}}
+
+\newcommand{\LogicInverter}{%
+  \path[use as bounding box] (0,0) rectangle (7.2,7.0);
+
+  \draw[line] (0.85,3.50) -- (2.05,3.50);
+  \draw[line, fill=white] (2.05,2.20) -- (2.05,4.80) -- (4.45,3.50) -- cycle;
+  \draw[line, fill=white] (4.65,3.50) circle[radius=0.20];
+  \draw[line] (4.85,3.50) -- (6.05,3.50);
+
+  \node[mono label, anchor=east] at (0.70,3.50) {a};
+  \node[mono label, anchor=west] at (6.20,3.50) {y};
 }
 
 \begin{document}
@@ -320,6 +354,12 @@
     \SpatialModels
   \or
     \CmosInverter
+  \or
+    \CmosInverterLow
+  \or
+    \CmosInverterHigh
+  \or
+    \LogicInverter
   \fi
 \end{tikzpicture}
 \end{document}

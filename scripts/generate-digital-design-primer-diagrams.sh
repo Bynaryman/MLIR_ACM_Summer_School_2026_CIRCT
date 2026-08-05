@@ -15,6 +15,9 @@ DIAGRAMS=(
   stored-program-models
   spatial-models
   cmos-inverter
+  cmos-inverter-low
+  cmos-inverter-high
+  logic-inverter
 )
 
 cleanup() {
