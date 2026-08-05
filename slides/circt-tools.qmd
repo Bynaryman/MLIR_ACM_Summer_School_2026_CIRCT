@@ -60,19 +60,20 @@ CIRCT firtool-1.147.0
 ```
 :::
 
-## Keep the cheat sheet open {#tools-cheatsheet}
+## Exercise cheat sheet {#tools-cheatsheet .smaller}
 
-Inside the container:
-
-```bash
-less CHEATSHEET.md
-```
-
-It contains the commands for **translation, passes, equivalence, Verilog,
-synthesis reports, and tests**, plus the Python rewrite skeleton and every
-supplied `comb`/`hw` builder.
-
-[Open the cheat sheet on GitHub](https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT/blob/main/tutorial/CHEATSHEET.md)
+| I need to... | Use |
+|---|---|
+| Build and run the supplied pipeline | `./scripts/build.sh && ./scripts/run.sh` |
+| SystemVerilog -> MLIR | `circt-verilog in.sv -o out.mlir` |
+| Apply passes | `circt-opt in.mlir --PASS -o out.mlir` |
+| MLIR -> SystemVerilog | `firtool in.mlir -o out.sv` |
+| Prove equivalent | `circt-lec --c1 TOP before.mlir --c2 TOP after.mlir` |
+| Compare synthesis statistics | `./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP` |
+| Run the Python lowering | `python scripts/lower-e4m3fn.py in.mlir -o out.mlir` |
+| Create XOR | `x = comb.XorOp.create(a, b).result` |
+| Replace an operation | `rewriter.replace_op(op, [value])` |
+| Test the E4M3 normal path | `./scripts/test-e4m3-all.py --pass --normal-path` |
 
 ## Tutorial Part 1: CIRCT basics {#tools-basics}
 
