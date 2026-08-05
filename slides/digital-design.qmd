@@ -565,11 +565,15 @@ connects them into one circuit.
 - **2,072** user I/Os
 - **80** high-speed transceivers
 
-::: {.fragment}
+::: {.fragment data-fragment-index="0"}
 Millions of configurable resources, memories, DSPs, and wires become the
 circuit described by one bitstream.
+:::
 
-[Compilation can take several days.]{.marker}
+::: {.callout-tip .dd-compiler-takeaway .fragment data-fragment-index="1" appearance="simple" icon=false}
+## Compiler takeaway
+
+Compilation can take several days.
 :::
 :::
 ::::
