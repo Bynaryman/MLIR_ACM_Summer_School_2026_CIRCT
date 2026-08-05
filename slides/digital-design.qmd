@@ -632,7 +632,7 @@ What hardware object is shown here?
 </div>
 </div>
 
-## From geometry to logic {#dd-asic-inverter data-transition="none"}
+## From geometry to logic (bottom-up) {#dd-asic-inverter data-transition="none"}
 
 <div class="asic-reveal-stage asic-answer-stage">
 <div class="asic-answer-item">

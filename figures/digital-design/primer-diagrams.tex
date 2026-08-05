@@ -273,7 +273,7 @@
     {configuration chooses cell functions and routes};
 }
 
-\newcommand{\CmosInverterCore}[5]{%
+\newcommand{\CmosInverterCore}[6]{%
   \path[use as bounding box] (0,0) rectangle (7.2,7.0);
 
   \coordinate (input-junction) at (2.15,3.50);
@@ -311,17 +311,17 @@
     (output-node) -- (5.85,3.50);
   \fill[#3] (output-node) circle[radius=1.9pt];
 
-  \node[font=\ttfamily\large, text=#3, anchor=east] at (0.70,3.50) {#4};
-  \node[font=\ttfamily\large, text=#3, anchor=west] at (6.00,3.50) {#5};
+  \node[font={\ttfamily#6}, text=#3, anchor=east] at (0.70,3.50) {#4};
+  \node[font={\ttfamily#6}, text=#3, anchor=west] at (6.00,3.50) {#5};
   \node[font=\sffamily\normalsize\bfseries, text=#1, anchor=west]
     at (4.85,4.65) {pMOS};
   \node[font=\sffamily\normalsize\bfseries, text=#2, anchor=west]
     at (4.85,2.35) {nMOS};
 }
 
-\newcommand{\CmosInverter}{\CmosInverterCore{ink}{ink}{ink}{a}{y}}
-\newcommand{\CmosInverterLow}{\CmosInverterCore{accent}{ink}{accent}{a=0}{y=1}}
-\newcommand{\CmosInverterHigh}{\CmosInverterCore{ink}{reset}{reset}{a=1}{y=0}}
+\newcommand{\CmosInverter}{\CmosInverterCore{ink}{ink}{ink}{a}{y}{\Huge}}
+\newcommand{\CmosInverterLow}{\CmosInverterCore{accent}{ink}{accent}{a=0}{y=1}{\LARGE}}
+\newcommand{\CmosInverterHigh}{\CmosInverterCore{ink}{reset}{reset}{a=1}{y=0}{\LARGE}}
 
 \newcommand{\LogicInverter}{%
   \path[use as bounding box] (0,0) rectangle (7.2,7.0);
@@ -331,8 +331,8 @@
   \draw[line, fill=white] (4.65,3.50) circle[radius=0.20];
   \draw[line] (4.85,3.50) -- (6.05,3.50);
 
-  \node[mono label, anchor=east] at (0.70,3.50) {a};
-  \node[mono label, anchor=west] at (6.20,3.50) {y};
+  \node[font=\ttfamily\Huge, text=ink, anchor=east] at (0.70,3.50) {a};
+  \node[font=\ttfamily\Huge, text=ink, anchor=west] at (6.20,3.50) {y};
 }
 
 \begin{document}
