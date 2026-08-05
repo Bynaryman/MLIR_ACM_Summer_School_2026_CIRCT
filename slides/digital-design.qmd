@@ -630,7 +630,7 @@ What hardware object is shown here?
 <div class="asic-render-frame asic-answer-media">
 <img src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 inverter standard cell">
 </div>
-<div class="asic-answer-caption fragment" data-fragment-index="0">SKY130 <code>inv_2</code> render by <a href="https://github.com/mbalestrini/GDS-Cell-Library-Render">Matias Balestrini</a></div>
+<div class="asic-answer-caption fragment" data-fragment-index="0">SKY130 <code>inv_2</code> render by <a href="https://github.com/mbalestrini/GDS-Cell-Library-Render">Maximo Balestrini</a></div>
 </div>
 
 <div class="asic-answer-item">

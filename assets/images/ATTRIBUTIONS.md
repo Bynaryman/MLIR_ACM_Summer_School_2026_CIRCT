@@ -172,7 +172,7 @@
 - License: presenter and co-author-owned course material
 
 - Local file: `digital-design/sky130-inverter-mbalestrini.jpg`
-- Source: Matias Balestrini,
+- Source: Maximo Balestrini,
   [`GDS-Cell-Library-Render`](https://github.com/mbalestrini/GDS-Cell-Library-Render),
   `sky130_fd_sc_hd__inv_2_PERSPECTIVE.jpg`
 - Description: perspective Blender render of the SKY130 HD `inv_2` standard
