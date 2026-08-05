@@ -302,7 +302,7 @@
   \node[font=\ttfamily\large, text=#2, anchor=west] at (4.35,0.70) {VGND};
 
   \draw[draw=#3, line width=0.86pt, line cap=round, line join=round]
-    (0.85,3.50) -- (input-junction) |- (2.89,4.65);
+    (1.25,3.50) -- (input-junction) |- (2.89,4.65);
   \draw[draw=#3, line width=0.86pt, line cap=round, line join=round]
     (input-junction) |- (3.15,2.35);
   \fill[#3] (input-junction) circle[radius=1.9pt];
@@ -311,7 +311,7 @@
     (output-node) -- (5.85,3.50);
   \fill[#3] (output-node) circle[radius=1.9pt];
 
-  \node[font={\ttfamily#6}, text=#3, anchor=east] at (0.70,3.50) {#4};
+  \node[font={\ttfamily#6}, text=#3, anchor=east] at (1.10,3.50) {#4};
   \node[font={\ttfamily#6}, text=#3, anchor=west] at (6.00,3.50) {#5};
   \node[font=\sffamily\normalsize\bfseries, text=#1, anchor=west]
     at (4.85,4.65) {pMOS};
