@@ -657,7 +657,7 @@ What hardware object is shown here?
 </div>
 </div>
 
-## Yes: this line generated that geometry {#dd-asic-rtl}
+## Yes: this line. {#dd-asic-rtl}
 
 :::: {.columns}
 ::: {.column width="36%"}
@@ -669,6 +669,16 @@ assign y = ~a;
 
 - **Synthesis** selects an inverter cell.
 - **Physical design** turns that cell into fixed polygons.
+
+::: {.fragment}
+**Later, the same in CIRCT:**
+
+```{.mlir code-line-numbers="false"}
+%y = comb.xor %a, %one : i1
+```
+
+with `%one = hw.constant true`.
+:::
 :::
 
 ::: {.column width="64%"}
