@@ -76,7 +76,7 @@ format:
 3. [Digital design primer](#digital-design) [quiz]{.toc-quiz} [~20 min]{.toc-time}
 4. [CIRCT: MLIR toward hardware](#circt) [~10 min]{.toc-time}
 5. [CIRCT in practice](#circt-tools) [hands-on: 5 exercises]{.toc-hands-on} [quiz]{.toc-quiz} [~45 min]{.toc-time}
-6. [Arithmetic becomes hardware](#arithmetic) [hands-on: 3 exercises + 1 optional]{.toc-hands-on} [quiz]{.toc-quiz} [~50 min]{.toc-time}
+6. [Let’s multiply](#arithmetic) [hands-on: 3 exercises + 1 optional]{.toc-hands-on} [quiz]{.toc-quiz} [~50 min]{.toc-time}
 7. [Bonus: HLS with MLIR and CIRCT](#hls) [~20 min]{.toc-time}
 :::
 
@@ -186,7 +186,13 @@ But also an [artist]{.marker}.
 
 {{< include slides/circt-tools.qmd >}}
 
-# Arithmetic becomes hardware {#arithmetic .section-title .center}
+# Let’s multiply {#arithmetic .section-title .center .with-subtitle}
+
+::: {.section-subtitle .section-epigraph}
+“Be fruitful, and multiply.”
+
+[Genesis 1:28](https://www.biblegateway.com/passage/?search=Genesis%201%3A27-29&version=KJ21){.section-reference}
+:::
 
 {{< include slides/arithmetic.qmd >}}
 

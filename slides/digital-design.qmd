@@ -599,7 +599,13 @@ The source language can be the same; the implementation is not.
 [Next: in an ASIC, logic and wires become fixed geometry.]{.marker}
 :::
 
-## ASIC {#dd-asic-separator .section-title .center}
+## ASIC {#dd-asic-separator .section-title .center .with-subtitle}
+
+::: {.section-subtitle}
+Application-Specific Integrated Circuits
+
+[(the hard hardware)]{.section-aside}
+:::
 
 ## Quiz: what are we looking at? {#dd-asic-mystery data-transition="none"}
 
