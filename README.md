@@ -180,18 +180,21 @@ quarto preview mlir-circt-summer-school.qmd --profile instructor
 
 ## Tutorial container
 
-Students start the published environment with one command. Docker downloads it
-automatically the first time:
+From the repository root, mount the tutorial folder into the published
+environment. Docker downloads the image automatically the first time:
 
 ```bash
-docker run -it ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
+cd tutorial
+docker run -it -v "$PWD:/workspace" \
+  ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
 ```
 
-Build the same image locally when changing the Dockerfile or exercise:
+Build the same image locally from `tutorial/` when changing the Dockerfile or
+exercise:
 
 ```bash
-docker build -t mlir-summer-school-2026-circt tutorial
-docker run -it mlir-summer-school-2026-circt
+docker build -t mlir-summer-school-2026-circt .
+docker run -it -v "$PWD:/workspace" mlir-summer-school-2026-circt
 ```
 
 The exercise structure and commands are documented in `tutorial/README.md`.

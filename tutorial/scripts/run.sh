@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cmake --build build
-build/bin/circt-tutorial-opt examples/ex6_arith_muli.mlir \
+
+mkdir -p build
+circt-tutorial-opt examples/ex6_arith_muli.mlir \
   --tutorial-func-to-hw \
   -o build/ex6_hw_arith.mlir
 circt-opt build/ex6_hw_arith.mlir \

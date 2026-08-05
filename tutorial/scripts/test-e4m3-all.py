@@ -2,6 +2,7 @@
 
 import argparse
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -106,7 +107,9 @@ def generate_reference_vectors(normal_path=False):
 def build_pass_verilog(lowerer):
     optimizer = ROOT / "build" / "bin" / "circt-tutorial-opt"
     if not optimizer.exists():
-        raise RuntimeError("run ./scripts/build.sh before testing the pass")
+        optimizer = shutil.which("circt-tutorial-opt")
+    if optimizer is None:
+        raise RuntimeError("circt-tutorial-opt is unavailable; run ./scripts/build.sh")
 
     lowered_function = WORK / "ex7_e4m3fn_mul_function.mlir"
     lowered = WORK / "ex7_e4m3fn_mul_lowered.mlir"

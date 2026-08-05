@@ -34,19 +34,22 @@ Useful for quick experiments. For the exercises, we use a pinned container.
 
 ## Start the environment {#tools-setup}
 
-Pull and enter the pre-built course image:
+Clone once, then enter the pre-built course image:
 
-```bash
-docker run -it ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
-```
-\
-
-The same image can be built locally:
 ```bash
 git clone https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT
 cd MLIR_ACM_Summer_School_2026_CIRCT/tutorial
+docker run -it -v "$PWD:/workspace" ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
+```
+\
+
+`-v "$PWD:/workspace"` shares the local folder: edit with your IDE, run in
+Docker. Use the mount on every `docker run`.
+
+The same image can be built locally instead:
+```bash
 docker build -t mlir-summer-school-2026-circt .
-docker run -it mlir-summer-school-2026-circt
+docker run -it -v "$PWD:/workspace" mlir-summer-school-2026-circt
 ```
 \
 

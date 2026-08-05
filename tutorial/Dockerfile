@@ -52,6 +52,8 @@ ENV CXX=g++
 WORKDIR /workspace
 COPY . /workspace
 
-RUN ./scripts/build.sh
+RUN ./scripts/build.sh && \
+    install -m 0755 build/bin/circt-tutorial-opt \
+      /usr/local/bin/circt-tutorial-opt
 
 CMD ["/bin/bash"]

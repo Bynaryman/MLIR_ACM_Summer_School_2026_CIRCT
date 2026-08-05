@@ -11,15 +11,23 @@ composed integer lowering, then a Python rewrite that materializes an E4M3
 Use the pre-built course image:
 
 ```bash
-docker run -it ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
+git clone https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT
+cd MLIR_ACM_Summer_School_2026_CIRCT/tutorial
+docker run -it -v "$PWD:/workspace" \
+  ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest
 ```
 
-Or build the same image from the repository root:
+Or build the same image from the `tutorial/` directory:
 
 ```bash
-docker build -t mlir-summer-school-2026-circt tutorial
-docker run -it mlir-summer-school-2026-circt
+docker build -t mlir-summer-school-2026-circt .
+docker run -it -v "$PWD:/workspace" mlir-summer-school-2026-circt
 ```
+
+The bind mount maps the host `tutorial/` folder to `/workspace`. Use the same
+`-v "$PWD:/workspace"` option each time: edit with the host IDE, then run and
+test those files inside Docker. Generated files under `build/` also persist on
+the host.
 
 No setup or activation is needed inside the image. Its `/opt/mlir-python`
 virtual environment is already on `PATH`; it isolates the pinned upstream MLIR
