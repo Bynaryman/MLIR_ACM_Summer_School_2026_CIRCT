@@ -236,6 +236,21 @@ less shifting and control for AI workloads that tolerate tiny perturbations.
 Less precision buys a smaller representation and more operations per watt;
 the exact rounding and exceptional-value rules remain part of the contract.
 
+## Exercise cheat sheet {#tools-cheatsheet .smaller}
+
+| I need to... | Use |
+|---|---|
+| Build and run the supplied pipeline | `./scripts/build.sh && ./scripts/run.sh` |
+| SystemVerilog -> MLIR | `circt-verilog in.sv -o out.mlir` |
+| Apply passes | `circt-opt in.mlir --PASS -o out.mlir` |
+| MLIR -> SystemVerilog | `firtool in.mlir -o out.sv` |
+| Prove equivalent | `circt-lec --c1 TOP before.mlir --c2 TOP after.mlir` |
+| Compare synthesis statistics | `./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP` |
+| Run the Python lowering | `python scripts/lower-e4m3fn.py in.mlir -o out.mlir` |
+| Create XOR | `x = comb.XorOp.create(a, b).result` |
+| Replace an operation | `rewriter.replace_op(op, [value])` |
+| Test the E4M3 normal path | `./scripts/test-e4m3-all.py --pass --normal-path` |
+
 ## Exercise 7: build an E4M3 multiplier {#arithmetic-pass-goal auto-animate=true auto-animate-id="e4m3-rewrite"}
 
 :::: {.e4m3-rewrite-layout}
