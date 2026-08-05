@@ -442,7 +442,13 @@ Analyses see nine connected PE instances, not a loop.
 :::
 ::::
 
-## FPGA {#dd-fpga-separator .section-title .center}
+## FPGA {#dd-fpga-separator .section-title .center .with-subtitle}
+
+::: {.section-subtitle}
+Field-Programmable Gate Array
+
+[(the soft/easy hardware)]{.section-aside}
+:::
 
 ## FPGA means configurable after manufacture {#dd-fpga-history}
 
@@ -577,31 +583,6 @@ Compilation can take several days.
 :::
 :::
 ::::
-
-## From FPGA to ASIC {#dd-targets}
-
-::: {.callout-note appearance="simple" icon=false}
-## One last FPGA quiz
-
-Which can implement a different circuit **after manufacturing**: an FPGA or an ASIC?
-:::
-
-::: {.fragment data-fragment-index="0"}
-**The FPGA.** Its configuration can be rewritten.
-
-The source language can be the same; the implementation is not.
-
-| | FPGA | ASIC |
-|---|---|---|
-| logic | configurable LUTs | fixed logic cells |
-| connections | programmable routing | fixed metal wires |
-| flow output | bitstream | GDSII geometry |
-| reconfigurable | **yes** | **no** |
-:::
-
-::: {.fragment data-fragment-index="1"}
-[Next: in an ASIC, logic and wires become fixed geometry.]{.marker}
-:::
 
 ## ASIC {#dd-asic-separator .section-title .center .with-subtitle}
 
