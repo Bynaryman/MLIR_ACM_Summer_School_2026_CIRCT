@@ -725,3 +725,6 @@ Put a small design on a shared fabrication shuttle.
 Learn the complete open-source digital ASIC flow.
 :::
 ::::
+
+They are friends: just knock on their doors.
+[Cheap, modern paths to a real chip.]{.marker}
