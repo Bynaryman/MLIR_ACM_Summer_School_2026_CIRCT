@@ -60,6 +60,20 @@ CIRCT firtool-1.147.0
 ```
 :::
 
+## Keep the cheat sheet open {#tools-cheatsheet}
+
+Inside the container:
+
+```bash
+less CHEATSHEET.md
+```
+
+It contains the commands for **translation, passes, equivalence, Verilog,
+synthesis reports, and tests**, plus the Python rewrite skeleton and every
+supplied `comb`/`hw` builder.
+
+[Open the cheat sheet on GitHub](https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT/blob/main/tutorial/CHEATSHEET.md)
+
 ## Tutorial Part 1: CIRCT basics {#tools-basics}
 
 ::: {.incremental}

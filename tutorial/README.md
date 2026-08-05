@@ -26,10 +26,18 @@ virtual environment is already on `PATH`; it isolates the pinned upstream MLIR
 Python bindings used by Exercises 7-8. CIRCT, CMake, Ninja, GCC, Icarus
 Verilog, Z3, and the remaining tools are installed in the same image.
 
+Keep the command and Python API reference in
+[`CHEATSHEET.md`](CHEATSHEET.md) open during the exercises:
+
+```bash
+less CHEATSHEET.md
+```
+
 ## Files
 
 ```text
 tutorial/
+|-- CHEATSHEET.md                  # Commands, Python builders, and test recipes
 |-- rtl/
 |   |-- ex1_fma.sv                 # Exercise 1 source
 |   `-- ex5_aig.sv                 # Exercise 5 input

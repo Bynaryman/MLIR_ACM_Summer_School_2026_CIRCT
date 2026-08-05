@@ -42,6 +42,7 @@ The project retains two render profiles for the later exercises:
 |-- scripts/generate-digital-design-primer-diagrams.sh # Regenerates primer TikZ SVGs
 |-- scripts/generate-e4m3-rewrite-datapath.sh # Regenerates staged TikZ SVGs
 |-- tutorial/                      # Original CIRCT tool tour plus arithmetic pass exercises
+|   `-- CHEATSHEET.md              # Student command and Python API reference
 |-- .github/workflows/             # GHCR image publication
 |-- dist/                          # Generated slides; ignored
 |-- tmp/                           # Scratch and test output; ignored
@@ -194,4 +195,7 @@ docker build -t mlir-summer-school-2026-circt tutorial
 docker run -it mlir-summer-school-2026-circt
 ```
 
-The exercise structure and commands are documented in `tutorial/README.md`.
+The exercise structure is documented in
+[`tutorial/README.md`](tutorial/README.md). Students can keep
+[`tutorial/CHEATSHEET.md`](tutorial/CHEATSHEET.md) open for command recipes,
+the supplied Python builder API, and the verification and synthesis workflows.
