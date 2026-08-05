@@ -740,27 +740,3 @@ Put a small design on a shared fabrication shuttle.
 Learn the complete open-source digital ASIC flow.
 :::
 ::::
-
-## The same circuit lives in several representations {#dd-vocabulary}
-
-:::: {.columns}
-::: {.column width="57%"}
-We have just seen the same hardware concepts living together at several levels:
-
-- **SystemVerilog / RTL:** modules, connections, combinational logic, and
-  registers.
-- **Gate-level netlists:** gates or cells and their connectivity.
-- **Physical design:** placed cells and routed wires.
-
-::: {.fragment data-fragment-index="0"}
-Can compiler passes see a **module**, a **combinational operator**, or a
-**register** directly, without rediscovering those concepts from syntax?
-
-**CIRCT gives those hardware concepts explicit MLIR operations.**
-:::
-:::
-
-::: {.column width="43%"}
-![](assets/images/digital-design/circt-dialects.svg){.fragment data-fragment-index="0" fig-alt="Overview of CIRCT dialects, their frontends, lowerings, and hardware outputs" height="730"}
-:::
-::::
