@@ -240,6 +240,7 @@ the exact rounding and exceptional-value rules remain part of the contract.
 
 | I need to... | Use |
 |---|---|
+| Edit locally; run in Docker | `docker run -it -v "$PWD:/workspace" IMAGE` |
 | Build and run the supplied pipeline | `./scripts/build.sh && ./scripts/run.sh` |
 | SystemVerilog -> MLIR | `circt-verilog in.sv -o out.mlir` |
 | Apply passes | `circt-opt in.mlir --PASS -o out.mlir` |
