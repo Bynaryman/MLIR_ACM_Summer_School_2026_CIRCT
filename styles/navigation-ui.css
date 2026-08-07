@@ -1,0 +1,6 @@
+.reveal .slide-number {
+  right: auto;
+  left: 50%;
+  width: max-content;
+  transform: translateX(-50%);
+}
