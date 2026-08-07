@@ -547,7 +547,7 @@ All operations are modulo $2^8$.
 :::
 
 ::: {.column width="45%"}
-```{.bash code-line-numbers="2-6"}
+```bash
 circt-verilog rtl/ex5_aig.sv -o build/ex5_aig.mlir
 circt-synth build/ex5_aig.mlir --top=ex5_aig \
   --analysis-output=build/ex5-reports \
