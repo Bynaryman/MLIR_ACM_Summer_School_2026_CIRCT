@@ -996,30 +996,6 @@ We will instead exploit **structure already visible in the IR**.
 For a square, the lower triangle duplicates the upper triangle and the
 diagonal does not require an AND gate [@dinechin2024asa, sec. 14.2].
 
-## Why the significand squarer is cheaper {#arithmetic-square-derivation}
-
-:::: {.columns}
-::: {.column width="46%"}
-For $X=\sum_i 2^i x_i$:
-
-$$
-X^2 = \sum_i 2^{2i}x_i
-    + \sum_{j<i} 2^{i+j+1}x_ix_j
-$$
-:::
-
-::: {.column width="54%"}
-::: {.incremental}
-- **Diagonal:** $x_i x_i=x_i$, so it is a wire.
-- **Mirror:** $x_ix_j=x_jx_i$, so compute the pair once and shift its weight.
-- **Four bits:** 16 generic partial products become 6 ANDs and 4 wires.
-:::
-:::
-::::
-
-The bit complexity is roughly halved before compression and rounding. The
-floating-point normalization and exceptional-value policy remain.
-
 ## Exercise 8: use the stronger pattern first {#arithmetic-square-order}
 
 :::: {.columns}
@@ -1046,7 +1022,8 @@ the dedicated square lowering first:
 python scripts/lower-e4m3fn-square.py \
   exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
-    --canonicalize -o exercises/ex8_square_intermediate.mlir
+    --canonicalize \
+    -o exercises/ex8_square_intermediate.mlir
 ```
 
 In a combined production pass, the square rewrite would receive the higher
