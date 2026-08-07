@@ -377,7 +377,7 @@ result.
 :::
 ::::
 
-## Worked example: cumulative sign path {#arithmetic-sign-recap data-transition="none"}
+## Solution checkpoint: sign {#arithmetic-sign-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -476,7 +476,7 @@ product = comb.MulOp.create(ma8, mb8).result
 :::
 ::::
 
-## Exercise 7A: cumulative implementation {#arithmetic-significand-recap data-transition="none"}
+## Solution checkpoint: significand {#arithmetic-significand-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -612,7 +612,7 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 ::::
 
-## Exercise 7B: cumulative implementation {#arithmetic-normalization-recap data-transition="none"}
+## Solution checkpoint: normalization {#arithmetic-normalization-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -731,7 +731,7 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 :::
 ::::
 
-## Together: cumulative exponent path {#arithmetic-exponent-recap data-transition="none"}
+## Solution checkpoint: exponent {#arithmetic-exponent-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
