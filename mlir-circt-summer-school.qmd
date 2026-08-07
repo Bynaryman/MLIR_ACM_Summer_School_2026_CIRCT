@@ -198,18 +198,23 @@ But also an [artist]{.marker}.
 
 {{< include slides/arithmetic.qmd >}}
 
-## What to keep from this session {#course-takeaways}
+## Can `tensor` / `linalg` become a chip? {#course-takeaways}
 
-- `hw`, `comb`, and `seq` preserve hardware structure, dataflow, and state.
+| Upstream of CIRCT | CIRCT hardware IR | Downstream of CIRCT |
+|---|---|---|
+| `tensor`, `linalg`, `scf`, `arith` | `hw`, `comb`, `seq` | SystemVerilog, AIG/netlists, gates, GDSII |
 
-- A lowering is an **architecture choice**: one operation can become many
-  circuits.
+**Yes, but the arrows are not automatic.** Lowering passes must choose the
+schedule, parallelism, storage, control, bit widths, and arithmetic
+architecture.
 
-- Prove behavior first; then compare Boolean structure and physical cost.
+[Preserve intent $\rightarrow$ choose a circuit $\rightarrow$ prove behavior
+$\rightarrow$ measure cost $\rightarrow$ iterate.]{.marker}
 
-- MLIR and CIRCT make that design loop programmable.
+**A hardware compiler does not merely target a machine; it helps build the
+machine.**
 
-[Preserve intent long enough to choose the circuit deliberately.]{.marker}
+The bridge from upstream MLIR into CIRCT is **high-level synthesis**.
 
 # Bonus: HLS with MLIR and CIRCT {#hls .section-title .center}
 
