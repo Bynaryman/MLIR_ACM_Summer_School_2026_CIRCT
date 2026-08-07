@@ -518,6 +518,8 @@ equivalent functions can still have different AIGs.
 %a_n_b = synth.aig.and_inv not %a, %b : i1
 ```
 
+The `synth` dialect represents this graph.
+
 [@mishchenko2006aig]
 :::
 ::::
