@@ -389,7 +389,6 @@ result.
 :::
 
 ::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
-<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -489,7 +488,6 @@ product = comb.MulOp.create(ma8, mb8).result
 :::
 
 ::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
-<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -626,7 +624,6 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 
 ::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
-<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -746,7 +743,6 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 :::
 
 ::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
-<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
@@ -842,7 +838,6 @@ The floating-point island is dead; the greedy rewrite removes it.
 :::
 
 ::: {.e4m3-rewrite-copy .e4m3-function-recap .e4m3-recap-panel data-id="e4m3-copy"}
-<div class="e4m3-recap-caption">Cumulative Python lowering</div>
 ```{#e4m3-final-python .python-circt}
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)
