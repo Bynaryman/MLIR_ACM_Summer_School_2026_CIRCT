@@ -489,28 +489,35 @@ them.
 Can an OR gate be built using only AND and inversion?
 :::
 
-## The Boolean network is an AIG {#tools-aig-definition}
+::: {.fragment}
+**Yes.** De Morgan's law gives:
+
+$$
+a \lor b = \neg(\neg a \land \neg b)
+$$
+:::
+
+## AIG: a common synthesis representation {#tools-aig-definition}
+
+Many synthesis tools normalize Boolean logic into an
+**And-Inverter Graph (AIG)**.
+
+It is regular and optimization-friendly, but **not a canonical form**:
+equivalent functions can still have different AIGs.
 
 :::: {.columns}
 ::: {.column width="52%"}
-An **And-Inverter Graph (AIG)** is a directed acyclic graph:
-
 - vertices are two-input AND operations;
 - an edge may invert its value;
 - ports are graph inputs and outputs.
+:::
 
+::: {.column width="48%"}
 ```mlir
 %and = synth.aig.and_inv %a, %b : i1
 %a_n_b = synth.aig.and_inv not %a, %b : i1
 ```
-:::
 
-::: {.column width="48%"}
-$$
-a \lor b = \neg(\neg a \land \neg b)
-$$
-
-AND and inversion can represent every Boolean function.
 [@mishchenko2006aig]
 :::
 ::::
