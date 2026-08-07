@@ -1,10 +1,10 @@
-\documentclass[tikz,border=5pt]{standalone}
+\documentclass[tikz,border=3pt]{standalone}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,calc,positioning}
 
 \definecolor{neutral}{HTML}{263640}
-\definecolor{lightneutral}{HTML}{8B99A3}
+\definecolor{lightneutral}{HTML}{6B7A84}
 \definecolor{signcolor}{HTML}{7C3AED}
 \definecolor{significandcolor}{HTML}{0F766E}
 \definecolor{normalizecolor}{HTML}{A16207}
@@ -16,79 +16,87 @@
     draw=#1,
     fill=#1!7,
     rounded corners=1.2pt,
-    line width=0.95pt,
-    minimum height=0.92cm,
-    minimum width=3.15cm,
-    inner xsep=7pt,
-    inner ysep=5pt,
+    line width=1.15pt,
+    minimum height=1.05cm,
+    inner xsep=8pt,
+    inner ysep=6pt,
     align=center,
-    font=\sffamily\small
+    font=\sffamily\normalsize
   },
   wire/.style={
     draw=#1,
-    line width=0.95pt,
+    line width=1.15pt,
     line cap=round,
     line join=round,
-    -{Latex[length=1.8mm,width=1.15mm]}
+    -{Latex[length=2.0mm,width=1.3mm]}
   },
   control/.style={
     draw=#1,
-    line width=0.85pt,
+    line width=1.05pt,
     dashed,
     line cap=round,
     line join=round,
-    -{Latex[length=1.7mm,width=1.1mm]}
+    -{Latex[length=1.9mm,width=1.25mm]}
   },
-  port/.style={font=\ttfamily\normalsize, text=neutral},
-  note/.style={font=\sffamily\scriptsize, text=lightneutral}
+  port/.style={font=\ttfamily\large, text=neutral},
+  signal/.style={font=\sffamily\small, text=#1, fill=white, inner sep=2pt}
 }
 
 \begin{document}
 \begin{tikzpicture}
-  \node[port] (lhs) at (-2.6,4.65) {\%lhs : i8};
-  \node[port] (rhs) at ( 2.6,4.65) {\%rhs : i8};
+  \path[use as bounding box] (-6.35,-4.75) rectangle (6.35,4.75);
 
-  \node[block=neutral, minimum width=7.7cm, minimum height=1.18cm]
-    (decode) at (0,3.55)
-    {\textbf{classify + decode both operands}\\
-     \ttfamily\scriptsize sign, exponent, fraction, scale, zero, subnormal, NaN};
+  \node[port] (lhs) at (-3.15,4.45) {\%lhs : i8};
+  \node[port] (rhs) at ( 3.15,4.45) {\%rhs : i8};
 
-  \node[block=signcolor, minimum width=2.35cm] (sign) at (-4.15,1.75)
+  \node[block=neutral, minimum width=11.1cm, minimum height=1.18cm]
+    (decode) at (0,3.35)
+    {\textbf{classify + unpack both operands}\\[-1pt]
+     \ttfamily\small sign \;|\; exponent \;|\; significand \;|\; zero / subnormal / NaN};
+
+  \node[block=signcolor, minimum width=2.55cm] (sign) at (-4.45,1.65)
     {\textbf{sign}\\$s_a \oplus s_b$};
-  \node[block=significandcolor, minimum width=3.55cm] (multiply) at (0,1.75)
-    {\textbf{significands}\\hidden-bit select + $4\!\times\!4$ multiply};
-  \node[block=exponentcolor, minimum width=2.75cm] (scale) at (4.15,1.75)
-    {\textbf{scale}\\add operand scales};
+  \node[block=significandcolor, minimum width=4.25cm] (multiply) at (0,1.65)
+    {\textbf{significands}\\hidden-bit select $\rightarrow$ $4\!\times\!4$ multiply};
+  \node[block=exponentcolor, minimum width=2.95cm] (scale) at (4.45,1.65)
+    {\textbf{scale}\\$e_a + e_b - \mathrm{bias}$};
 
-  \node[block=normalizecolor, minimum width=5.6cm] (normalize) at (0,-0.15)
-    {\textbf{leading-bit detect + alignment}\\normal and subnormal result paths};
-  \node[block=roundcolor, minimum width=5.6cm] (round) at (0,-1.75)
-    {\textbf{round to nearest, ties to even}\\carry and exponent correction};
-  \node[block=neutral, minimum width=6.7cm, minimum height=1.12cm]
-    (select) at (0,-3.55)
-    {\textbf{special-case select + pack}\\
-     \ttfamily\scriptsize NaN, signed zero, underflow, normal result, overflow};
-  \node[port] (result) at (0,-4.85) {\%result : i8};
+  \node[block=normalizecolor, minimum width=6.15cm] (normalize) at (0.75,-0.05)
+    {\textbf{normalize + align}\\leading-bit detect and exponent correction};
+  \node[block=roundcolor, minimum width=6.15cm] (round) at (0.75,-1.55)
+    {\textbf{round to nearest, ties to even}\\guard + round + sticky $\rightarrow$ carry};
 
-  \draw[wire=neutral] (lhs.south) -- ($(decode.north)+(-2.6,0)$);
-  \draw[wire=neutral] (rhs.south) -- ($(decode.north)+( 2.6,0)$);
+  \node[block=neutral, minimum width=10.55cm, minimum height=1.15cm]
+    (select) at (0,-3.25)
+    {\textbf{select result + pack}\\[-1pt]
+     \ttfamily\small NaN \;|\; signed zero \;|\; underflow \;|\; finite result \;|\; overflow};
+  \node[port] (result) at (0,-4.47) {\%result : i8};
 
-  \draw[wire=signcolor] ($(decode.south)+(-2.8,0)$) -- ++(0,-0.28) -| (sign.north);
+  \draw[wire=neutral] (lhs.south) -- ($(decode.north)+(-3.15,0)$);
+  \draw[wire=neutral] (rhs.south) -- ($(decode.north)+( 3.15,0)$);
+
+  \draw[wire=signcolor] ($(decode.south)+(-4.1,0)$) -- (sign.north);
   \draw[wire=significandcolor] (decode.south) -- (multiply.north);
-  \draw[wire=exponentcolor] ($(decode.south)+(2.8,0)$) -- ++(0,-0.28) -| (scale.north);
+  \draw[wire=exponentcolor] ($(decode.south)+(4.1,0)$) -- (scale.north);
+  \node[signal=signcolor] at (-4.1,2.38) {signs};
+  \node[signal=significandcolor] at (0,2.38) {fractions + class};
+  \node[signal=exponentcolor] at (4.1,2.38) {exponents};
 
-  \draw[wire=significandcolor] (multiply.south) -- ($(normalize.north)+(-0.78,0)$);
-  \draw[wire=exponentcolor] (scale.south) -- ++(0,-0.38) -| ($(normalize.north)+(0.78,0)$);
+  \draw[wire=significandcolor] (multiply.south) -- ++(0,-0.18)
+    -| ($(normalize.north)+(-1.15,0)$);
+  \draw[wire=exponentcolor] (scale.south) -- ++(0,-0.18)
+    -| ($(normalize.north)+(1.15,0)$);
   \draw[wire=normalizecolor] (normalize.south) -- (round.north);
-  \draw[wire=roundcolor] (round.south) -- (select.north);
+  \draw[wire=roundcolor] (round.south) -- ($(select.north)+(0.75,0)$);
 
-  \draw[wire=signcolor] (sign.south) -- ++(0,-4.02) -| ($(select.west)+(0,0.20)$);
-  \draw[control=lightneutral] (decode.west) -- ++(-0.62,0) |- ($(select.west)+(0,-0.20)$);
+  \draw[wire=signcolor] (sign.south) -- ++(0,-3.70)
+    -| ($(select.north)+(-3.75,0)$);
+  \node[signal=signcolor, anchor=west] at (-4.37,-0.72) {result sign};
+
+  \draw[control=lightneutral] (decode.east) -- ++(0.48,0)
+    |- ($(select.north)+(3.75,0)$);
+  \node[signal=lightneutral, rotate=90] at (5.98,-0.25) {class flags};
 
   \draw[wire=neutral] (select.south) -- (result.north);
-
-  \node[note, anchor=west] at ($(decode.east)+(0.18,0)$) {control flags};
-  \node[note, anchor=west, text=roundcolor] at ($(round.east)+(0.18,0)$)
-    {guard + sticky + LSB};
 \end{tikzpicture}
 \end{document}
