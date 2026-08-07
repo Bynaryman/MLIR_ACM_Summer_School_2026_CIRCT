@@ -45,8 +45,9 @@ format:
     auto-animate-easing: ease-in-out
     auto-animate-duration: 0.55
 
-    controls: false
+    controls: true
     controls-layout: bottom-right
+    controls-tutorial: true
     menu:
       side: left
       width: normal
