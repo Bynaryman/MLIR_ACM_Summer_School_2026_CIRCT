@@ -55,12 +55,28 @@ docker run -it -v "$PWD:/workspace" mlir-summer-school-2026-circt
 
 
 ::: {.fragment}
-Quick check:
+**Quick check**
+
+:::: {.columns}
+::: {.column width="50%"}
+**CIRCT toolchain**
+
 ```bash
 circt-opt --version
 LLVM version 23.0.0git
 CIRCT firtool-1.147.0
 ```
+:::
+
+::: {.column width="50%"}
+**Mounted course files**
+
+```bash
+ls -l /workspace
+ls -l /workspace/rtl
+```
+:::
+::::
 :::
 
 ## Tutorial Part 1: CIRCT basics {#tools-basics}
