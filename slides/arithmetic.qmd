@@ -240,7 +240,7 @@ the exact rounding and exceptional-value rules remain part of the contract.
 
 | I need to... | Use |
 |---|---|
-| Edit locally; run in Docker | `docker run -it -v "$PWD:/workspace" IMAGE` |
+| Edit locally; run in Docker | `docker run -it -v "$PWD:/workspace" ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest` |
 | Build and run the supplied pipeline | `./scripts/build.sh && ./scripts/run.sh` |
 | SystemVerilog -> MLIR | `circt-verilog in.sv -o out.mlir` |
 | Apply passes | `circt-opt in.mlir --PASS -o out.mlir` |
@@ -252,7 +252,7 @@ the exact rounding and exceptional-value rules remain part of the contract.
 | Replace an operation | `rewriter.replace_op(op, [value])` |
 | Test the E4M3 normal path | `./scripts/test-e4m3-all.py --pass --normal-path` |
 
-## Exercise 7: build an E4M3 multiplier {#arithmetic-pass-goal auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7: build an E4M3 multiplier {#arithmetic-pass-goal data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -295,7 +295,7 @@ and `comb`/`hw` builders · **Scope:** exact normal finite products; no rounding
 :::
 ::::
 
-## What must the circuit compute? {#arithmetic-mult-decomposition auto-animate=true auto-animate-id="e4m3-rewrite"}
+## What must the circuit compute? {#arithmetic-mult-decomposition data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -324,7 +324,7 @@ to the result exponent.
 :::
 ::::
 
-## Together: route the sign {#arithmetic-sign-path auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Together: route the sign {#arithmetic-sign-path data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -363,7 +363,7 @@ result.
 :::
 ::::
 
-## Together: route the sign {#arithmetic-sign-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Worked example: cumulative sign path {#arithmetic-sign-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -394,7 +394,7 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 ::::
 
-## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -422,7 +422,7 @@ produce the full-width `%product : i8`. `comb.mul` returns the operand width.
 :::
 ::::
 
-## Exercise 7A: multiply the significands - 6 min {#arithmetic-exercise-7a-solution auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7A: solution {#arithmetic-exercise-7a-solution data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -462,7 +462,7 @@ product = comb.MulOp.create(ma8, mb8).result
 :::
 ::::
 
-## Exercise 7A: multiply the significands - 6 min {#arithmetic-significand-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7A: cumulative implementation {#arithmetic-significand-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -503,7 +503,7 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 ::::
 
-## One bit chooses the normalization {#arithmetic-normalization-bit auto-animate=true auto-animate-id="e4m3-rewrite"}
+## One bit chooses the normalization {#arithmetic-normalization-bit data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -539,7 +539,7 @@ Thus `0x3C × 0x3C` produces `0x41` ($2.25$).
 :::
 ::::
 
-## Exercise 7B: build the normalization mux - 7 min {#arithmetic-exercise-7b auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7B: build the normalization mux - 7 min {#arithmetic-exercise-7b data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -563,7 +563,7 @@ normalized window, then retain it as the exponent correction.
 :::
 ::::
 
-## Exercise 7B: build the normalization mux - 7 min {#arithmetic-exercise-7b-solution auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7B: solution {#arithmetic-exercise-7b-solution data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -598,7 +598,7 @@ frac = comb.ExtractOp.create(0, i3, mant).result
 :::
 ::::
 
-## Exercise 7B: build the normalization mux - 7 min {#arithmetic-normalization-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Exercise 7B: cumulative implementation {#arithmetic-normalization-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -644,7 +644,7 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 ::::
 
-## Why subtract only one bias? {#arithmetic-exponent-math auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Why subtract only one bias? {#arithmetic-exponent-math data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -675,7 +675,7 @@ one bias back, so the circuit subtracts only one bias overall.
 :::
 ::::
 
-## Together: adjust the exponent {#arithmetic-exponent-path auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Together: adjust the exponent {#arithmetic-exponent-path data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -717,7 +717,7 @@ exp = comb.ExtractOp.create(0, i4, adjusted).result
 :::
 ::::
 
-## Together: adjust the exponent {#arithmetic-exponent-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Together: cumulative exponent path {#arithmetic-exponent-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
@@ -775,7 +775,7 @@ def lower_e4m3_mul(out_cast, rewriter):
 :::
 ::::
 
-## Together: pack and replace {#arithmetic-normal-path auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Together: pack and replace {#arithmetic-normal-path data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel}
@@ -812,7 +812,7 @@ The floating-point island is dead; the greedy rewrite removes it.
 :::
 ::::
 
-## Together: pack and replace {#arithmetic-final-recap auto-animate=true auto-animate-id="e4m3-rewrite"}
+## Complete normal-path lowering {#arithmetic-final-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
