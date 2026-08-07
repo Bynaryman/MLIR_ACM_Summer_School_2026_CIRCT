@@ -815,13 +815,13 @@ The floating-point island is dead; the greedy rewrite removes it.
 :::
 ::::
 
-## Complete normal-path lowering {#arithmetic-final-recap data-transition="none"}
+## Exercise 7: the simplified datapath {#arithmetic-final-recap data-transition="none"}
 
 :::: {.e4m3-rewrite-layout}
 ::: {.e4m3-diagram-panel .e4m3-recap-panel}
 <div class="e4m3-recap-caption">Cumulative schematic</div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
-  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
+  <img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Simplified E4M3 multiplier datapath">
   <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
   <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
   <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
@@ -874,35 +874,52 @@ patterns.add(arith.BitcastOp, lower_e4m3_mul)
 :::
 ::::
 
-## What did we implement? {#arithmetic-special-cases data-transition="none"}
+## Quiz: how many exact products did we prove? {#arithmetic-special-cases data-transition="none"}
 
-:::: {.columns}
-::: {.column width="47%"}
-| Scope | Input pairs |
-|---|---:|
-| every E4M3 bit pattern | **65,536** |
-| normal $\times$ normal | **56,644** |
-| exact simplified path | **11,892** |
+::: {.callout-note appearance="simple" icon=false}
+## How many normal $\times$ normal cases does our restricted checker validate?
+:::
 
 ```bash
 ./scripts/test-e4m3-all.py --pass --normal-path
 ```
 
+::: {.fragment}
 ```text
 PASS: all 11892 E4M3 products match MLIR
 ```
+
+### **11,892** of **56,644** normal $\times$ normal pairs
+
+That is **21%** of normal $\times$ normal, or **18%** of all 65,536 bit-pattern pairs.
+
+These are the guaranteed exact cases; truncation may coincide with correct rounding elsewhere.
 :::
 
-::: {.column width="53%"}
-The checker keeps products that:
+## Why does the checker stop at 11,892? {#arithmetic-coverage-breakdown data-transition="none"}
 
-- use normal finite operands;
-- stay in the normal exponent range;
-- need no rounding.
+:::: {.columns}
+::: {.column width="58%"}
+| Outcome for normal $\times$ normal | Pairs |
+|---|---:|
+| normal finite result | **42,084** |
+| $\hookrightarrow$ exact, no rounding | **11,892** |
+| $\hookrightarrow$ rounding required | **30,192** |
+| subnormal result | **3,916** |
+| underflow to zero | **524** |
+| overflow to E4M3FN NaN | **10,120** |
+| **total** | **56,644** |
+:::
 
-It excludes zero, subnormals, overflow, NaN, and inexact products.
+::: {.column width="42%"}
+Our datapath still lacks:
 
-[Our circuit implements a useful subset, not the complete E4M3FN contract.]{.marker}
+- round-to-nearest, ties-to-even;
+- subnormal and gradual-underflow paths;
+- exponent-range and overflow handling;
+- classification of zero, subnormal, and NaN inputs.
+
+[The 11,892 cases are exactly those for which none of this extra machinery is needed.]{.marker}
 :::
 ::::
 
@@ -914,11 +931,12 @@ It excludes zero, subnormals, overflow, NaN, and inexact products.
 :::
 
 ::: {.column width="36%"}
-The supplied reference adds:
+[A complete reference is provided, but we will not implement it today.]{.marker}
 
-- operand classification;
-- normal and subnormal alignment;
-- round-to-nearest, ties-to-even;
+It handles:
+
+- operand and special-value classification;
+- normal/subnormal alignment and rounding;
 - zero, NaN, underflow, and overflow selection.
 
 ```bash
@@ -929,11 +947,23 @@ The supplied reference adds:
 PASS: 65536 / 65536 products
 ```
 
-Complete reference RTL in `exercises/`.
+Complete RTL is provided in `exercises/`.
 :::
 ::::
 
-## Quiz: should `%x * %x` cost the same? {#arithmetic-square-quiz}
+## From completeness to specialization {#arithmetic-specialization-transition data-transition="none"}
+
+The complete reference broadens **which values** the multiplier handles.
+
+Exercise 8 changes **which circuit** the compiler generates:
+
+- SSA tells us when both operands are the same value;
+- a stronger rewrite pattern can recognize it;
+- the lowering can generate a dedicated squarer.
+
+[This is where compilers can shine: recognize stronger intent and choose a specialized architecture.]{.marker}
+
+## Exercise 8: should `%x * %x` cost the same? {#arithmetic-square-quiz data-transition="none"}
 
 :::: {.columns}
 ::: {.column width="48%"}
