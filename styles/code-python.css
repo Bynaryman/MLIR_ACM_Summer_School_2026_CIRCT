@@ -77,77 +77,65 @@
   padding: 0.48em 0.58em;
 }
 
-/* Final recap: brackets map Python regions to the datapath colors. */
+/* Final recap: colored code regions map directly to the datapath stages. */
 .reveal #e4m3-final-python pre code {
   font-size: 0.58em;
-  padding-right: 6.1em;
+  padding-right: 0.8em;
 }
 
 .reveal #e4m3-final-python code > span {
   position: relative;
   display: inline-block;
-  width: 100%;
+  width: 72ch;
+  max-width: calc(100% - 9em);
   box-sizing: border-box;
 }
 
 .reveal #e4m3-final-python code > span:nth-child(n + 7):nth-child(-n + 9) {
   --code-stage-color: #7c3aed;
+  --code-stage-fill: rgba(124, 58, 237, 0.12);
 }
 
 .reveal #e4m3-final-python code > span:nth-child(n + 10):nth-child(-n + 18) {
   --code-stage-color: #0f766e;
+  --code-stage-fill: rgba(15, 118, 110, 0.12);
 }
 
 .reveal #e4m3-final-python code > span:nth-child(n + 19):nth-child(-n + 23) {
   --code-stage-color: #b7791f;
+  --code-stage-fill: rgba(183, 121, 31, 0.14);
 }
 
 .reveal #e4m3-final-python code > span:nth-child(n + 24):nth-child(-n + 34) {
   --code-stage-color: #2563eb;
+  --code-stage-fill: rgba(37, 99, 235, 0.11);
 }
 
 .reveal #e4m3-final-python code > span:nth-child(n + 35):nth-child(-n + 37) {
   --code-stage-color: #be185d;
+  --code-stage-fill: rgba(190, 24, 93, 0.11);
 }
 
 .reveal #e4m3-final-python code > span:nth-child(n + 7):nth-child(-n + 37) {
-  border-right: 0.16em solid var(--code-stage-color, transparent);
-  padding-right: 0.55em;
+  border-left: 0.18em solid var(--code-stage-color);
+  background: var(--code-stage-fill);
+  padding-left: 0.42em;
 }
 
-.reveal #e4m3-final-python code > span:nth-child(7)::before,
-.reveal #e4m3-final-python code > span:nth-child(10)::before,
-.reveal #e4m3-final-python code > span:nth-child(19)::before,
-.reveal #e4m3-final-python code > span:nth-child(24)::before,
-.reveal #e4m3-final-python code > span:nth-child(35)::before,
-.reveal #e4m3-final-python code > span:nth-child(9)::before,
-.reveal #e4m3-final-python code > span:nth-child(18)::before,
-.reveal #e4m3-final-python code > span:nth-child(23)::before,
-.reveal #e4m3-final-python code > span:nth-child(34)::before,
-.reveal #e4m3-final-python code > span:nth-child(37)::before {
-  content: "";
-  position: absolute;
-  right: -0.16em;
-  width: 0.58em;
-  border-color: var(--code-stage-color);
+.reveal #e4m3-final-python code > span:nth-child(7),
+.reveal #e4m3-final-python code > span:nth-child(10),
+.reveal #e4m3-final-python code > span:nth-child(19),
+.reveal #e4m3-final-python code > span:nth-child(24),
+.reveal #e4m3-final-python code > span:nth-child(35) {
+  border-radius: 0.22em 0.22em 0 0;
 }
 
-.reveal #e4m3-final-python code > span:nth-child(7)::before,
-.reveal #e4m3-final-python code > span:nth-child(10)::before,
-.reveal #e4m3-final-python code > span:nth-child(19)::before,
-.reveal #e4m3-final-python code > span:nth-child(24)::before,
-.reveal #e4m3-final-python code > span:nth-child(35)::before {
-  top: 0;
-  border-top: 0.16em solid var(--code-stage-color);
-}
-
-.reveal #e4m3-final-python code > span:nth-child(9)::before,
-.reveal #e4m3-final-python code > span:nth-child(18)::before,
-.reveal #e4m3-final-python code > span:nth-child(23)::before,
-.reveal #e4m3-final-python code > span:nth-child(34)::before,
-.reveal #e4m3-final-python code > span:nth-child(37)::before {
-  bottom: 0;
-  border-bottom: 0.16em solid var(--code-stage-color);
+.reveal #e4m3-final-python code > span:nth-child(9),
+.reveal #e4m3-final-python code > span:nth-child(18),
+.reveal #e4m3-final-python code > span:nth-child(23),
+.reveal #e4m3-final-python code > span:nth-child(34),
+.reveal #e4m3-final-python code > span:nth-child(37) {
+  border-radius: 0 0 0.22em 0.22em;
 }
 
 .reveal #e4m3-final-python code > span:nth-child(7)::after,
@@ -156,37 +144,44 @@
 .reveal #e4m3-final-python code > span:nth-child(24)::after,
 .reveal #e4m3-final-python code > span:nth-child(35)::after {
   position: absolute;
-  right: -5.7em;
-  width: 4.8em;
+  left: calc(100% + 0.5em);
+  width: 7.8em;
+  padding: 0.34em 0.48em;
+  border: 0.1em solid var(--code-stage-color);
+  border-radius: 0.25em;
+  background: var(--code-stage-fill);
+  box-sizing: border-box;
   color: var(--code-stage-color);
   font-family: var(--r-main-font);
-  font-size: 0.92em;
+  font-size: 1.16em;
   font-weight: 800;
-  line-height: 1;
-  text-align: left;
+  line-height: 1.05;
+  text-align: center;
+  white-space: nowrap;
+  transform: translateY(-50%);
 }
 
 .reveal #e4m3-final-python code > span:nth-child(7)::after {
   content: "sign";
-  top: 1.62em;
+  top: 1.5em;
 }
 
 .reveal #e4m3-final-python code > span:nth-child(10)::after {
   content: "significand";
-  top: 4.86em;
+  top: 4.5em;
 }
 
 .reveal #e4m3-final-python code > span:nth-child(19)::after {
   content: "normalize";
-  top: 2.7em;
+  top: 2.5em;
 }
 
 .reveal #e4m3-final-python code > span:nth-child(24)::after {
   content: "exponent";
-  top: 5.94em;
+  top: 5.5em;
 }
 
 .reveal #e4m3-final-python code > span:nth-child(35)::after {
   content: "pack";
-  top: 1.62em;
+  top: 1.5em;
 }
