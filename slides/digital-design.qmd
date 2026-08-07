@@ -613,12 +613,12 @@ What hardware object is shown here?
 <img src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 standard cell">
 </div>
 
-<div class="asic-cmos-column fragment instant-fragment" data-fragment-index="0">
+<div class="asic-cmos-column">
 <div class="asic-kind-of">See? It kind of looks like this.</div>
 <div class="r-stack asic-cmos-stack">
-<img class="fragment fade-out instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS circuit with a pMOS above an nMOS transistor">
-<img class="fragment fade-in-then-out instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter-low.svg" alt="With input zero, the pMOS path drives the output high">
-<img class="fragment instant-fragment" data-fragment-index="2" src="assets/images/digital-design/cmos-inverter-high.svg" alt="With input one, the nMOS path drives the output low">
+<img class="fragment fade-out instant-fragment" data-fragment-index="0" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS circuit with a pMOS above an nMOS transistor">
+<img class="fragment fade-in-then-out instant-fragment" data-fragment-index="0" src="assets/images/digital-design/cmos-inverter-low.svg" alt="With input zero, the pMOS path drives the output high">
+<img class="fragment instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter-high.svg" alt="With input one, the nMOS path drives the output low">
 </div>
 </div>
 </div>
