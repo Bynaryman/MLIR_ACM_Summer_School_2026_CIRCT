@@ -6,8 +6,3 @@ project:
   resources:
     - assets/images/**
     - assets/videos/**
-
-profile:
-  default: student
-  group:
-    - [student, instructor]

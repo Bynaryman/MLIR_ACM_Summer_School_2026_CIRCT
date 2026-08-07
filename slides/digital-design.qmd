@@ -587,7 +587,7 @@ Compilation can take several days.
 ## ASIC {#dd-asic-separator .section-title .center .with-subtitle}
 
 ::: {.section-subtitle}
-Application-Specific Integrated Circuits
+Application-Specific Integrated Circuit
 
 [(the hard hardware)]{.section-aside}
 :::

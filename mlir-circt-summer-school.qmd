@@ -73,7 +73,7 @@ format:
 ::: {.course-toc}
 1. [`$ whoami`](#about) [~5 min]{.toc-time}
 2. [From problems to electron flow](#motivation) [quiz]{.toc-quiz} [~10 min]{.toc-time}
-3. [Digital design primer](#digital-design) [quiz]{.toc-quiz} [~20 min]{.toc-time}
+3. [Digital design primer](#digital-design) [quiz]{.toc-quiz} [~25 min]{.toc-time}
 4. [CIRCT: MLIR toward hardware](#circt) [~10 min]{.toc-time}
 5. [CIRCT in practice](#circt-tools) [hands-on: 5 exercises]{.toc-hands-on} [quiz]{.toc-quiz} [~45 min]{.toc-time}
 6. [Let’s multiply](#arithmetic) [hands-on: 3 exercises + 1 optional]{.toc-hands-on} [quiz]{.toc-quiz} [~50 min]{.toc-time}
@@ -105,9 +105,9 @@ It can download while we begin.
 
 ::: {.whoami-copy}
 <ul class="whoami-list">
-  <li>Postdoctoral researcher at INSA Lyon and Inria, Emeraude.</li>
+  <li>Postdoctoral researcher at INSA Lyon and INRIA, Emeraude.</li>
   <li>I design <span class="marker">arithmetic circuits</span> and circuit generators with MLIR and CIRCT.</li>
-  <li>Incoming Associate Professor at University of Rennes, IRISA and Inria, working on <span class="marker">systolic arrays</span> and <span class="marker">small floating-point formats</span>.</li>
+  <li>Incoming Associate Professor at University of Rennes, IRISA and INRIA, working on <span class="marker">systolic arrays</span> and <span class="marker">small floating-point formats</span>.</li>
 </ul>
 
 <div class="whoami-links">More work and links: <a href="https://bynaryman.github.io">bynaryman.github.io</a> · <a href="https://github.com/Bynaryman">github.com/Bynaryman</a></div>

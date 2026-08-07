@@ -1,6 +1,6 @@
 ## The CIRCT tool tour {#tools-route}
 
-This section follows the [ARITH 2026 CIRCT Tutorial](https://github.com/cowardsa/CIRCT_TUTORIAL_2026) by Samuel Coward and myself.
+This section follows the [ARITH 2026 CIRCT Tutorial](https://github.com/cowardsa/CIRCT_TUTORIAL_2026) by Samuel Coward and me.
 
 ::: {.incremental}
 1. **Basics:** `circt-verilog`, `circt-opt`, `circt-lec`, and `firtool`.
@@ -293,13 +293,11 @@ diff -u rtl/ex2_fma_optimized.mlir rtl/ex2_fma_variant.mlir
 **Before reading the diff:** will the semantics change? Will the operation
 count change? What single extra pass would recover the first output?
 
-::: {.content-visible when-profile="instructor"}
 ::: {.fragment}
 **Answer:** the arithmetic still narrows to `i8`, but late narrowing inserts
 `comb.extract` and `comb.concat` operations after canonicalization has already
 finished. The semantics are unchanged, the IR is larger, and a final
 `--canonicalize` recovers the first output.
-:::
 :::
 
 ## Exercise 3: do you trust the transformation? {#tools-exercise-3-intro}
@@ -393,13 +391,11 @@ circt-lec --c1 ex1_fma rtl/ex1_fma.mlir \
           --c2 ex1_fma rtl/ex3_fma_broken.mlir
 ```
 
-::: {.content-visible when-profile="instructor"}
 ::: {.fragment}
 \
 **Answer**: Change the multiply to an add, alter a constant, or disconnect an operand.
 The current tool reports inequivalence but does not conveniently print the
 counterexample.
-:::
 :::
 
 ## Exercise 4: generate SystemVerilog with `firtool` {#tools-exercise-4}
@@ -432,7 +428,6 @@ endmodule
 2. Compile that Verilog back to CIRCT IR with `circt-verilog`.
 3. Use `circt-lec` to prove that the round trip preserved equivalence.
 
-::: {.content-visible when-profile="instructor"}
 ::: {.fragment}
 ```bash
 firtool rtl/ex2_fma_optimized.mlir -o rtl/ex4_fma_roundtrip.sv
@@ -440,7 +435,6 @@ circt-verilog rtl/ex4_fma_roundtrip.sv -o rtl/ex4_fma_roundtrip.mlir
 circt-lec --c1 ex1_fma rtl/ex2_fma_optimized.mlir \
           --c2 ex1_fma rtl/ex4_fma_roundtrip.mlir
 ```
-:::
 :::
 
 ## Exercise 5: same function, less logic {#tools-synthesis-part}

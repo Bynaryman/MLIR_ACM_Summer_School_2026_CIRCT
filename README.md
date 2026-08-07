@@ -6,10 +6,8 @@ the canonical Quarto deck is being rebuilt from it one section at a time. The
 previous full prototype remains in `mlir-circt-summer-school-old.qmd` as a
 reference for content and layouts, but Quarto does not render it.
 
-The project retains two render profiles for the later exercises:
-
-- `student`: exercise prompts without answers;
-- `instructor`: the same slides with answers revealed as fragments.
+The course uses one deck. Exercise prompts and their solutions share the same
+linear presentation; solutions appear only when the presenter advances.
 
 ## File hierarchy
 
@@ -25,8 +23,6 @@ The project retains two render profiles for the later exercises:
 |-- slides/arithmetic.qmd          # E4M3 lowering and implementation choices
 |-- slides/hls-eurollvm.qmd        # Optional EuroLLVM HLS chapter
 |-- _quarto.yml                    # Shared Quarto project configuration
-|-- _quarto-student.yml            # Student output directory
-|-- _quarto-instructor.yml         # Instructor output directory
 |-- figures/digital-design/        # Editable SystemVerilog and TikZ primer figures
 |-- figures/arithmetic/            # Editable TikZ for the staged E4M3 datapath
 |-- assets/images/digital-design/  # Reference figures and generated Yosys schematics
@@ -37,7 +33,7 @@ The project retains two render profiles for the later exercises:
 |-- styles/                        # Reveal.js presentation CSS
 |-- syntax/                        # MLIR and CIRCT-Python highlighting grammars
 |-- filters/slide-layout.lua       # Slide title/body layout filter
-|-- scripts/render-course-decks.sh # Builds both deck editions
+|-- scripts/render-course-deck.sh  # Builds the course deck
 |-- scripts/generate-digital-design-schematics.sh # Regenerates Yosys SVGs
 |-- scripts/generate-digital-design-primer-diagrams.sh # Regenerates primer TikZ SVGs
 |-- scripts/generate-e4m3-rewrite-datapath.sh # Regenerates staged TikZ SVGs
@@ -51,11 +47,9 @@ The project retains two render profiles for the later exercises:
 
 ### Quarto configuration
 
-- `_quarto.yml` selects the slide source, copies image resources, and declares
-  `student` as the default profile.
-- `_quarto-student.yml` writes the public deck to `dist/student/`.
-- `_quarto-instructor.yml` writes the deck with solutions to
-  `dist/instructor/`.
+- `_quarto.yml` selects the slide source, output directory, and copied image
+  resources.
+- Exercise answers are normal Reveal.js fragments in the canonical deck.
 
 ### Styles
 
@@ -159,23 +153,22 @@ circuit layer together with the corresponding Python rewrite code.
 
 The slides are made with quarto, an open source technical publishing system for creating beautiful articles, websites, blogs, books, slides, and more.
 
-Build students and teacher editions:
+Build the course deck:
 
 ```bash
-./scripts/render-course-decks.sh
+./scripts/render-course-deck.sh
 ```
 
-The generated decks are:
+The generated deck is:
 
 ```text
-dist/student/mlir-circt-summer-school-2026.html
-dist/instructor/mlir-circt-summer-school-2026.html
+dist/mlir-circt-summer-school-2026.html
 ```
 
-Preview one edition while editing:
+Preview it while editing:
 
 ```bash
-quarto preview mlir-circt-summer-school.qmd --profile instructor
+quarto preview mlir-circt-summer-school.qmd
 ```
 
 ## Tutorial container
