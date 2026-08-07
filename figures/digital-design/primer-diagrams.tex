@@ -26,7 +26,7 @@
   label/.style={font=\sffamily\small, text=ink},
   small label/.style={font=\sffamily\scriptsize, text=ink},
   mono label/.style={font=\ttfamily\small, text=ink},
-  timing label/.style={font=\ttfamily\normalsize, text=ink},
+  timing label/.style={font=\ttfamily\LARGE, text=ink},
   register/.style={draw=ink, fill=white, line width=0.9pt, minimum width=1.55cm,
     minimum height=2.10cm, inner sep=2pt, font=\sffamily\small, text=ink,
     soft shadow},
@@ -43,7 +43,7 @@
 }
 
 \newcommand{\RegisterTimingInputs}{%
-  \path[use as bounding box] (0,0) rectangle (15.4,5.5);
+  \path[use as bounding box] (-0.75,0) rectangle (15.4,5.5);
 
   \node[timing label, anchor=east] at (1.15,4.55) {clk};
   \node[timing label, anchor=east] at (1.15,3.20) {d};
