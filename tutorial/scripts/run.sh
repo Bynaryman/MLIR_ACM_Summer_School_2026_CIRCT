@@ -2,7 +2,7 @@
 set -euo pipefail
 
 mkdir -p build
-circt-tutorial-opt examples/ex6_arith_muli.mlir \
+circt-tutorial-opt exercises/ex6_arith_muli.mlir \
   --tutorial-func-to-hw \
   -o build/ex6_hw_arith.mlir
 circt-opt build/ex6_hw_arith.mlir \

@@ -38,19 +38,18 @@ Verilog, Z3, and the remaining tools are installed in the same image.
 
 ```text
 tutorial/
-|-- rtl/
+|-- exercises/
 |   |-- ex1_fma.sv                 # Exercise 1 source
-|   `-- ex5_aig.sv                 # Exercise 5 input
+|   |-- ex5_aig.sv                 # Exercise 5 input
+|   |-- ex6_arith_muli.mlir        # Exercise 6 integer input
+|   |-- ex6_arith_mulf.mlir        # Same pipeline, unsupported float op
+|   |-- ex7_e4m3fn_mul.mlir        # Exercise 7 arith.mulf input
+|   |-- ex7_e4m3fn_mul_reference.sv # Complete E4M3 reference RTL
+|   `-- ex8_e4m3fn_square.mlir     # Exercise 8 squarer input
 |-- solutions/
 |   |-- ex5_aig_optimized.sv       # Exercise 5 revealed solution
 |   |-- lower-e4m3fn-normal.py     # Exercise 7 normal-path reference
 |   `-- lower-e4m3fn-square.py     # Exercise 8 squarer reference
-|-- examples/
-|   |-- ex6_arith_muli.mlir          # Exercise 6 integer input
-|   |-- ex6_arith_mulf.mlir          # Same pipeline, unsupported float op
-|   |-- ex7_e4m3fn_mul.mlir          # Exercise 7 arith.mulf input
-|   |-- ex7_e4m3fn_mul_reference.sv  # Complete E4M3 reference RTL
-|   `-- ex8_e4m3fn_square.mlir        # Exercise 8 squarer input
 |-- include/Tutorial/Passes.h       # Course pass registration
 |-- python/circt_tutorial/          # Supplied Python matcher and op builders
 |-- lib/
@@ -70,8 +69,10 @@ tutorial/
 `-- Dockerfile
 ```
 
-Put generated MLIR, Verilog, reports, and binaries under `build/` when working
-outside the literal tutorial commands. That directory is ignored by Git.
+All student-facing MLIR and SystemVerilog files live in `exercises/`. The
+literal tutorial commands keep their intermediate files there too. Put larger
+generated reports and binaries under `build/`; that directory is ignored by
+Git.
 
 # Part 1: CIRCT basics
 
@@ -86,13 +87,13 @@ assign d = (a * b) + (c * 1'd1);
 Print the CIRCT IR directly:
 
 ```bash
-circt-verilog rtl/ex1_fma.sv
+circt-verilog exercises/ex1_fma.sv
 ```
 
 Then save it for the next tools:
 
 ```bash
-circt-verilog rtl/ex1_fma.sv -o rtl/ex1_fma.mlir
+circt-verilog exercises/ex1_fma.sv -o exercises/ex1_fma.mlir
 ```
 
 Look for the `hw.module` interface and the `comb.concat`, `comb.mul`, and
@@ -101,10 +102,10 @@ Look for the `hw.module` interface and the `comb.concat`, `comb.mul`, and
 ## Exercise 2: optimize a design
 
 ```bash
-circt-opt rtl/ex1_fma.mlir \
+circt-opt exercises/ex1_fma.mlir \
   --comb-int-range-narrowing \
   --canonicalize \
-  -o rtl/ex2_fma_optimized.mlir
+  -o exercises/ex2_fma_optimized.mlir
 ```
 
 `--comb-int-range-narrowing` proves that the four-bit multiplication needs only
@@ -116,12 +117,12 @@ narrowing.
 Swap the passes and compare the result:
 
 ```bash
-circt-opt rtl/ex1_fma.mlir \
+circt-opt exercises/ex1_fma.mlir \
   --canonicalize \
   --comb-int-range-narrowing \
-  -o rtl/ex2_fma_variant.mlir
+  -o exercises/ex2_fma_variant.mlir
 
-diff -u rtl/ex2_fma_optimized.mlir rtl/ex2_fma_variant.mlir
+diff -u exercises/ex2_fma_optimized.mlir exercises/ex2_fma_variant.mlir
 ```
 
 Narrowing first gives canonicalization a chance to remove the extensions and
@@ -131,8 +132,8 @@ canonicalization has already run.
 ## Exercise 3: verify a transformation
 
 ```bash
-circt-lec --c1 ex1_fma rtl/ex1_fma.mlir \
-          --c2 ex1_fma rtl/ex2_fma_optimized.mlir
+circt-lec --c1 ex1_fma exercises/ex1_fma.mlir \
+          --c2 ex1_fma exercises/ex2_fma_optimized.mlir
 ```
 
 The expected result is:
@@ -147,11 +148,11 @@ make the two outputs differ. `unsat` means that no counterexample exists.
 ### Break the circuit - 5 minutes
 
 ```bash
-cp rtl/ex2_fma_optimized.mlir rtl/ex3_fma_broken.mlir
-nano rtl/ex3_fma_broken.mlir
+cp exercises/ex2_fma_optimized.mlir exercises/ex3_fma_broken.mlir
+nano exercises/ex3_fma_broken.mlir
 
-circt-lec --c1 ex1_fma rtl/ex1_fma.mlir \
-          --c2 ex1_fma rtl/ex3_fma_broken.mlir
+circt-lec --c1 ex1_fma exercises/ex1_fma.mlir \
+          --c2 ex1_fma exercises/ex3_fma_broken.mlir
 ```
 
 Introduce a functional bug while keeping the circuit valid and compilable.
@@ -160,10 +161,10 @@ Then check that `circt-lec` reports `c1 != c2`.
 ## Exercise 4: generate SystemVerilog
 
 ```bash
-firtool rtl/ex2_fma_optimized.mlir
+firtool exercises/ex2_fma_optimized.mlir
 ```
 
-`rtl/ex2_fma_optimized.mlir` is created by Exercise 2. Run Exercises 1 and 2
+`exercises/ex2_fma_optimized.mlir` is created by Exercise 2. Run Exercises 1 and 2
 first when following the tutorial in a fresh container.
 
 ### Verify the round trip - 5 minutes
@@ -175,10 +176,10 @@ first when following the tutorial in a fresh container.
 One working sequence is:
 
 ```bash
-firtool rtl/ex2_fma_optimized.mlir -o rtl/ex4_fma_roundtrip.sv
-circt-verilog rtl/ex4_fma_roundtrip.sv -o rtl/ex4_fma_roundtrip.mlir
-circt-lec --c1 ex1_fma rtl/ex2_fma_optimized.mlir \
-          --c2 ex1_fma rtl/ex4_fma_roundtrip.mlir
+firtool exercises/ex2_fma_optimized.mlir -o exercises/ex4_fma_roundtrip.sv
+circt-verilog exercises/ex4_fma_roundtrip.sv -o exercises/ex4_fma_roundtrip.mlir
+circt-lec --c1 ex1_fma exercises/ex2_fma_optimized.mlir \
+          --c2 ex1_fma exercises/ex4_fma_roundtrip.mlir
 ```
 
 # Part 2: logic synthesis and reports
@@ -228,7 +229,7 @@ circt-translate build/aig-comparison/after-aig.mlir \
 
 ## Exercise 6: compose an integer hardware pipeline - 5 minutes
 
-`examples/ex6_arith_muli.mlir` starts with a `func.func` containing one
+`exercises/ex6_arith_muli.mlir` starts with a `func.func` containing one
 `arith.muli`. Two independent transformations produce the hardware:
 
 - The course-specific `--tutorial-func-to-hw` pass turns function arguments and
@@ -270,7 +271,7 @@ build/ex6_hw_comb.mlir   # hw.module containing comb.mul
 Now run the same pipeline after changing the arithmetic type:
 
 ```bash
-circt-tutorial-opt examples/ex6_arith_mulf.mlir \
+circt-tutorial-opt exercises/ex6_arith_mulf.mlir \
   --tutorial-func-to-hw \
   -o build/ex6_float_hw_arith.mlir
 circt-opt build/ex6_float_hw_arith.mlir --map-arith-to-comb
@@ -295,7 +296,7 @@ products generated by MLIR constant folding:
 
 ## Exercise 7: lower E4M3 multiplication - 30 minutes
 
-Start from `examples/ex7_e4m3fn_mul.mlir` and edit
+Start from `exercises/ex7_e4m3fn_mul.mlir` and edit
 `scripts/lower-e4m3fn.py`. The function boundary uses `i8` wires. Input and
 output `arith.bitcast` operations delimit one `f8E4M3FN` multiplication island,
 so the rewrite can replace it with an `i8 -> i8` `comb` datapath without a type
@@ -310,7 +311,7 @@ next CIRCT invocation parses and verifies them as registered CIRCT operations.
 The passes run in this order:
 
 ```bash
-python scripts/lower-e4m3fn.py examples/ex7_e4m3fn_mul.mlir \
+python scripts/lower-e4m3fn.py exercises/ex7_e4m3fn_mul.mlir \
   -o build/ex7_function_comb.mlir
 
 circt-tutorial-opt build/ex7_function_comb.mlir \
@@ -339,12 +340,12 @@ complete. The reference implementation is `solutions/lower-e4m3fn-normal.py`.
 ./scripts/test-e4m3-all.py --pass
 ```
 
-`examples/ex7_e4m3fn_mul_reference.sv` is the complete hardware reference for
+`exercises/ex7_e4m3fn_mul_reference.sv` is the complete hardware reference for
 that extension.
 
 ## Exercise 8 (optional): specialize the squarer
 
-`examples/ex8_e4m3fn_square.mlir` uses the same SSA value twice. The working
+`exercises/ex8_e4m3fn_square.mlir` uses the same SSA value twice. The working
 intermediate `scripts/lower-e4m3fn-square.py` already matches that stronger
 case, decodes once, fixes the sign to zero, and doubles the exponent. Its
 `build_square4` helper still emits a generic multiplier; replace only that
@@ -352,7 +353,7 @@ helper with the dedicated partial-product squarer. The final reference is
 `solutions/lower-e4m3fn-square.py`.
 
 ```bash
-python scripts/lower-e4m3fn-square.py examples/ex8_e4m3fn_square.mlir | \
+python scripts/lower-e4m3fn-square.py exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
   -o build/ex8_square_intermediate.mlir
 ```

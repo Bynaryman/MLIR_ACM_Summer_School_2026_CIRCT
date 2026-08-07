@@ -73,7 +73,7 @@ CIRCT firtool-1.147.0
 
 ```bash
 ls -l /workspace
-ls -l /workspace/rtl
+ls -l /workspace/exercises
 ```
 :::
 ::::
@@ -102,14 +102,14 @@ First tool: **`circt-verilog`** parses SystemVerilog and prints CIRCT IR.
 ::: {.column width="50%"}
 Let's inspect the FMA module.
 ```bash
-cat rtl/ex1_fma.sv
+cat exercises/ex1_fma.sv
 ```
 \
 
 ::: {.fragment data-fragment-index="0"}
 ::: {data-id="exercise-1-systemverilog"}
 ```systemverilog
-// rtl/ex1_fma.sv
+// exercises/ex1_fma.sv
 module ex1_fma (
   input  wire [3:0] a,
   input  wire [3:0] b,
@@ -129,7 +129,7 @@ endmodule
 ::: {.column width="50%"}
 ... and its MLIR/CIRCT counterpart
 ```bash
-circt-verilog rtl/ex1_fma.sv
+circt-verilog exercises/ex1_fma.sv
 ```
 \
 
@@ -161,7 +161,7 @@ module {
 :::: {.columns}
 ::: {.column width="50%" data-id="exercise-1-systemverilog"}
 ```systemverilog
-// rtl/ex1_fma.sv
+// exercises/ex1_fma.sv
 module ex1_fma (
   input  wire [3:0] a,
   input  wire [3:0] b,
@@ -206,7 +206,7 @@ operands.
 Save the IR for Exercise 2:
 
 ```bash
-circt-verilog rtl/ex1_fma.sv -o rtl/ex1_fma.mlir
+circt-verilog exercises/ex1_fma.sv -o exercises/ex1_fma.mlir
 ```
 \
 
@@ -257,10 +257,10 @@ the signed-arithmetic limitation does not apply yet.
 ## Exercise 2: run a deliberate pipeline {#tools-exercise-2}
 
 ```bash
-circt-opt rtl/ex1_fma.mlir \
+circt-opt exercises/ex1_fma.mlir \
   --comb-int-range-narrowing \
   --canonicalize \
-  -o rtl/ex2_fma_optimized.mlir
+  -o exercises/ex2_fma_optimized.mlir
 ```
 
 The order is intentional:
@@ -297,12 +297,12 @@ The multiply and add are now `i8`; the final zero-extension preserves the
 Now reverse the two passes:
 
 ```bash
-circt-opt rtl/ex1_fma.mlir \
+circt-opt exercises/ex1_fma.mlir \
   --canonicalize \
   --comb-int-range-narrowing \
-  -o rtl/ex2_fma_variant.mlir
+  -o exercises/ex2_fma_variant.mlir
 
-diff -u rtl/ex2_fma_optimized.mlir rtl/ex2_fma_variant.mlir
+diff -u exercises/ex2_fma_optimized.mlir exercises/ex2_fma_variant.mlir
 ```
 
 **Before reading the diff:** will the semantics change? Will the operation
@@ -343,8 +343,8 @@ circt-lec --c1 <module_1> <design_1.mlir> \
 ::: {.fragment}
 Our FMA:
 ```bash
-circt-lec --c1 ex1_fma rtl/ex1_fma.mlir \
-          --c2 ex1_fma rtl/ex2_fma_optimized.mlir
+circt-lec --c1 ex1_fma exercises/ex1_fma.mlir \
+          --c2 ex1_fma exercises/ex2_fma_optimized.mlir
 ```
 :::
 \
@@ -399,11 +399,11 @@ Introduce a functional bug while keeping the circuit valid and compilable.
 Then check that `circt-lec` reports `c1 != c2`.
 
 ```bash
-cp rtl/ex2_fma_optimized.mlir rtl/ex3_fma_broken.mlir
-nano rtl/ex3_fma_broken.mlir
+cp exercises/ex2_fma_optimized.mlir exercises/ex3_fma_broken.mlir
+nano exercises/ex3_fma_broken.mlir
 
-circt-lec --c1 ex1_fma rtl/ex1_fma.mlir \
-          --c2 ex1_fma rtl/ex3_fma_broken.mlir
+circt-lec --c1 ex1_fma exercises/ex1_fma.mlir \
+          --c2 ex1_fma exercises/ex3_fma_broken.mlir
 ```
 
 ::: {.fragment}
@@ -422,10 +422,10 @@ A useful CIRCT flow is:
 3. Emit Verilog with **`firtool`** for downstream FPGA or ASIC tools.
 
 ```bash
-firtool rtl/ex2_fma_optimized.mlir
+firtool exercises/ex2_fma_optimized.mlir
 ```
 
-`rtl/ex2_fma_optimized.mlir` is the output saved in Exercise 2.
+`exercises/ex2_fma_optimized.mlir` is the output saved in Exercise 2.
 
 ```systemverilog
 module ex1_fma(
@@ -445,10 +445,10 @@ endmodule
 
 ::: {.fragment}
 ```bash
-firtool rtl/ex2_fma_optimized.mlir -o rtl/ex4_fma_roundtrip.sv
-circt-verilog rtl/ex4_fma_roundtrip.sv -o rtl/ex4_fma_roundtrip.mlir
-circt-lec --c1 ex1_fma rtl/ex2_fma_optimized.mlir \
-          --c2 ex1_fma rtl/ex4_fma_roundtrip.mlir
+firtool exercises/ex2_fma_optimized.mlir -o exercises/ex4_fma_roundtrip.sv
+circt-verilog exercises/ex4_fma_roundtrip.sv -o exercises/ex4_fma_roundtrip.mlir
+circt-lec --c1 ex1_fma exercises/ex2_fma_optimized.mlir \
+          --c2 ex1_fma exercises/ex4_fma_roundtrip.mlir
 ```
 :::
 
@@ -536,7 +536,7 @@ circt-translate circuit-aig.mlir \
 :::: {.columns}
 ::: {.column width="55%"}
 ```systemverilog
-// rtl/ex5_aig.sv
+// exercises/ex5_aig.sv
 always_comb begin
   out = a ? (b ? -x : -(x + 8'd1))
           : (b ? x + 8'd1 : x);
@@ -548,7 +548,7 @@ All operations are modulo $2^8$.
 
 ::: {.column width="45%"}
 ```bash
-circt-verilog rtl/ex5_aig.sv -o build/ex5_aig.mlir
+circt-verilog exercises/ex5_aig.sv -o build/ex5_aig.mlir
 circt-synth build/ex5_aig.mlir --top=ex5_aig \
   --analysis-output=build/ex5-reports \
   -o build/ex5_aig_synth.mlir

@@ -21,7 +21,7 @@ def prepare_example():
     before = WORK / "before.mlir"
     after = WORK / "after.mlir"
 
-    run(["circt-verilog", "rtl/ex5_aig.sv", "-o", before])
+    run(["circt-verilog", "exercises/ex5_aig.sv", "-o", before])
     run(["circt-verilog", "solutions/ex5_aig_optimized.sv", "-o", after])
     return before, after, "ex5_aig"
 

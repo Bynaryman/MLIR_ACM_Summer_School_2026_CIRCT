@@ -25,7 +25,7 @@ datapath on `i8` wires.
 :::: {.columns}
 ::: {.column width="50%"}
 ```bash
-cat examples/ex6_arith_muli.mlir
+cat exercises/ex6_arith_muli.mlir
 ```
 
 <div class="code-gap"></div>
@@ -97,7 +97,7 @@ No direct generic `func.func` → `hw.module` pass.
 ## Exercise 6: compose two passes {#arithmetic-integer-pipeline}
 
 ```bash
-circt-tutorial-opt examples/ex6_arith_muli.mlir \
+circt-tutorial-opt exercises/ex6_arith_muli.mlir \
   --tutorial-func-to-hw -o build/ex6_hw_arith.mlir
 
 circt-opt build/ex6_hw_arith.mlir \
@@ -123,10 +123,10 @@ module {
 }
 ```
 
-Run the same two-stage pipeline on `examples/ex6_arith_mulf.mlir`:
+Run the same two-stage pipeline on `exercises/ex6_arith_mulf.mlir`:
 
 ```bash
-circt-tutorial-opt examples/ex6_arith_mulf.mlir \
+circt-tutorial-opt exercises/ex6_arith_mulf.mlir \
   --tutorial-func-to-hw -o build/ex6_float_hw_arith.mlir
 circt-opt build/ex6_float_hw_arith.mlir --map-arith-to-comb
 ```
@@ -273,7 +273,7 @@ the exact rounding and exceptional-value rules remain part of the contract.
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
-**Input excerpt:** `examples/ex7_e4m3fn_mul.mlir`
+**Input excerpt:** `exercises/ex7_e4m3fn_mul.mlir`
 
 ```mlir
 %af = arith.bitcast %a : i8 to f8E4M3FN
@@ -941,7 +941,7 @@ The supplied reference adds:
 PASS: 65536 / 65536 products
 ```
 
-Complete reference RTL in `examples/`.
+Complete reference RTL in `exercises/`.
 :::
 ::::
 
@@ -1011,7 +1011,7 @@ floating-point normalization and exceptional-value policy remain.
 :::: {.columns}
 ::: {.column width="47%"}
 ```bash
-cat examples/ex8_e4m3fn_square.mlir
+cat exercises/ex8_e4m3fn_square.mlir
 ```
 
 ```mlir
@@ -1030,7 +1030,7 @@ the dedicated square lowering first:
 
 ```bash
 python scripts/lower-e4m3fn-square.py \
-  examples/ex8_e4m3fn_square.mlir | \
+  exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
     --canonicalize -o build/ex8_square_intermediate.mlir
 ```
@@ -1087,7 +1087,7 @@ Then regenerate the specialized circuit:
 
 ```bash
 python scripts/lower-e4m3fn-square.py \
-  examples/ex8_e4m3fn_square.mlir | \
+  exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
     --canonicalize -o build/ex8_square_specialized.mlir
 ```
@@ -1137,7 +1137,7 @@ Generate the generic Exercise 7 baseline:
 
 ```bash
 python solutions/lower-e4m3fn-normal.py \
-  examples/ex8_e4m3fn_square.mlir | \
+  exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
     --canonicalize -o build/ex8_square_generic.mlir
 ```

@@ -118,7 +118,7 @@ def build_pass_verilog(lowerer):
         [
             sys.executable,
             lowerer,
-            "examples/ex7_e4m3fn_mul.mlir",
+            "exercises/ex7_e4m3fn_mul.mlir",
             "-o",
             lowered_function,
         ]
@@ -165,7 +165,7 @@ def main():
     verilog = (
         build_pass_verilog(args.lowerer)
         if args.test_pass
-        else ROOT / "examples" / "ex7_e4m3fn_mul_reference.sv"
+        else ROOT / "exercises" / "ex7_e4m3fn_mul_reference.sv"
     )
     simulator = WORK / "ex7_e4m3fn_test"
 
