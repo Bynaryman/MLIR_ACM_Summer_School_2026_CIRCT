@@ -273,17 +273,21 @@ the exact rounding and exceptional-value rules remain part of the contract.
 :::
 
 ::: {.e4m3-rewrite-copy data-id="e4m3-copy"}
+**Input excerpt:** `examples/ex7_e4m3fn_mul.mlir`
+
 ```mlir
 %af = arith.bitcast %a : i8 to f8E4M3FN
 %bf = arith.bitcast %b : i8 to f8E4M3FN
-%p = arith.mulf %af, %bf : f8E4M3FN
-%r = arith.bitcast %p : f8E4M3FN to i8
+%product = arith.mulf %af, %bf : f8E4M3FN
+%result = arith.bitcast %product : f8E4M3FN to i8
 ```
 
 Root the rewrite at the final `arith.bitcast`: the matched island and its
 replacement then have the same `i8` boundary.
 
 ::: {.e4m3-stage-code .stage-target}
+**Pass skeleton:** `scripts/lower-e4m3fn.py`
+
 ```python-circt
 def lower_e4m3_mul(out_cast, rewriter):
     matched = match_e4m3_island(out_cast)  # supplied
@@ -300,8 +304,8 @@ patterns.add(
 ```
 :::
 
-**Edit:** `scripts/lower-e4m3fn.py` · **Supplied:** matcher, integer type aliases,
-and `comb`/`hw` builders · **Scope:** exact normal finite products; no rounding.
+**Supplied:** matcher, integer type aliases, and `comb`/`hw` builders ·
+**Scope:** exact normal finite products; no rounding.
 :::
 ::::
 
