@@ -569,7 +569,7 @@ This is a four-entry lookup table selected by `a` and `b`:
 | 1 | 1 | `-x` |
 :::
 
-## Exercise 5: algebra and syntax hints {#tools-aig-rewrite}
+## Exercise 5: simplify the four cases {#tools-aig-simplify}
 
 All arithmetic is eight-bit modulo $2^8$:
 
@@ -579,21 +579,86 @@ $$
 -x = \mathord{\sim}x + 1
 $$
 
-| SystemVerilog | Meaning |
-|---|---|
-| `x ^ y` | bitwise XOR |
-| `{8{a}}` | repeat `a` eight times |
-| `{a, b}` | concatenate `a` and `b` |
-| `assign` | continuous combinational assignment |
+Apply these identities to the two negative rows.
 
-::: {.fragment}
+:::: {.columns}
+::: {.column width="50%"}
+**Original table**
+
+| `a` | `b` | `out` |
+|---:|---:|---|
+| 0 | 0 | `x` |
+| 0 | 1 | `x + 1` |
+| 1 | 0 | `-(x + 1)` |
+| 1 | 1 | `-x` |
+:::
+
+::: {.column width="50%"}
+::: {.fragment data-fragment-index="0"}
+**Simplified table**
+
+| `a` | `b` | `out` |
+|---:|---:|---|
+| 0 | 0 | `x` |
+| 0 | 1 | `x + 1` |
+| 1 | 0 | `~x` |
+| 1 | 1 | `~x + 1` |
+:::
+:::
+::::
+
+::: {.callout-note .fragment data-fragment-index="1" appearance="simple" icon=false}
+## Question
+
+Which input selects `x` or `~x`? Which input selects `+0` or `+1`?
+:::
+
+## Exercise 5: combine the controls {#tools-aig-rewrite}
+
+:::: {.columns}
+::: {.column width="42%"}
+**Simplified behavior**
+
+| `a` | `b` | `out` |
+|---:|---:|---|
+| 0 | 0 | `x` |
+| 0 | 1 | `x + 1` |
+| 1 | 0 | `~x` |
+| 1 | 1 | `~x + 1` |
+:::
+
+::: {.column width="58%"}
+::: {.callout-note appearance="simple" icon=false}
+## Question
+
+How can `a` select `x` or `~x`, while `b` selects `+0` or `+1`?
+:::
+
+::: {.fragment data-fragment-index="0"}
+**1. Replicate `a` into an eight-bit mask**
+
+`{8{a}}` is `8'b00000000` when `a = 0`, and `8'b11111111` when `a = 1`.
+:::
+
+::: {.fragment data-fragment-index="1"}
+**2. Use XOR to select `x` or `~x`**
+
+`base = x ^ {8{a}}`
+:::
+
+::: {.fragment data-fragment-index="2"}
+**3. Let `b` add zero or one**
+
+`out = base + b`
+:::
+:::
+::::
+
+::: {.fragment data-fragment-index="3"}
 ```systemverilog
 // solutions/ex5_aig_optimized.sv
 assign out = (x ^ {8{a}}) + b;
 ```
-
-- `a` selects either `x` or `~x`.
-- `b` selects whether to add one.
 :::
 
 ## Exercise 5: compare both designs {#tools-exercise-5}
