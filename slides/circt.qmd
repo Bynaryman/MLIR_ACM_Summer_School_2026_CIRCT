@@ -2,21 +2,19 @@
 
 :::: {.columns}
 ::: {.column width="42%"}
-**Upstream MLIR**
-
-`tensor`, `linalg` can lower toward<br>
-`func`, `scf`, `arith`.
-
-**CIRCT continues downstream**
+**CIRCT defines the concepts from the primer:**
 
 - **`hw`**: structure and hierarchy
 - **`comb`**: combinational logic
-- **`seq`**: state
+- **`seq`**: registers and state
 
 ::: {.fragment}
-Then: **SystemVerilog** and FPGA/ASIC tools.
+- **Upstream MLIR:** `tensor`, `linalg` &rarr; `func`, `scf`, `arith`
+- **Downstream:** SystemVerilog &rarr; simulation, FPGA, ASIC tools
+:::
 
-[Next: use the tools.]{.marker}
+::: {.fragment}
+[Next: use the CIRCT tools.]{.marker}
 :::
 :::
 
