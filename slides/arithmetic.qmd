@@ -953,15 +953,11 @@ Complete RTL is provided in `exercises/`.
 
 ## From completeness to specialization {#arithmetic-specialization-transition data-transition="none"}
 
-The complete reference broadens **which values** the multiplier handles.
+The complete reference expands **numerical coverage**.
 
-Exercise 8 changes **which circuit** the compiler generates:
+We will instead exploit **structure already visible in the IR**.
 
-- SSA tells us when both operands are the same value;
-- a stronger rewrite pattern can recognize it;
-- the lowering can generate a dedicated squarer.
-
-[This is where compilers can shine: recognize stronger intent and choose a specialized architecture.]{.marker}
+[Recognize `%x * %x` $\longrightarrow$ generate a specialized squarer.]{.marker}
 
 ## Exercise 8: should `%x * %x` cost the same? {#arithmetic-square-quiz data-transition="none"}
 
