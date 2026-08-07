@@ -458,16 +458,29 @@ circt-lec --c1 ex1_fma exercises/ex2_fma_optimized.mlir \
 AIGs · equivalence · structural cost
 :::
 
-## Exercise 5: beat Sam's circuit - 12 min {#tools-synthesis-part}
+## Exercise 5: simplify and measure - 12 min {#tools-synthesis-part}
 
-::: {.callout-note appearance="simple" icon=false}
-## Two questions
+:::: {.columns}
+::: {.column width="55%"}
+```systemverilog
+// exercises/ex5_aig.sv
+always_comb begin
+  out = a ? (b ? -x : -(x + 8'd1))
+          : (b ? x + 8'd1 : x);
+end
+```
 
-1. How many **AIG nodes** implement the circuit?
-2. How many **logic levels** are on its deepest path?
+All operations are modulo $2^8$.
 :::
 
-Sam's baseline: **149 nodes, 13 levels**. Can you reach **54 nodes, 8 levels**?
+::: {.column width="45%"}
+**Objective**
+
+- **Simplify** this circuit without changing its function.
+- **Measure** AIG nodes and logic levels with CIRCT.
+- **Check** equivalence with `circt-lec`.
+:::
+::::
 
 ## What does `circt-synth` do? {#tools-synthesis-definition}
 
@@ -540,22 +553,10 @@ circt-translate circuit-aig.mlir \
 
 `firtool` remains the tool used when the required output is Verilog.
 
-## Exercise 5: inspect the starting circuit {#tools-aig-source}
+## Exercise 5: measure the baseline {#tools-aig-source}
 
 :::: {.columns}
-::: {.column width="55%"}
-```systemverilog
-// exercises/ex5_aig.sv
-always_comb begin
-  out = a ? (b ? -x : -(x + 8'd1))
-          : (b ? x + 8'd1 : x);
-end
-```
-
-All operations are modulo $2^8$.
-:::
-
-::: {.column width="45%"}
+::: {.column width="60%"}
 ```bash
 circt-verilog exercises/ex5_aig.sv -o build/ex5_aig.mlir
 circt-synth build/ex5_aig.mlir --top=ex5_aig \
@@ -565,18 +566,18 @@ cat build/ex5-reports/resource_usage.txt
 cat build/ex5-reports/longest_path.txt
 ```
 :::
-::::
 
+::: {.column width="40%"}
 ::: {.fragment}
-This is a four-entry lookup table selected by `a` and `b`:
+**Baseline**
 
-| `a` | `b` | `out` |
-|---:|---:|---|
-| 0 | 0 | `x` |
-| 0 | 1 | `x + 1` |
-| 1 | 0 | `-(x + 1)` |
-| 1 | 1 | `-x` |
+- **149** AIG nodes
+- **13** logic levels
+
+[Target: 54 nodes, 8 levels.]{.marker}
 :::
+:::
+::::
 
 ## Exercise 5: simplify the four cases {#tools-aig-simplify}
 
