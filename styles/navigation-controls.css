@@ -1,0 +1,8 @@
+.reveal.reveal .slide-number {
+  top: 8px;
+  right: 8px;
+  bottom: auto;
+  left: auto;
+  width: max-content;
+  transform: none;
+}

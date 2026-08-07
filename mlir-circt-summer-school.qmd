@@ -32,7 +32,7 @@ format:
       - styles/code.css
       - styles/code-mlir.css
       - styles/code-python.css
-      - styles/navigation-ui.css
+      - styles/navigation-controls.css
     slide-level: 2
     navigation-mode: linear
     view: slide
