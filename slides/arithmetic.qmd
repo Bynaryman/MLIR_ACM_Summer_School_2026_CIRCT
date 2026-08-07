@@ -98,10 +98,10 @@ No direct generic `func.func` → `hw.module` pass.
 
 ```bash
 circt-tutorial-opt exercises/ex6_arith_muli.mlir \
-  --tutorial-func-to-hw -o build/ex6_hw_arith.mlir
+  --tutorial-func-to-hw -o exercises/ex6_hw_arith.mlir
 
-circt-opt build/ex6_hw_arith.mlir \
-  --map-arith-to-comb -o build/ex6_hw_comb.mlir
+circt-opt exercises/ex6_hw_arith.mlir \
+  --map-arith-to-comb -o exercises/ex6_hw_comb.mlir
 ```
 
 | File | Boundary | Multiplication |
@@ -127,8 +127,8 @@ Run the same two-stage pipeline on `exercises/ex6_arith_mulf.mlir`:
 
 ```bash
 circt-tutorial-opt exercises/ex6_arith_mulf.mlir \
-  --tutorial-func-to-hw -o build/ex6_float_hw_arith.mlir
-circt-opt build/ex6_float_hw_arith.mlir --map-arith-to-comb
+  --tutorial-func-to-hw -o exercises/ex6_float_hw_arith.mlir
+circt-opt exercises/ex6_float_hw_arith.mlir --map-arith-to-comb
 ```
 
 ::: {.fragment}
@@ -1027,7 +1027,7 @@ the dedicated square lowering first:
 python scripts/lower-e4m3fn-square.py \
   exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
-    --canonicalize -o build/ex8_square_intermediate.mlir
+    --canonicalize -o exercises/ex8_square_intermediate.mlir
 ```
 
 In a combined production pass, the square rewrite would receive the higher
@@ -1084,7 +1084,7 @@ Then regenerate the specialized circuit:
 python scripts/lower-e4m3fn-square.py \
   exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
-    --canonicalize -o build/ex8_square_specialized.mlir
+    --canonicalize -o exercises/ex8_square_specialized.mlir
 ```
 
 ## Exercise 8: solution {#arithmetic-square-builder}
@@ -1134,15 +1134,15 @@ Generate the generic Exercise 7 baseline:
 python solutions/lower-e4m3fn-normal.py \
   exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
-    --canonicalize -o build/ex8_square_generic.mlir
+    --canonicalize -o exercises/ex8_square_generic.mlir
 ```
 
 Compare it with the specialized circuit:
 
 ```bash
 ./scripts/compare-aig.py \
-  build/ex8_square_generic.mlir \
-  build/ex8_square_specialized.mlir \
+  exercises/ex8_square_generic.mlir \
+  exercises/ex8_square_specialized.mlir \
   e4m3fn_square
 ```
 

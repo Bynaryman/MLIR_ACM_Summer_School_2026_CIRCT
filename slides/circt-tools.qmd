@@ -558,12 +558,12 @@ circt-translate circuit-aig.mlir \
 :::: {.columns}
 ::: {.column width="60%"}
 ```bash
-circt-verilog exercises/ex5_aig.sv -o build/ex5_aig.mlir
-circt-synth build/ex5_aig.mlir --top=ex5_aig \
-  --analysis-output=build/ex5-reports \
-  -o build/ex5_aig_synth.mlir
-cat build/ex5-reports/resource_usage.txt
-cat build/ex5-reports/longest_path.txt
+circt-verilog exercises/ex5_aig.sv -o exercises/ex5_aig.mlir
+circt-synth exercises/ex5_aig.mlir --top=ex5_aig \
+  --analysis-output=exercises/ex5-reports \
+  -o exercises/ex5_aig_synth.mlir
+cat exercises/ex5-reports/resource_usage.txt
+cat exercises/ex5-reports/longest_path.txt
 ```
 :::
 

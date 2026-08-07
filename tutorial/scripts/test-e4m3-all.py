@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WORK = ROOT / "build" / "ex7_e4m3_exhaustive"
+WORK = ROOT / "exercises" / "ex7-check"
 PAIR_COUNT = 256 * 256
 
 

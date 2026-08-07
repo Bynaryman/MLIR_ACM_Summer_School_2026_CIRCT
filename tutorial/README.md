@@ -26,8 +26,8 @@ docker run -it -v "$PWD:/workspace" mlir-summer-school-2026-circt
 
 The bind mount maps the host `tutorial/` folder to `/workspace`. Use the same
 `-v "$PWD:/workspace"` option each time: edit with the host IDE, then run and
-test those files inside Docker. Generated files under `build/` also persist on
-the host.
+test those files inside Docker. Generated files under `exercises/` also persist
+on the host.
 
 No setup or activation is needed inside the image. Its `/opt/mlir-python`
 virtual environment is already on `PATH`; it isolates the pinned upstream MLIR
@@ -70,9 +70,9 @@ tutorial/
 ```
 
 All student-facing MLIR and SystemVerilog files live in `exercises/`. The
-literal tutorial commands keep their intermediate files there too. Put larger
-generated reports and binaries under `build/`; that directory is ignored by
-Git.
+literal tutorial commands keep their intermediate files and reports there too.
+The `build/` directory is reserved for rebuilding `circt-tutorial-opt` with
+CMake and Ninja. Generated exercise artifacts are ignored by Git.
 
 # Part 1: CIRCT basics
 
@@ -221,8 +221,8 @@ levels.
 To export the synthesized graph after the script:
 
 ```bash
-circt-translate build/aig-comparison/after-aig.mlir \
-  --export-aiger -o build/aig-comparison/after.aiger
+circt-translate exercises/ex5-reports/after-aig.mlir \
+  --export-aiger -o exercises/ex5-reports/after.aiger
 ```
 
 # Part 3: arithmetic becomes hardware
@@ -264,8 +264,8 @@ The output should contain:
 for inspection:
 
 ```text
-build/ex6_hw_arith.mlir  # hw.module containing arith.muli
-build/ex6_hw_comb.mlir   # hw.module containing comb.mul
+exercises/ex6_hw_arith.mlir  # hw.module containing arith.muli
+exercises/ex6_hw_comb.mlir   # hw.module containing comb.mul
 ```
 
 Now run the same pipeline after changing the arithmetic type:
@@ -273,8 +273,8 @@ Now run the same pipeline after changing the arithmetic type:
 ```bash
 circt-tutorial-opt exercises/ex6_arith_mulf.mlir \
   --tutorial-func-to-hw \
-  -o build/ex6_float_hw_arith.mlir
-circt-opt build/ex6_float_hw_arith.mlir --map-arith-to-comb
+  -o exercises/ex6_float_hw_arith.mlir
+circt-opt exercises/ex6_float_hw_arith.mlir --map-arith-to-comb
 ```
 
 The command fails on `arith.mulf`. This is intentional: the documented
@@ -312,11 +312,11 @@ The passes run in this order:
 
 ```bash
 python scripts/lower-e4m3fn.py exercises/ex7_e4m3fn_mul.mlir \
-  -o build/ex7_function_comb.mlir
+  -o exercises/ex7_function_comb.mlir
 
-circt-tutorial-opt build/ex7_function_comb.mlir \
+circt-tutorial-opt exercises/ex7_function_comb.mlir \
   --tutorial-func-to-hw --canonicalize \
-  -o build/ex7_hw_comb.mlir
+  -o exercises/ex7_hw_comb.mlir
 ```
 
 The Python rewrite handles arithmetic first. `--tutorial-func-to-hw` then
@@ -355,10 +355,10 @@ helper with the dedicated partial-product squarer. The final reference is
 ```bash
 python scripts/lower-e4m3fn-square.py exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
-  -o build/ex8_square_intermediate.mlir
+  -o exercises/ex8_square_intermediate.mlir
 ```
 
-Generate `build/ex8_square_specialized.mlir` after editing the helper, then use
+Generate `exercises/ex8_square_specialized.mlir` after editing the helper, then use
 `scripts/compare-aig.py` to prove equivalence and report AIG nodes and depth.
 With the pinned tools, the generic Exercise 7 lowering has 57 AIG nodes and 14
 levels; the supplied square intermediate has 51 nodes and 14 levels; the final
