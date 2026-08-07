@@ -1,13 +1,23 @@
 ## The arithmetic hands-on {#arithmetic-route}
 
-This section builds one floating-point lowering step by step.
+**Pass:** `lower-e4m3fn-mul-to-comb`<br>
+**Implementation:** `scripts/lower-e4m3fn.py`
+
+Match one `arith.mulf : f8E4M3FN` island and replace it with a CIRCT `comb`
+datapath on `i8` wires.
+
+`arith.mulf : f8E4M3FN` $\longrightarrow$ `comb.extract`, `comb.mul`,
+`comb.add`, `comb.mux`, `comb.concat`
 
 ::: {.incremental}
-1. **Exercise 6:** lower integer `arith.muli` into `hw` and `comb`.
+1. **Exercise 6 — baseline:** lower integer `arith.muli`, then expose the
+   missing floating-point mapping.
 
-2. **Exercise 7:** construct an E4M3 multiplier.
+2. **Exercise 7 — pass:** construct the E4M3 datapath one rewrite step at a
+   time, then exhaustively test the supported normal products.
 
-3. **Exercise 8 (optional):** recognize squaring and build a cheaper datapath.
+3. **Exercise 8 — specialization (optional):** recognize `x * x` and build a
+   cheaper squarer.
 :::
 
 ## Exercise 6: start from generic MLIR {#arithmetic-objective}
