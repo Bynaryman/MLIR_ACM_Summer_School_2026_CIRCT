@@ -79,7 +79,8 @@ format:
 4. [CIRCT: MLIR toward hardware](#circt) [~10 min]{.toc-time}
 5. [CIRCT in practice](#circt-tools) [hands-on: 5 exercises]{.toc-hands-on} [quiz]{.toc-quiz} [~45 min]{.toc-time}
 6. [Let’s multiply](#arithmetic) [hands-on: 3 exercises + 1 optional]{.toc-hands-on} [quiz]{.toc-quiz} [~50 min]{.toc-time}
-7. [Bonus: HLS with MLIR and CIRCT](#hls) [~20 min]{.toc-time}
+7. [Conclusion](#conclusion) [~3 min]{.toc-time}
+8. [Bonus: HLS with MLIR and CIRCT](#hls) [~20 min]{.toc-time}
 :::
 
 ## Before we continue {#download-container}
@@ -198,23 +199,24 @@ But also an [artist]{.marker}.
 
 {{< include slides/arithmetic.qmd >}}
 
-## Can `tensor` / `linalg` become a chip? {#course-takeaways}
+# Conclusion {#conclusion .section-title .center}
 
-| Upstream of CIRCT | CIRCT hardware IR | Downstream of CIRCT |
-|---|---|---|
-| `tensor`, `linalg`, `scf`, `arith` | `hw`, `comb`, `seq` | SystemVerilog, AIG/netlists, gates, GDSII |
+## Compilation becomes hardware design {#course-takeaways}
 
-**Yes, but the arrows are not automatic.** Lowering passes must choose the
-schedule, parallelism, storage, control, bit widths, and arithmetic
-architecture.
+- **Represent hardware:** `hw`, `comb`, and `seq` capture hierarchy, parallel
+  logic, and state.
 
-[Preserve intent $\rightarrow$ choose a circuit $\rightarrow$ prove behavior
-$\rightarrow$ measure cost $\rightarrow$ iterate.]{.marker}
+- **Choose an architecture:** lowering makes widths, pipelines, storage,
+  control, and arithmetic explicit. One operation can become many circuits.
 
-**A hardware compiler does not merely target a machine; it helps build the
-machine.**
+- **Explore with evidence:** prove behavior, synthesize, measure cost, and
+  iterate.
 
-The bridge from upstream MLIR into CIRCT is **high-level synthesis**.
+- **Connect the levels:** `tensor` / `linalg` $\rightarrow$ HLS $\rightarrow$
+  CIRCT $\rightarrow$ RTL, gates, and geometry.
+
+[A hardware compiler does not merely target a machine; it helps build the
+machine.]{.marker}
 
 # Bonus: HLS with MLIR and CIRCT {#hls .section-title .center}
 
