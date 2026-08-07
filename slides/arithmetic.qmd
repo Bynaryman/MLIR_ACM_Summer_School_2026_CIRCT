@@ -872,7 +872,7 @@ patterns.add(arith.BitcastOp, lower_e4m3_mul)
 :::
 ::::
 
-## What did we implement? {#arithmetic-special-cases}
+## What did we implement? {#arithmetic-special-cases data-transition="none"}
 
 :::: {.columns}
 ::: {.column width="47%"}
@@ -904,11 +904,11 @@ It excludes zero, subnormals, overflow, NaN, and inexact products.
 :::
 ::::
 
-## A complete E4M3FN multiplier {#arithmetic-complete-multiplier}
+## A complete E4M3FN multiplier {#arithmetic-complete-multiplier data-transition="none"}
 
 :::: {.columns}
 ::: {.column width="64%"}
-![](assets/images/arithmetic/e4m3-complete-multiplier.svg){fig-alt="Block-level complete E4M3FN multiplier with classification, significand multiplication, scale computation, normalization, rounding, and special-case selection" width="100%"}
+![](assets/images/arithmetic/e4m3-complete-multiplier.svg){fig-alt="Block-level complete E4M3FN multiplier with classification, significand multiplication, scale computation, normalization, rounding, and special-case selection" height="650"}
 :::
 
 ::: {.column width="36%"}
@@ -924,10 +924,10 @@ The supplied reference adds:
 ```
 
 ```text
-PASS: all 65536 E4M3 products match MLIR
+PASS: 65536 / 65536 products
 ```
 
-`examples/ex7_e4m3fn_mul_reference.sv`
+Complete reference RTL in `examples/`.
 :::
 ::::
 

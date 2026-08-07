@@ -140,7 +140,9 @@ on the host. Intermediate DOT files stay under the ignored `tmp/` directory.
 
 `figures/arithmetic/e4m3-rewrite-datapath.tex` defines the vertical E4M3
 multiplier once, then exports transparent layers for the target operation,
-exercise prompt, sign, significand, normalization, exponent, and packing stages:
+exercise prompt, sign, significand, normalization, exponent, and packing
+stages. The same command also renders the complete reference architecture from
+`figures/arithmetic/e4m3-complete-multiplier.tex`:
 
 ```bash
 ./scripts/generate-e4m3-rewrite-datapath.sh

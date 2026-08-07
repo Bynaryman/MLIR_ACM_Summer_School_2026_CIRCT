@@ -178,7 +178,7 @@ New accelerators, new compiler stacks: one origin of [MLIR](https://storage.goog
 :::
 
 ::: {.column width="66%"}
-**Emeraude**, my Inria team, works on:
+**Emeraude**, my INRIA team, works on:
 
 <ul>
   <li><strong>Arithmetic</strong></li>
