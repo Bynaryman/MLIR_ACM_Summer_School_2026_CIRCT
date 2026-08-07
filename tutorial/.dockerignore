@@ -11,6 +11,8 @@ exercises/ex3_fma_broken.mlir
 exercises/ex4_fma_roundtrip.mlir
 exercises/ex4_fma_roundtrip.sv
 exercises/ex5_aig.mlir
+exercises/ex5_aig_optimized.mlir
+exercises/ex5_aig_optimized.sv
 exercises/ex5_aig_synth.mlir
 exercises/ex5-reports/
 exercises/ex6_hw_arith.mlir

@@ -193,7 +193,7 @@ An **AIGER** file serializes an AIG for exchange with other EDA tools.
 file. AIG node count and depth are structural estimates, not final physical
 area or timing.
 
-## Exercise 5: measure a supplied optimization
+## Exercise 5: write and measure an optimization
 
 The source uses four cases:
 
@@ -202,21 +202,37 @@ out = a ? (b ? -x : -(x + 8'd1))
         : (b ? x + 8'd1 : x);
 ```
 
-For eight-bit modulo arithmetic, `-(x + 1) == ~x` and `-x == ~x + 1`. The
-supplied optimized implementation is:
+Copy it, then rewrite the combinational logic while keeping the module name,
+ports, and behavior unchanged:
+
+```bash
+cp exercises/ex5_aig.sv exercises/ex5_aig_optimized.sv
+```
+
+For eight-bit modulo arithmetic, `-(x + 1) == ~x` and `-x == ~x + 1`. One
+optimized implementation is:
 
 ```systemverilog
 assign out = (x ^ {8{a}}) + b;
 ```
 
-Run the complete import, equivalence, synthesis, and reporting flow:
+Import your implementation, then run the equivalence, synthesis, and reporting
+flow:
 
 ```bash
-./scripts/compare-aig.py
+circt-verilog exercises/ex5_aig.sv \
+  -o exercises/ex5_aig.mlir
+circt-verilog exercises/ex5_aig_optimized.sv \
+  -o exercises/ex5_aig_optimized.mlir
+
+./scripts/compare-aig.py \
+  exercises/ex5_aig.mlir \
+  exercises/ex5_aig_optimized.mlir \
+  ex5_aig
 ```
 
 The expected result is `c1 == c2`, 149 to 54 AIG nodes, and 13 to 8 logic
-levels.
+levels for the supplied solution in `solutions/ex5_aig_optimized.sv`.
 
 To export the synthesized graph after the script:
 

@@ -460,8 +460,13 @@ AIGs · equivalence · structural cost
 
 ## Exercise 5: simplify and measure - 12 min {#tools-synthesis-part}
 
+**Task:** Write a new SystemVerilog implementation that computes the same
+function but synthesizes to a **smaller and shallower AIG**.
+
 :::: {.columns}
 ::: {.column width="55%"}
+**Starting point**
+
 ```systemverilog
 // exercises/ex5_aig.sv
 always_comb begin
@@ -474,11 +479,20 @@ All operations are modulo $2^8$.
 :::
 
 ::: {.column width="45%"}
-**Objective**
+**Create your version**
 
-- **Simplify** this circuit without changing its function.
-- **Measure** AIG nodes and logic levels with CIRCT.
-- **Check** equivalence with `circt-lec`.
+```bash
+cp exercises/ex5_aig.sv \
+  exercises/ex5_aig_optimized.sv
+```
+
+Rewrite the combinational logic; keep the module name and ports unchanged.
+
+**Success criteria**
+
+- fewer than **149 AIG nodes**;
+- fewer than **13 logic levels**;
+- `c1 == c2` with `circt-lec`.
 :::
 ::::
 
@@ -673,20 +687,30 @@ assign out = (x ^ {8{a}}) + b;
 
 ## Exercise 5: compare both designs {#tools-exercise-5}
 
-The supplied script imports both designs, checks equivalence, lowers each one
-to an AIG, and reports node count and depth:
+Import your implementation, then check equivalence and measure both AIGs:
 
+:::: {.columns}
+::: {.column width="56%"}
 ```bash
-./scripts/compare-aig.py
-```
+circt-verilog exercises/ex5_aig_optimized.sv \
+  -o exercises/ex5_aig_optimized.mlir
 
+./scripts/compare-aig.py \
+  exercises/ex5_aig.mlir \
+  exercises/ex5_aig_optimized.mlir \
+  ex5_aig
+```
+:::
+
+::: {.column width="44%"}
 ```text
 c1 == c2
 
-metric                       before      after      delta
-and-inverter nodes               149         54        -95
-maximum logic level               13          8         -5
+AIG nodes       149 -> 54
+logic levels     13 -> 8
 ```
+:::
+::::
 
 The optimization removes **95 AIG nodes** and **5 logic levels** without
 changing the function.
