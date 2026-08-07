@@ -2,18 +2,19 @@
 
 :::: {.columns}
 ::: {.column width="42%"}
-The highlighted core dialects match the concepts we just used:
+**Upstream MLIR**
+
+`tensor`, `linalg` can lower toward<br>
+`func`, `scf`, `arith`.
+
+**CIRCT continues downstream**
 
 - **`hw`**: structure and hierarchy
 - **`comb`**: combinational logic
 - **`seq`**: state
 
-**Upstream (top):** source/front-end, more abstract.<br>
-**Downstream (bottom):** HDL/back-end, closer to implementation.
-
 ::: {.fragment}
-CIRCT also contains other hardware dialects, transformations, analyses, and
-tools.
+Then: **SystemVerilog** and FPGA/ASIC tools.
 
 [Next: use the tools.]{.marker}
 :::

@@ -283,9 +283,9 @@
   text-underline-offset: 0.12em;
 }
 
-.reveal .circt-dialects-figure {
-  width: min(100%, 12.4em);
-  margin: 0 auto;
+.reveal #circt-route .circt-dialects-figure {
+  width: min(100%, 13.1em);
+  margin: 0 0 0 auto;
 }
 
 .reveal .circt-dialects-figure figure,
@@ -293,11 +293,11 @@
   margin: 0;
 }
 
-.reveal .circt-dialects-figure img {
+.reveal #circt-route .circt-dialects-figure img {
   display: block;
   width: 100%;
   height: auto;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .reveal .circt-dialects-figure figcaption {
