@@ -64,6 +64,12 @@ def synthesize(input_file, label, top):
         ]
     )
 
+    # CIRCT creates report directories as 0750. Keep bind-mounted outputs
+    # readable by the host user even when Docker runs the script as root.
+    analysis.chmod(0o755)
+    for report in analysis.iterdir():
+        report.chmod(0o644)
+
     resources = json.loads((analysis / "resource_usage.json").read_text())
     resource_record = next(item for item in resources if item["moduleName"] == top)
     aig_nodes = int(resource_record["total"].get("synth.aig.and_inv", 0))
