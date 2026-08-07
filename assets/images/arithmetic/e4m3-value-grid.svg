@@ -1,0 +1,1330 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="680" viewBox="0 0 1480 680" role="img" aria-labelledby="title desc">
+  <title id="title">All E4M3FN encodings and values</title>
+  <desc id="desc">A sixteen by sixteen table. Columns encode the four exponent bits and rows encode the sign and three fraction bits. Signed zero, subnormal values, and NaNs are colorized.</desc>
+  <text x="774" y="24" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#20262c">column: exponent eeee</text>
+  <text x="1452" y="24" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" fill="#20262c">cell = s eeee mmm</text>
+  <text x="24" y="330" text-anchor="middle" transform="rotate(-90 24 330)" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#20262c">row: sign + fraction smmm</text>
+  <text x="189" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0000</text>
+  <text x="267" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0001</text>
+  <text x="345" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0010</text>
+  <text x="423" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0011</text>
+  <text x="501" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0100</text>
+  <text x="579" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0101</text>
+  <text x="657" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0110</text>
+  <text x="735" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0111</text>
+  <text x="813" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1000</text>
+  <text x="891" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1001</text>
+  <text x="969" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1010</text>
+  <text x="1047" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1011</text>
+  <text x="1125" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1100</text>
+  <text x="1203" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1101</text>
+  <text x="1281" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1110</text>
+  <text x="1359" y="67" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1111</text>
+  <text x="132" y="102.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0000</text>
+  <g>
+    <title>0 0000 000 = +0 (zero)</title>
+    <rect x="150" y="82" width="78" height="31" fill="#b9ded9" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">+0</text>
+  </g>
+  <g>
+    <title>0 0001 000 = 0.015625 (normal)</title>
+    <rect x="228" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0156</text>
+  </g>
+  <g>
+    <title>0 0010 000 = 0.03125 (normal)</title>
+    <rect x="306" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0312</text>
+  </g>
+  <g>
+    <title>0 0011 000 = 0.0625 (normal)</title>
+    <rect x="384" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0625</text>
+  </g>
+  <g>
+    <title>0 0100 000 = 0.125 (normal)</title>
+    <rect x="462" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.125</text>
+  </g>
+  <g>
+    <title>0 0101 000 = 0.25 (normal)</title>
+    <rect x="540" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.25</text>
+  </g>
+  <g>
+    <title>0 0110 000 = 0.5 (normal)</title>
+    <rect x="618" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.5</text>
+  </g>
+  <g>
+    <title>0 0111 000 = 1 (normal)</title>
+    <rect x="696" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1</text>
+  </g>
+  <g>
+    <title>0 1000 000 = 2 (normal)</title>
+    <rect x="774" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">2</text>
+  </g>
+  <g>
+    <title>0 1001 000 = 4 (normal)</title>
+    <rect x="852" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">4</text>
+  </g>
+  <g>
+    <title>0 1010 000 = 8 (normal)</title>
+    <rect x="930" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">8</text>
+  </g>
+  <g>
+    <title>0 1011 000 = 16 (normal)</title>
+    <rect x="1008" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">16</text>
+  </g>
+  <g>
+    <title>0 1100 000 = 32 (normal)</title>
+    <rect x="1086" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">32</text>
+  </g>
+  <g>
+    <title>0 1101 000 = 64 (normal)</title>
+    <rect x="1164" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">64</text>
+  </g>
+  <g>
+    <title>0 1110 000 = 128 (normal)</title>
+    <rect x="1242" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">128</text>
+  </g>
+  <g>
+    <title>0 1111 000 = 256 (normal)</title>
+    <rect x="1320" y="82" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="102.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">256</text>
+  </g>
+  <text x="132" y="133.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0001</text>
+  <g>
+    <title>0 0000 001 = 0.001953125 (subnormal)</title>
+    <rect x="150" y="113" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.002</text>
+  </g>
+  <g>
+    <title>0 0001 001 = 0.017578125 (normal)</title>
+    <rect x="228" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0176</text>
+  </g>
+  <g>
+    <title>0 0010 001 = 0.03515625 (normal)</title>
+    <rect x="306" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0352</text>
+  </g>
+  <g>
+    <title>0 0011 001 = 0.0703125 (normal)</title>
+    <rect x="384" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0703</text>
+  </g>
+  <g>
+    <title>0 0100 001 = 0.140625 (normal)</title>
+    <rect x="462" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1406</text>
+  </g>
+  <g>
+    <title>0 0101 001 = 0.28125 (normal)</title>
+    <rect x="540" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.2812</text>
+  </g>
+  <g>
+    <title>0 0110 001 = 0.5625 (normal)</title>
+    <rect x="618" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.5625</text>
+  </g>
+  <g>
+    <title>0 0111 001 = 1.125 (normal)</title>
+    <rect x="696" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.125</text>
+  </g>
+  <g>
+    <title>0 1000 001 = 2.25 (normal)</title>
+    <rect x="774" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">2.25</text>
+  </g>
+  <g>
+    <title>0 1001 001 = 4.5 (normal)</title>
+    <rect x="852" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">4.5</text>
+  </g>
+  <g>
+    <title>0 1010 001 = 9 (normal)</title>
+    <rect x="930" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">9</text>
+  </g>
+  <g>
+    <title>0 1011 001 = 18 (normal)</title>
+    <rect x="1008" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">18</text>
+  </g>
+  <g>
+    <title>0 1100 001 = 36 (normal)</title>
+    <rect x="1086" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">36</text>
+  </g>
+  <g>
+    <title>0 1101 001 = 72 (normal)</title>
+    <rect x="1164" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">72</text>
+  </g>
+  <g>
+    <title>0 1110 001 = 144 (normal)</title>
+    <rect x="1242" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">144</text>
+  </g>
+  <g>
+    <title>0 1111 001 = 288 (normal)</title>
+    <rect x="1320" y="113" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="133.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">288</text>
+  </g>
+  <text x="132" y="164.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0010</text>
+  <g>
+    <title>0 0000 010 = 0.00390625 (subnormal)</title>
+    <rect x="150" y="144" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.004</text>
+  </g>
+  <g>
+    <title>0 0001 010 = 0.01953125 (normal)</title>
+    <rect x="228" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0195</text>
+  </g>
+  <g>
+    <title>0 0010 010 = 0.0390625 (normal)</title>
+    <rect x="306" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0391</text>
+  </g>
+  <g>
+    <title>0 0011 010 = 0.078125 (normal)</title>
+    <rect x="384" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0781</text>
+  </g>
+  <g>
+    <title>0 0100 010 = 0.15625 (normal)</title>
+    <rect x="462" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1562</text>
+  </g>
+  <g>
+    <title>0 0101 010 = 0.3125 (normal)</title>
+    <rect x="540" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.3125</text>
+  </g>
+  <g>
+    <title>0 0110 010 = 0.625 (normal)</title>
+    <rect x="618" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.625</text>
+  </g>
+  <g>
+    <title>0 0111 010 = 1.25 (normal)</title>
+    <rect x="696" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.25</text>
+  </g>
+  <g>
+    <title>0 1000 010 = 2.5 (normal)</title>
+    <rect x="774" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">2.5</text>
+  </g>
+  <g>
+    <title>0 1001 010 = 5 (normal)</title>
+    <rect x="852" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">5</text>
+  </g>
+  <g>
+    <title>0 1010 010 = 10 (normal)</title>
+    <rect x="930" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">10</text>
+  </g>
+  <g>
+    <title>0 1011 010 = 20 (normal)</title>
+    <rect x="1008" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">20</text>
+  </g>
+  <g>
+    <title>0 1100 010 = 40 (normal)</title>
+    <rect x="1086" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">40</text>
+  </g>
+  <g>
+    <title>0 1101 010 = 80 (normal)</title>
+    <rect x="1164" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">80</text>
+  </g>
+  <g>
+    <title>0 1110 010 = 160 (normal)</title>
+    <rect x="1242" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">160</text>
+  </g>
+  <g>
+    <title>0 1111 010 = 320 (normal)</title>
+    <rect x="1320" y="144" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="164.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">320</text>
+  </g>
+  <text x="132" y="195.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0011</text>
+  <g>
+    <title>0 0000 011 = 0.005859375 (subnormal)</title>
+    <rect x="150" y="175" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.006</text>
+  </g>
+  <g>
+    <title>0 0001 011 = 0.021484375 (normal)</title>
+    <rect x="228" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0215</text>
+  </g>
+  <g>
+    <title>0 0010 011 = 0.04296875 (normal)</title>
+    <rect x="306" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.043</text>
+  </g>
+  <g>
+    <title>0 0011 011 = 0.0859375 (normal)</title>
+    <rect x="384" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0859</text>
+  </g>
+  <g>
+    <title>0 0100 011 = 0.171875 (normal)</title>
+    <rect x="462" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1719</text>
+  </g>
+  <g>
+    <title>0 0101 011 = 0.34375 (normal)</title>
+    <rect x="540" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.3438</text>
+  </g>
+  <g>
+    <title>0 0110 011 = 0.6875 (normal)</title>
+    <rect x="618" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.6875</text>
+  </g>
+  <g>
+    <title>0 0111 011 = 1.375 (normal)</title>
+    <rect x="696" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.375</text>
+  </g>
+  <g>
+    <title>0 1000 011 = 2.75 (normal)</title>
+    <rect x="774" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">2.75</text>
+  </g>
+  <g>
+    <title>0 1001 011 = 5.5 (normal)</title>
+    <rect x="852" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">5.5</text>
+  </g>
+  <g>
+    <title>0 1010 011 = 11 (normal)</title>
+    <rect x="930" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">11</text>
+  </g>
+  <g>
+    <title>0 1011 011 = 22 (normal)</title>
+    <rect x="1008" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">22</text>
+  </g>
+  <g>
+    <title>0 1100 011 = 44 (normal)</title>
+    <rect x="1086" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">44</text>
+  </g>
+  <g>
+    <title>0 1101 011 = 88 (normal)</title>
+    <rect x="1164" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">88</text>
+  </g>
+  <g>
+    <title>0 1110 011 = 176 (normal)</title>
+    <rect x="1242" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">176</text>
+  </g>
+  <g>
+    <title>0 1111 011 = 352 (normal)</title>
+    <rect x="1320" y="175" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="195.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">352</text>
+  </g>
+  <text x="132" y="226.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0100</text>
+  <g>
+    <title>0 0000 100 = 0.0078125 (subnormal)</title>
+    <rect x="150" y="206" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.008</text>
+  </g>
+  <g>
+    <title>0 0001 100 = 0.0234375 (normal)</title>
+    <rect x="228" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0234</text>
+  </g>
+  <g>
+    <title>0 0010 100 = 0.046875 (normal)</title>
+    <rect x="306" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0469</text>
+  </g>
+  <g>
+    <title>0 0011 100 = 0.09375 (normal)</title>
+    <rect x="384" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0938</text>
+  </g>
+  <g>
+    <title>0 0100 100 = 0.1875 (normal)</title>
+    <rect x="462" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1875</text>
+  </g>
+  <g>
+    <title>0 0101 100 = 0.375 (normal)</title>
+    <rect x="540" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.375</text>
+  </g>
+  <g>
+    <title>0 0110 100 = 0.75 (normal)</title>
+    <rect x="618" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.75</text>
+  </g>
+  <g>
+    <title>0 0111 100 = 1.5 (normal)</title>
+    <rect x="696" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.5</text>
+  </g>
+  <g>
+    <title>0 1000 100 = 3 (normal)</title>
+    <rect x="774" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">3</text>
+  </g>
+  <g>
+    <title>0 1001 100 = 6 (normal)</title>
+    <rect x="852" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">6</text>
+  </g>
+  <g>
+    <title>0 1010 100 = 12 (normal)</title>
+    <rect x="930" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">12</text>
+  </g>
+  <g>
+    <title>0 1011 100 = 24 (normal)</title>
+    <rect x="1008" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">24</text>
+  </g>
+  <g>
+    <title>0 1100 100 = 48 (normal)</title>
+    <rect x="1086" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">48</text>
+  </g>
+  <g>
+    <title>0 1101 100 = 96 (normal)</title>
+    <rect x="1164" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">96</text>
+  </g>
+  <g>
+    <title>0 1110 100 = 192 (normal)</title>
+    <rect x="1242" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">192</text>
+  </g>
+  <g>
+    <title>0 1111 100 = 384 (normal)</title>
+    <rect x="1320" y="206" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="226.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">384</text>
+  </g>
+  <text x="132" y="257.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0101</text>
+  <g>
+    <title>0 0000 101 = 0.009765625 (subnormal)</title>
+    <rect x="150" y="237" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.010</text>
+  </g>
+  <g>
+    <title>0 0001 101 = 0.025390625 (normal)</title>
+    <rect x="228" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0254</text>
+  </g>
+  <g>
+    <title>0 0010 101 = 0.05078125 (normal)</title>
+    <rect x="306" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0508</text>
+  </g>
+  <g>
+    <title>0 0011 101 = 0.1015625 (normal)</title>
+    <rect x="384" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1016</text>
+  </g>
+  <g>
+    <title>0 0100 101 = 0.203125 (normal)</title>
+    <rect x="462" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.2031</text>
+  </g>
+  <g>
+    <title>0 0101 101 = 0.40625 (normal)</title>
+    <rect x="540" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.4062</text>
+  </g>
+  <g>
+    <title>0 0110 101 = 0.8125 (normal)</title>
+    <rect x="618" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.8125</text>
+  </g>
+  <g>
+    <title>0 0111 101 = 1.625 (normal)</title>
+    <rect x="696" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.625</text>
+  </g>
+  <g>
+    <title>0 1000 101 = 3.25 (normal)</title>
+    <rect x="774" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">3.25</text>
+  </g>
+  <g>
+    <title>0 1001 101 = 6.5 (normal)</title>
+    <rect x="852" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">6.5</text>
+  </g>
+  <g>
+    <title>0 1010 101 = 13 (normal)</title>
+    <rect x="930" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">13</text>
+  </g>
+  <g>
+    <title>0 1011 101 = 26 (normal)</title>
+    <rect x="1008" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">26</text>
+  </g>
+  <g>
+    <title>0 1100 101 = 52 (normal)</title>
+    <rect x="1086" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">52</text>
+  </g>
+  <g>
+    <title>0 1101 101 = 104 (normal)</title>
+    <rect x="1164" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">104</text>
+  </g>
+  <g>
+    <title>0 1110 101 = 208 (normal)</title>
+    <rect x="1242" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">208</text>
+  </g>
+  <g>
+    <title>0 1111 101 = 416 (normal)</title>
+    <rect x="1320" y="237" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="257.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">416</text>
+  </g>
+  <text x="132" y="288.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0110</text>
+  <g>
+    <title>0 0000 110 = 0.01171875 (subnormal)</title>
+    <rect x="150" y="268" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.012</text>
+  </g>
+  <g>
+    <title>0 0001 110 = 0.02734375 (normal)</title>
+    <rect x="228" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0273</text>
+  </g>
+  <g>
+    <title>0 0010 110 = 0.0546875 (normal)</title>
+    <rect x="306" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0547</text>
+  </g>
+  <g>
+    <title>0 0011 110 = 0.109375 (normal)</title>
+    <rect x="384" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1094</text>
+  </g>
+  <g>
+    <title>0 0100 110 = 0.21875 (normal)</title>
+    <rect x="462" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.2188</text>
+  </g>
+  <g>
+    <title>0 0101 110 = 0.4375 (normal)</title>
+    <rect x="540" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.4375</text>
+  </g>
+  <g>
+    <title>0 0110 110 = 0.875 (normal)</title>
+    <rect x="618" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.875</text>
+  </g>
+  <g>
+    <title>0 0111 110 = 1.75 (normal)</title>
+    <rect x="696" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.75</text>
+  </g>
+  <g>
+    <title>0 1000 110 = 3.5 (normal)</title>
+    <rect x="774" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">3.5</text>
+  </g>
+  <g>
+    <title>0 1001 110 = 7 (normal)</title>
+    <rect x="852" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">7</text>
+  </g>
+  <g>
+    <title>0 1010 110 = 14 (normal)</title>
+    <rect x="930" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">14</text>
+  </g>
+  <g>
+    <title>0 1011 110 = 28 (normal)</title>
+    <rect x="1008" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">28</text>
+  </g>
+  <g>
+    <title>0 1100 110 = 56 (normal)</title>
+    <rect x="1086" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">56</text>
+  </g>
+  <g>
+    <title>0 1101 110 = 112 (normal)</title>
+    <rect x="1164" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">112</text>
+  </g>
+  <g>
+    <title>0 1110 110 = 224 (normal)</title>
+    <rect x="1242" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">224</text>
+  </g>
+  <g>
+    <title>0 1111 110 = 448 (normal)</title>
+    <rect x="1320" y="268" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="288.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">448</text>
+  </g>
+  <text x="132" y="319.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">0111</text>
+  <g>
+    <title>0 0000 111 = 0.013671875 (subnormal)</title>
+    <rect x="150" y="299" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">.014</text>
+  </g>
+  <g>
+    <title>0 0001 111 = 0.029296875 (normal)</title>
+    <rect x="228" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0293</text>
+  </g>
+  <g>
+    <title>0 0010 111 = 0.05859375 (normal)</title>
+    <rect x="306" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.0586</text>
+  </g>
+  <g>
+    <title>0 0011 111 = 0.1171875 (normal)</title>
+    <rect x="384" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.1172</text>
+  </g>
+  <g>
+    <title>0 0100 111 = 0.234375 (normal)</title>
+    <rect x="462" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.2344</text>
+  </g>
+  <g>
+    <title>0 0101 111 = 0.46875 (normal)</title>
+    <rect x="540" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.4688</text>
+  </g>
+  <g>
+    <title>0 0110 111 = 0.9375 (normal)</title>
+    <rect x="618" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">.9375</text>
+  </g>
+  <g>
+    <title>0 0111 111 = 1.875 (normal)</title>
+    <rect x="696" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">1.875</text>
+  </g>
+  <g>
+    <title>0 1000 111 = 3.75 (normal)</title>
+    <rect x="774" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">3.75</text>
+  </g>
+  <g>
+    <title>0 1001 111 = 7.5 (normal)</title>
+    <rect x="852" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">7.5</text>
+  </g>
+  <g>
+    <title>0 1010 111 = 15 (normal)</title>
+    <rect x="930" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">15</text>
+  </g>
+  <g>
+    <title>0 1011 111 = 30 (normal)</title>
+    <rect x="1008" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">30</text>
+  </g>
+  <g>
+    <title>0 1100 111 = 60 (normal)</title>
+    <rect x="1086" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">60</text>
+  </g>
+  <g>
+    <title>0 1101 111 = 120 (normal)</title>
+    <rect x="1164" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">120</text>
+  </g>
+  <g>
+    <title>0 1110 111 = 240 (normal)</title>
+    <rect x="1242" y="299" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">240</text>
+  </g>
+  <g>
+    <title>0 1111 111 = NaN (nan)</title>
+    <rect x="1320" y="299" width="78" height="31" fill="#efc4ce" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="319.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">NaN</text>
+  </g>
+  <text x="132" y="350.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1000</text>
+  <g>
+    <title>1 0000 000 = -0 (zero)</title>
+    <rect x="150" y="330" width="78" height="31" fill="#b9ded9" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-0</text>
+  </g>
+  <g>
+    <title>1 0001 000 = -0.015625 (normal)</title>
+    <rect x="228" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0156</text>
+  </g>
+  <g>
+    <title>1 0010 000 = -0.03125 (normal)</title>
+    <rect x="306" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0312</text>
+  </g>
+  <g>
+    <title>1 0011 000 = -0.0625 (normal)</title>
+    <rect x="384" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0625</text>
+  </g>
+  <g>
+    <title>1 0100 000 = -0.125 (normal)</title>
+    <rect x="462" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.125</text>
+  </g>
+  <g>
+    <title>1 0101 000 = -0.25 (normal)</title>
+    <rect x="540" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.25</text>
+  </g>
+  <g>
+    <title>1 0110 000 = -0.5 (normal)</title>
+    <rect x="618" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.5</text>
+  </g>
+  <g>
+    <title>1 0111 000 = -1 (normal)</title>
+    <rect x="696" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1</text>
+  </g>
+  <g>
+    <title>1 1000 000 = -2 (normal)</title>
+    <rect x="774" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-2</text>
+  </g>
+  <g>
+    <title>1 1001 000 = -4 (normal)</title>
+    <rect x="852" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-4</text>
+  </g>
+  <g>
+    <title>1 1010 000 = -8 (normal)</title>
+    <rect x="930" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-8</text>
+  </g>
+  <g>
+    <title>1 1011 000 = -16 (normal)</title>
+    <rect x="1008" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-16</text>
+  </g>
+  <g>
+    <title>1 1100 000 = -32 (normal)</title>
+    <rect x="1086" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-32</text>
+  </g>
+  <g>
+    <title>1 1101 000 = -64 (normal)</title>
+    <rect x="1164" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-64</text>
+  </g>
+  <g>
+    <title>1 1110 000 = -128 (normal)</title>
+    <rect x="1242" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-128</text>
+  </g>
+  <g>
+    <title>1 1111 000 = -256 (normal)</title>
+    <rect x="1320" y="330" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="350.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-256</text>
+  </g>
+  <text x="132" y="381.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1001</text>
+  <g>
+    <title>1 0000 001 = -0.001953125 (subnormal)</title>
+    <rect x="150" y="361" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.002</text>
+  </g>
+  <g>
+    <title>1 0001 001 = -0.017578125 (normal)</title>
+    <rect x="228" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0176</text>
+  </g>
+  <g>
+    <title>1 0010 001 = -0.03515625 (normal)</title>
+    <rect x="306" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0352</text>
+  </g>
+  <g>
+    <title>1 0011 001 = -0.0703125 (normal)</title>
+    <rect x="384" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0703</text>
+  </g>
+  <g>
+    <title>1 0100 001 = -0.140625 (normal)</title>
+    <rect x="462" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1406</text>
+  </g>
+  <g>
+    <title>1 0101 001 = -0.28125 (normal)</title>
+    <rect x="540" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.2812</text>
+  </g>
+  <g>
+    <title>1 0110 001 = -0.5625 (normal)</title>
+    <rect x="618" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.5625</text>
+  </g>
+  <g>
+    <title>1 0111 001 = -1.125 (normal)</title>
+    <rect x="696" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.125</text>
+  </g>
+  <g>
+    <title>1 1000 001 = -2.25 (normal)</title>
+    <rect x="774" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-2.25</text>
+  </g>
+  <g>
+    <title>1 1001 001 = -4.5 (normal)</title>
+    <rect x="852" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-4.5</text>
+  </g>
+  <g>
+    <title>1 1010 001 = -9 (normal)</title>
+    <rect x="930" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-9</text>
+  </g>
+  <g>
+    <title>1 1011 001 = -18 (normal)</title>
+    <rect x="1008" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-18</text>
+  </g>
+  <g>
+    <title>1 1100 001 = -36 (normal)</title>
+    <rect x="1086" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-36</text>
+  </g>
+  <g>
+    <title>1 1101 001 = -72 (normal)</title>
+    <rect x="1164" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-72</text>
+  </g>
+  <g>
+    <title>1 1110 001 = -144 (normal)</title>
+    <rect x="1242" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-144</text>
+  </g>
+  <g>
+    <title>1 1111 001 = -288 (normal)</title>
+    <rect x="1320" y="361" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="381.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-288</text>
+  </g>
+  <text x="132" y="412.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1010</text>
+  <g>
+    <title>1 0000 010 = -0.00390625 (subnormal)</title>
+    <rect x="150" y="392" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.004</text>
+  </g>
+  <g>
+    <title>1 0001 010 = -0.01953125 (normal)</title>
+    <rect x="228" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0195</text>
+  </g>
+  <g>
+    <title>1 0010 010 = -0.0390625 (normal)</title>
+    <rect x="306" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0391</text>
+  </g>
+  <g>
+    <title>1 0011 010 = -0.078125 (normal)</title>
+    <rect x="384" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0781</text>
+  </g>
+  <g>
+    <title>1 0100 010 = -0.15625 (normal)</title>
+    <rect x="462" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1562</text>
+  </g>
+  <g>
+    <title>1 0101 010 = -0.3125 (normal)</title>
+    <rect x="540" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.3125</text>
+  </g>
+  <g>
+    <title>1 0110 010 = -0.625 (normal)</title>
+    <rect x="618" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.625</text>
+  </g>
+  <g>
+    <title>1 0111 010 = -1.25 (normal)</title>
+    <rect x="696" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.25</text>
+  </g>
+  <g>
+    <title>1 1000 010 = -2.5 (normal)</title>
+    <rect x="774" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-2.5</text>
+  </g>
+  <g>
+    <title>1 1001 010 = -5 (normal)</title>
+    <rect x="852" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-5</text>
+  </g>
+  <g>
+    <title>1 1010 010 = -10 (normal)</title>
+    <rect x="930" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-10</text>
+  </g>
+  <g>
+    <title>1 1011 010 = -20 (normal)</title>
+    <rect x="1008" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-20</text>
+  </g>
+  <g>
+    <title>1 1100 010 = -40 (normal)</title>
+    <rect x="1086" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-40</text>
+  </g>
+  <g>
+    <title>1 1101 010 = -80 (normal)</title>
+    <rect x="1164" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-80</text>
+  </g>
+  <g>
+    <title>1 1110 010 = -160 (normal)</title>
+    <rect x="1242" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-160</text>
+  </g>
+  <g>
+    <title>1 1111 010 = -320 (normal)</title>
+    <rect x="1320" y="392" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="412.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-320</text>
+  </g>
+  <text x="132" y="443.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1011</text>
+  <g>
+    <title>1 0000 011 = -0.005859375 (subnormal)</title>
+    <rect x="150" y="423" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.006</text>
+  </g>
+  <g>
+    <title>1 0001 011 = -0.021484375 (normal)</title>
+    <rect x="228" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0215</text>
+  </g>
+  <g>
+    <title>1 0010 011 = -0.04296875 (normal)</title>
+    <rect x="306" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.043</text>
+  </g>
+  <g>
+    <title>1 0011 011 = -0.0859375 (normal)</title>
+    <rect x="384" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0859</text>
+  </g>
+  <g>
+    <title>1 0100 011 = -0.171875 (normal)</title>
+    <rect x="462" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1719</text>
+  </g>
+  <g>
+    <title>1 0101 011 = -0.34375 (normal)</title>
+    <rect x="540" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.3438</text>
+  </g>
+  <g>
+    <title>1 0110 011 = -0.6875 (normal)</title>
+    <rect x="618" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.6875</text>
+  </g>
+  <g>
+    <title>1 0111 011 = -1.375 (normal)</title>
+    <rect x="696" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.375</text>
+  </g>
+  <g>
+    <title>1 1000 011 = -2.75 (normal)</title>
+    <rect x="774" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-2.75</text>
+  </g>
+  <g>
+    <title>1 1001 011 = -5.5 (normal)</title>
+    <rect x="852" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-5.5</text>
+  </g>
+  <g>
+    <title>1 1010 011 = -11 (normal)</title>
+    <rect x="930" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-11</text>
+  </g>
+  <g>
+    <title>1 1011 011 = -22 (normal)</title>
+    <rect x="1008" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-22</text>
+  </g>
+  <g>
+    <title>1 1100 011 = -44 (normal)</title>
+    <rect x="1086" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-44</text>
+  </g>
+  <g>
+    <title>1 1101 011 = -88 (normal)</title>
+    <rect x="1164" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-88</text>
+  </g>
+  <g>
+    <title>1 1110 011 = -176 (normal)</title>
+    <rect x="1242" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-176</text>
+  </g>
+  <g>
+    <title>1 1111 011 = -352 (normal)</title>
+    <rect x="1320" y="423" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="443.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-352</text>
+  </g>
+  <text x="132" y="474.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1100</text>
+  <g>
+    <title>1 0000 100 = -0.0078125 (subnormal)</title>
+    <rect x="150" y="454" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.008</text>
+  </g>
+  <g>
+    <title>1 0001 100 = -0.0234375 (normal)</title>
+    <rect x="228" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0234</text>
+  </g>
+  <g>
+    <title>1 0010 100 = -0.046875 (normal)</title>
+    <rect x="306" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0469</text>
+  </g>
+  <g>
+    <title>1 0011 100 = -0.09375 (normal)</title>
+    <rect x="384" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0938</text>
+  </g>
+  <g>
+    <title>1 0100 100 = -0.1875 (normal)</title>
+    <rect x="462" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1875</text>
+  </g>
+  <g>
+    <title>1 0101 100 = -0.375 (normal)</title>
+    <rect x="540" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.375</text>
+  </g>
+  <g>
+    <title>1 0110 100 = -0.75 (normal)</title>
+    <rect x="618" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.75</text>
+  </g>
+  <g>
+    <title>1 0111 100 = -1.5 (normal)</title>
+    <rect x="696" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.5</text>
+  </g>
+  <g>
+    <title>1 1000 100 = -3 (normal)</title>
+    <rect x="774" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-3</text>
+  </g>
+  <g>
+    <title>1 1001 100 = -6 (normal)</title>
+    <rect x="852" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-6</text>
+  </g>
+  <g>
+    <title>1 1010 100 = -12 (normal)</title>
+    <rect x="930" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-12</text>
+  </g>
+  <g>
+    <title>1 1011 100 = -24 (normal)</title>
+    <rect x="1008" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-24</text>
+  </g>
+  <g>
+    <title>1 1100 100 = -48 (normal)</title>
+    <rect x="1086" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-48</text>
+  </g>
+  <g>
+    <title>1 1101 100 = -96 (normal)</title>
+    <rect x="1164" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-96</text>
+  </g>
+  <g>
+    <title>1 1110 100 = -192 (normal)</title>
+    <rect x="1242" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-192</text>
+  </g>
+  <g>
+    <title>1 1111 100 = -384 (normal)</title>
+    <rect x="1320" y="454" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="474.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-384</text>
+  </g>
+  <text x="132" y="505.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1101</text>
+  <g>
+    <title>1 0000 101 = -0.009765625 (subnormal)</title>
+    <rect x="150" y="485" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.010</text>
+  </g>
+  <g>
+    <title>1 0001 101 = -0.025390625 (normal)</title>
+    <rect x="228" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0254</text>
+  </g>
+  <g>
+    <title>1 0010 101 = -0.05078125 (normal)</title>
+    <rect x="306" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0508</text>
+  </g>
+  <g>
+    <title>1 0011 101 = -0.1015625 (normal)</title>
+    <rect x="384" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1016</text>
+  </g>
+  <g>
+    <title>1 0100 101 = -0.203125 (normal)</title>
+    <rect x="462" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.2031</text>
+  </g>
+  <g>
+    <title>1 0101 101 = -0.40625 (normal)</title>
+    <rect x="540" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.4062</text>
+  </g>
+  <g>
+    <title>1 0110 101 = -0.8125 (normal)</title>
+    <rect x="618" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.8125</text>
+  </g>
+  <g>
+    <title>1 0111 101 = -1.625 (normal)</title>
+    <rect x="696" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.625</text>
+  </g>
+  <g>
+    <title>1 1000 101 = -3.25 (normal)</title>
+    <rect x="774" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-3.25</text>
+  </g>
+  <g>
+    <title>1 1001 101 = -6.5 (normal)</title>
+    <rect x="852" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-6.5</text>
+  </g>
+  <g>
+    <title>1 1010 101 = -13 (normal)</title>
+    <rect x="930" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-13</text>
+  </g>
+  <g>
+    <title>1 1011 101 = -26 (normal)</title>
+    <rect x="1008" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-26</text>
+  </g>
+  <g>
+    <title>1 1100 101 = -52 (normal)</title>
+    <rect x="1086" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-52</text>
+  </g>
+  <g>
+    <title>1 1101 101 = -104 (normal)</title>
+    <rect x="1164" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-104</text>
+  </g>
+  <g>
+    <title>1 1110 101 = -208 (normal)</title>
+    <rect x="1242" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-208</text>
+  </g>
+  <g>
+    <title>1 1111 101 = -416 (normal)</title>
+    <rect x="1320" y="485" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="505.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-416</text>
+  </g>
+  <text x="132" y="536.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1110</text>
+  <g>
+    <title>1 0000 110 = -0.01171875 (subnormal)</title>
+    <rect x="150" y="516" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.012</text>
+  </g>
+  <g>
+    <title>1 0001 110 = -0.02734375 (normal)</title>
+    <rect x="228" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0273</text>
+  </g>
+  <g>
+    <title>1 0010 110 = -0.0546875 (normal)</title>
+    <rect x="306" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0547</text>
+  </g>
+  <g>
+    <title>1 0011 110 = -0.109375 (normal)</title>
+    <rect x="384" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1094</text>
+  </g>
+  <g>
+    <title>1 0100 110 = -0.21875 (normal)</title>
+    <rect x="462" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.2188</text>
+  </g>
+  <g>
+    <title>1 0101 110 = -0.4375 (normal)</title>
+    <rect x="540" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.4375</text>
+  </g>
+  <g>
+    <title>1 0110 110 = -0.875 (normal)</title>
+    <rect x="618" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.875</text>
+  </g>
+  <g>
+    <title>1 0111 110 = -1.75 (normal)</title>
+    <rect x="696" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.75</text>
+  </g>
+  <g>
+    <title>1 1000 110 = -3.5 (normal)</title>
+    <rect x="774" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-3.5</text>
+  </g>
+  <g>
+    <title>1 1001 110 = -7 (normal)</title>
+    <rect x="852" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-7</text>
+  </g>
+  <g>
+    <title>1 1010 110 = -14 (normal)</title>
+    <rect x="930" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-14</text>
+  </g>
+  <g>
+    <title>1 1011 110 = -28 (normal)</title>
+    <rect x="1008" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-28</text>
+  </g>
+  <g>
+    <title>1 1100 110 = -56 (normal)</title>
+    <rect x="1086" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-56</text>
+  </g>
+  <g>
+    <title>1 1101 110 = -112 (normal)</title>
+    <rect x="1164" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-112</text>
+  </g>
+  <g>
+    <title>1 1110 110 = -224 (normal)</title>
+    <rect x="1242" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-224</text>
+  </g>
+  <g>
+    <title>1 1111 110 = -448 (normal)</title>
+    <rect x="1320" y="516" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="536.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-448</text>
+  </g>
+  <text x="132" y="567.5" text-anchor="end" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="15" font-weight="700" fill="#20262c">1111</text>
+  <g>
+    <title>1 0000 111 = -0.013671875 (subnormal)</title>
+    <rect x="150" y="547" width="78" height="31" fill="#f1d998" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="189" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">-.014</text>
+  </g>
+  <g>
+    <title>1 0001 111 = -0.029296875 (normal)</title>
+    <rect x="228" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="267" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0293</text>
+  </g>
+  <g>
+    <title>1 0010 111 = -0.05859375 (normal)</title>
+    <rect x="306" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="345" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.0586</text>
+  </g>
+  <g>
+    <title>1 0011 111 = -0.1171875 (normal)</title>
+    <rect x="384" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="423" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.1172</text>
+  </g>
+  <g>
+    <title>1 0100 111 = -0.234375 (normal)</title>
+    <rect x="462" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="501" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.2344</text>
+  </g>
+  <g>
+    <title>1 0101 111 = -0.46875 (normal)</title>
+    <rect x="540" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="579" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.4688</text>
+  </g>
+  <g>
+    <title>1 0110 111 = -0.9375 (normal)</title>
+    <rect x="618" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="657" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-.9375</text>
+  </g>
+  <g>
+    <title>1 0111 111 = -1.875 (normal)</title>
+    <rect x="696" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="735" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-1.875</text>
+  </g>
+  <g>
+    <title>1 1000 111 = -3.75 (normal)</title>
+    <rect x="774" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="813" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-3.75</text>
+  </g>
+  <g>
+    <title>1 1001 111 = -7.5 (normal)</title>
+    <rect x="852" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="891" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-7.5</text>
+  </g>
+  <g>
+    <title>1 1010 111 = -15 (normal)</title>
+    <rect x="930" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="969" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-15</text>
+  </g>
+  <g>
+    <title>1 1011 111 = -30 (normal)</title>
+    <rect x="1008" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1047" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-30</text>
+  </g>
+  <g>
+    <title>1 1100 111 = -60 (normal)</title>
+    <rect x="1086" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1125" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-60</text>
+  </g>
+  <g>
+    <title>1 1101 111 = -120 (normal)</title>
+    <rect x="1164" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1203" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-120</text>
+  </g>
+  <g>
+    <title>1 1110 111 = -240 (normal)</title>
+    <rect x="1242" y="547" width="78" height="31" fill="#ffffff" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1281" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="500" fill="#20262c">-240</text>
+  </g>
+  <g>
+    <title>1 1111 111 = NaN (nan)</title>
+    <rect x="1320" y="547" width="78" height="31" fill="#efc4ce" stroke="#9aa4ad" stroke-width="0.8"/>
+    <text x="1359" y="567.5" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="13" font-weight="700" fill="#20262c">NaN</text>
+  </g>
+  <rect x="150" y="82" width="1248" height="496" fill="none" stroke="#20262c" stroke-width="1.8"/>
+  <line x1="150" y1="330" x2="1398" y2="330" stroke="#20262c" stroke-width="2.6"/>
+  <rect x="190" y="622" width="24" height="20" fill="#ffffff" stroke="#9aa4ad" stroke-width="1"/>
+  <text x="224" y="638" font-family="Inter, Arial, sans-serif" font-size="16" fill="#20262c">normal finite (238)</text>
+  <rect x="460" y="622" width="24" height="20" fill="#b9ded9" stroke="#9aa4ad" stroke-width="1"/>
+  <text x="494" y="638" font-family="Inter, Arial, sans-serif" font-size="16" fill="#20262c">signed zero (2)</text>
+  <rect x="730" y="622" width="24" height="20" fill="#f1d998" stroke="#9aa4ad" stroke-width="1"/>
+  <text x="764" y="638" font-family="Inter, Arial, sans-serif" font-size="16" fill="#20262c">subnormal (14)</text>
+  <rect x="1000" y="622" width="24" height="20" fill="#efc4ce" stroke="#9aa4ad" stroke-width="1"/>
+  <text x="1034" y="638" font-family="Inter, Arial, sans-serif" font-size="16" fill="#20262c">NaN (2)</text>
+  <text x="1426" y="638" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" fill="#20262c">values below 1 rounded for display</text>
+</svg>

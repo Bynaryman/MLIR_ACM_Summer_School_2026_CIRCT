@@ -235,21 +235,9 @@ the gap gradually.
 Set aside: zero, subnormals, NaNs, overflow/underflow, and rounding.
 :::
 
-## The same format spans tiny values to 448 {#arithmetic-e4m3-values}
+## All 256 E4M3FN encodings {#arithmetic-e4m3-values}
 
-| Hex | Fields `s eeee mmm` | Value |
-|---:|---|---:|
-| `0x00` | `0 0000 000` | 0 |
-| `0x08` | `0 0001 000` | $2^{-6}$ |
-| `0x30` | `0 0110 000` | 0.5 |
-| `0x38` | `0 0111 000` | 1 |
-| `0x3C` | `0 0111 100` | 1.5 |
-| `0x41` | `0 1000 001` | 2.25 |
-| `0x7E` | `0 1111 110` | 448 |
-| `0x7F` | `0 1111 111` | NaN |
-
-Less precision buys a smaller representation and more operations per watt;
-the exact rounding and exceptional-value rules remain part of the contract.
+![](assets/images/arithmetic/e4m3-value-grid.svg){fig-alt="Table of all 256 E4M3FN values with exponent bits from 0000 to 1111 across columns and sign plus fraction bits from 0000 to 1111 across rows; zeros, subnormals, and NaNs are colorized" width="98%"}
 
 ## Exercise cheat sheet {#tools-cheatsheet .smaller}
 
