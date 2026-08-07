@@ -210,9 +210,10 @@ Overflow therefore produces NaN instead of infinity.
 `f8E4M3FN` has bias 7, finite values up to 448, and no infinity.
 [@micikevicius2022fp8]
 
-## Normal binades double; subnormals fill the gap {#arithmetic-e4m3-axis}
+## Normal and subnormal values {#arithmetic-e4m3-axis}
 
-A binade $[2^k,2^{k+1})$ contains the values that share one exponent.
+You may remember from class: **normal values** have an implicit leading $1$;
+**subnormal values** are tiny values near zero without it.
 
 ::: {.r-stack}
 ![](assets/images/e4m3-binades.svg){fig-alt="Normal E4M3FN binades double in width and leave no normal values between zero and two to the minus six" width="94%"}
@@ -220,14 +221,11 @@ A binade $[2^k,2^{k+1})$ contains the values that share one exponent.
 ![](assets/images/e4m3-binades-subnormals.svg){.fragment data-fragment-index="0" fig-alt="Seven subnormal values fill the interval next to zero" width="94%"}
 :::
 
-::: {.fragment data-fragment-index="0"}
-Subnormals make underflow **gradual**: seven values continue the smallest normal
-spacing toward zero, preserving nearby subtraction (Sterbenz's lemma).
-:::
-
 ::: {.fragment data-fragment-index="1"}
-**Exercise 7 keeps only the normal path.** Many accelerators choose flush-to-zero:
-less shifting and control for AI workloads that tolerate tiny perturbations.
+[Exercise 7: exact normal finite products only.]{.marker}
+
+A complete multiplier must also handle zero, subnormals, NaNs,
+overflow/underflow, and rounding. `f8E4M3FN` has no infinities.
 :::
 
 ## The same format spans tiny values to 448 {#arithmetic-e4m3-values}
