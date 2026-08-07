@@ -74,7 +74,6 @@ CIRCT firtool-1.147.0
 
 * Exercise 4: **Generate** SystemVerilog for downstream EDA tools. ($\approx$ 5 min.)
 
-* Exercise 5: **Prove and measure** the same function with less logic. ($\approx$ 12 min.)
 :::
 
 ## Exercise 1: compile the FMA example {#tools-exercise-1 auto-animate=true auto-animate-id="exercise-1-import"}
@@ -437,17 +436,22 @@ circt-lec --c1 ex1_fma rtl/ex2_fma_optimized.mlir \
 ```
 :::
 
-## Exercise 5: same function, less logic {#tools-synthesis-part}
+## Tutorial Part 2: synthesis and reports {#tools-synthesis-separator .section-title .center .with-subtitle}
 
-One source-level rewrite; three questions:
-
-**Hands-on:** $\approx 12$ min.
-
-::: {.incremental}
-1. Do both circuits compute the same function?
-2. How many Boolean operations remain?
-3. How long is the deepest logic path?
+::: {.section-subtitle}
+AIGs · equivalence · structural cost
 :::
+
+## Exercise 5: beat Sam's circuit - 12 min {#tools-synthesis-part}
+
+::: {.callout-note appearance="simple" icon=false}
+## Two questions
+
+1. How many **AIG nodes** implement the circuit?
+2. How many **logic levels** are on its deepest path?
+:::
+
+Sam's baseline: **149 nodes, 13 levels**. Can you reach **54 nodes, 8 levels**?
 
 ## What does `circt-synth` do? {#tools-synthesis-definition}
 
@@ -461,13 +465,15 @@ logic, then simplifies and shares that logic.
 It does **not** choose FPGA LUTs or ASIC cells, and it does not place or route
 them.
 
-## The Boolean network is an AIG {#tools-aig-definition}
+## Quiz: can AND and inversion express OR? {#tools-aig-quiz}
 
 ::: {.callout-note appearance="simple" icon=false}
 ## Quiz
 
 Can an OR gate be built using only AND and inversion?
 :::
+
+## The Boolean network is an AIG {#tools-aig-definition}
 
 :::: {.columns}
 ::: {.column width="52%"}
@@ -484,14 +490,12 @@ An **And-Inverter Graph (AIG)** is a directed acyclic graph:
 :::
 
 ::: {.column width="48%"}
-::: {.fragment}
 $$
 a \lor b = \neg(\neg a \land \neg b)
 $$
 
 AND and inversion can represent every Boolean function.
 [@mishchenko2006aig]
-:::
 :::
 ::::
 
@@ -510,12 +514,11 @@ circt-translate circuit-aig.mlir \
 ```
 
 `firtool` remains the tool used when the required output is Verilog.
-[@biere2007aiger]
 
-## The small optimization target {#tools-aig-source}
+## Exercise 5: inspect the starting circuit {#tools-aig-source}
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="55%"}
 ```systemverilog
 // rtl/ex5_aig.sv
 always_comb begin
@@ -527,7 +530,20 @@ end
 All operations are modulo $2^8$.
 :::
 
-::: {.column width="40%"}
+::: {.column width="45%"}
+```{.bash code-line-numbers="2-5"}
+circt-verilog rtl/ex5_aig.sv -o build/ex5_aig.mlir
+circt-synth build/ex5_aig.mlir --top=ex5_aig \
+  --analysis-output=build/ex5-reports \
+  -o build/ex5_aig_synth.mlir
+cat build/ex5-reports/{resource_usage,longest_path}.txt
+```
+:::
+::::
+
+::: {.fragment}
+This is a four-entry lookup table selected by `a` and `b`:
+
 | `a` | `b` | `out` |
 |---:|---:|---|
 | 0 | 0 | `x` |
@@ -535,11 +551,10 @@ All operations are modulo $2^8$.
 | 1 | 0 | `-(x + 1)` |
 | 1 | 1 | `-x` |
 :::
-::::
 
-## One expression shares the work {#tools-aig-rewrite}
+## Exercise 5: algebra and syntax hints {#tools-aig-rewrite}
 
-For eight-bit modulo arithmetic:
+All arithmetic is eight-bit modulo $2^8$:
 
 $$
 -(x + 1) = \mathord{\sim}x
@@ -547,20 +562,27 @@ $$
 -x = \mathord{\sim}x + 1
 $$
 
+| SystemVerilog | Meaning |
+|---|---|
+| `x ^ y` | bitwise XOR |
+| `{8{a}}` | repeat `a` eight times |
+| `{a, b}` | concatenate `a` and `b` |
+| `assign` | continuous combinational assignment |
+
+::: {.fragment}
 ```systemverilog
 // solutions/ex5_aig_optimized.sv
 assign out = (x ^ {8{a}}) + b;
 ```
 
-::: {.incremental}
 - `a` selects either `x` or `~x`.
 - `b` selects whether to add one.
 :::
 
-The solution is provided; the exercise is to inspect what the CIRCT tools
-prove and measure.
+## Exercise 5: compare both designs {#tools-exercise-5}
 
-## Exercise 5: prove and measure - 12 min {#tools-exercise-5}
+The supplied script imports both designs, checks equivalence, lowers each one
+to an AIG, and reports node count and depth:
 
 ```bash
 ./scripts/compare-aig.py
@@ -574,8 +596,5 @@ and-inverter nodes               149         54        -95
 maximum logic level               13          8         -5
 ```
 
-`circt-lec` proves the two modules equivalent. `circt-synth` builds each AIG
-and reports its structure.
-
-Node count and logic depth are early proxies. Physical area and timing require
-technology mapping, placement, and routing.
+The optimization removes **95 AIG nodes** and **5 logic levels** without
+changing the function.
