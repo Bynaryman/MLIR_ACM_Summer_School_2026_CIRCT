@@ -42,9 +42,9 @@ tutorial/
 |   |-- ex1_fma.sv                 # Exercise 1 source
 |   `-- ex5_aig.sv                 # Exercise 5 input
 |-- solutions/
-|   |-- ex5_aig_optimized.sv       # Instructor answer after Exercise 5
-|   |-- lower-e4m3fn-normal.py     # Exercise 7 normal-path answer
-|   `-- lower-e4m3fn-square.py     # Exercise 8 squarer answer
+|   |-- ex5_aig_optimized.sv       # Exercise 5 revealed solution
+|   |-- lower-e4m3fn-normal.py     # Exercise 7 normal-path reference
+|   `-- lower-e4m3fn-square.py     # Exercise 8 squarer reference
 |-- examples/
 |   |-- ex6_arith_muli.mlir          # Exercise 6 integer input
 |   |-- ex6_arith_mulf.mlir          # Same pipeline, unsupported float op
@@ -60,7 +60,8 @@ tutorial/
 |-- scripts/
 |   |-- build.sh                    # Build circt-tutorial-opt
 |   |-- run.sh                      # Run Exercise 6
-|   |-- lower-e4m3fn.py             # Exercises 7-8 student rewrite
+|   |-- lower-e4m3fn.py             # Exercise 7 rewrite
+|   |-- lower-e4m3fn-square.py      # Exercise 8 working intermediate
 |   |-- compare-aig.py              # Compare Exercise 5 implementations
 |   `-- test-e4m3-all.py            # Exhaustive E4M3 checker
 |-- test/e4m3fn-exhaustive-tb.sv
@@ -329,8 +330,7 @@ converts only the structural function boundary.
 ```
 
 This checks 11,892 input pairs and should pass after the normal datapath is
-complete. The instructor implementation is
-`solutions/lower-e4m3fn-normal.py`.
+complete. The reference implementation is `solutions/lower-e4m3fn-normal.py`.
 
 3. As an extension, add round-to-nearest-even, zero, subnormal, overflow, and
    NaN behavior. The full checker then covers all 65,536 pairs:
@@ -344,19 +344,21 @@ that extension.
 
 ## Exercise 8 (optional): specialize the squarer
 
-`examples/ex8_e4m3fn_square.mlir` uses the same SSA value twice. Match
-that case, decode the input once, emit a dedicated significand squarer, then
-compare equivalence and AIG statistics. Save the generic lowering before
-adding the specialization, regenerate it after the change, and reuse
-`scripts/compare-aig.py` to prove equivalence and report AIG nodes and depth.
-The instructor implementation is `solutions/lower-e4m3fn-square.py`.
+`examples/ex8_e4m3fn_square.mlir` uses the same SSA value twice. The working
+intermediate `scripts/lower-e4m3fn-square.py` already matches that stronger
+case, decodes once, fixes the sign to zero, and doubles the exponent. Its
+`build_square4` helper still emits a generic multiplier; replace only that
+helper with the dedicated partial-product squarer. The final reference is
+`solutions/lower-e4m3fn-square.py`.
 
 ```bash
-python scripts/lower-e4m3fn.py examples/ex8_e4m3fn_square.mlir | \
+python scripts/lower-e4m3fn-square.py examples/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
-  -o build/ex8_square_specialized.mlir
+  -o build/ex8_square_intermediate.mlir
 ```
 
-The supplied solution is equivalent under `circt-lec` and reduces the
-technology-independent result from 57 to 50 AIG nodes and from 14 to 13 logic
-levels with the pinned tools.
+Generate `build/ex8_square_specialized.mlir` after editing the helper, then use
+`scripts/compare-aig.py` to prove equivalence and report AIG nodes and depth.
+With the pinned tools, the generic Exercise 7 lowering has 57 AIG nodes and 14
+levels; the supplied square intermediate has 51 nodes and 14 levels; the final
+reference has 50 nodes and 13 levels.

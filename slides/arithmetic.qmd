@@ -992,10 +992,10 @@ $$
 The bit complexity is roughly halved before compression and rounding. The
 floating-point normalization and exceptional-value policy remain.
 
-## Exercise 8 (optional): specialize the E4M3 squarer - 12 min {#arithmetic-square-exercise}
+## Exercise 8: use the stronger pattern first {#arithmetic-square-order}
 
 :::: {.columns}
-::: {.column width="48%"}
+::: {.column width="47%"}
 ```bash
 cat examples/ex8_e4m3fn_square.mlir
 ```
@@ -1010,24 +1010,27 @@ func.func @e4m3fn_square(%x : i8) -> i8 {
 ```
 :::
 
-::: {.column width="52%"}
-Extend the callback from Exercise 7:
+::: {.column width="53%"}
+The generic multiplier pattern also matches `%x * %x`. For this exercise, run
+the dedicated square lowering first:
 
-::: {.incremental}
-1. Match equal SSA operands and decode `%x` only once.
-2. Replace the normal finite sign path with constant zero.
-3. Compute $E_r=2E_x-7+n$.
-4. Replace the $4 \times 4$ significand multiplier with a dedicated squarer.
-5. Reuse the same normalization, packing, and exceptional-value policy.
-:::
+```bash
+python scripts/lower-e4m3fn-square.py \
+  examples/ex8_e4m3fn_square.mlir | \
+  circt-tutorial-opt --tutorial-func-to-hw \
+    --canonicalize -o build/ex8_square_intermediate.mlir
+```
+
+In a combined production pass, the square rewrite would receive the higher
+`PatternBenefit`.
 :::
 ::::
 
-## Exercise 8 (optional): reveal the specialization {#arithmetic-square-solution}
+## Exercise 8: working intermediate {#arithmetic-square-intermediate}
 
 :::: {.columns}
-::: {.column width="50%"}
-**Match the stronger pattern**
+::: {.column width="52%"}
+The supplied script already specializes the outer floating-point structure:
 
 ```python-circt
 lhs, rhs = matched
@@ -1036,31 +1039,46 @@ if lhs != rhs:
 
 x = lhs
 sign = hw.ConstantOp.create(i1, 0).result
-```
 
-The generic `arith.mulf` pattern remains the fallback when the operands differ.
-:::
-
-::: {.column width="50%"}
-**Specialize the arithmetic**
-
-```python-circt
 ex = comb.ExtractOp.create(3, i4, x).result
 ex5 = comb.ConcatOp.create(zero1, ex).result
-one5 = hw.ConstantOp.create(i5, 1).result
 doubled = comb.ShlOp.create(ex5, one5).result
-base = comb.SubOp.create(doubled, bias).result
-adjusted = comb.AddOp.create(base, norm5).result
+```
+:::
 
-product = build_square4(ma4)
+::: {.column width="48%"}
+Only the significand still uses a generic multiplier:
+
+```python-circt
+def build_square4(value):
+    i4 = IntegerType.get_signless(4)
+    zero4 = hw.ConstantOp.create(i4, 0).result
+    wide = comb.ConcatOp.create(zero4, value).result
+    return comb.MulOp.create(wide, wide).result
 ```
 
-`build_square4` emits the six unique cross products and routes the four
-diagonal bits directly.
+The intermediate is valid and testable before students edit anything.
 :::
 ::::
 
-## Exercise 8 (optional): build the 4-bit squarer {#arithmetic-square-builder}
+## Exercise 8: replace one helper - 12 min {#arithmetic-square-exercise}
+
+Edit only `build_square4` in `scripts/lower-e4m3fn-square.py`:
+
+1. Route each diagonal bit $x_i$ to weight $2i$.
+2. Compute each cross product $x_ix_j$ once for $j<i$.
+3. Place it at weight $i+j+1$ and add the terms.
+
+Then regenerate the specialized circuit:
+
+```bash
+python scripts/lower-e4m3fn-square.py \
+  examples/ex8_e4m3fn_square.mlir | \
+  circt-tutorial-opt --tutorial-func-to-hw \
+    --canonicalize -o build/ex8_square_specialized.mlir
+```
+
+## Exercise 8: solution {#arithmetic-square-builder}
 
 :::: {.columns}
 ::: {.column width="39%"}
@@ -1099,22 +1117,18 @@ def build_square4(x):
 :::
 ::::
 
-## Exercise 8 (optional): prove, then measure {#arithmetic-square-measure}
+## Exercise 8: prove, then measure {#arithmetic-square-measure}
 
-Save the generic lowering before editing the callback:
+Generate the generic Exercise 7 baseline:
 
 ```bash
-python scripts/lower-e4m3fn.py examples/ex8_e4m3fn_square.mlir | \
-  circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
-  -o build/ex8_square_generic.mlir
-
-# After adding the specialization, run the same pipeline:
-python scripts/lower-e4m3fn.py examples/ex8_e4m3fn_square.mlir | \
-  circt-tutorial-opt --tutorial-func-to-hw --canonicalize \
-  -o build/ex8_square_specialized.mlir
+python solutions/lower-e4m3fn-normal.py \
+  examples/ex8_e4m3fn_square.mlir | \
+  circt-tutorial-opt --tutorial-func-to-hw \
+    --canonicalize -o build/ex8_square_generic.mlir
 ```
 
-Then compare both circuits:
+Compare it with the specialized circuit:
 
 ```bash
 ./scripts/compare-aig.py \
@@ -1123,10 +1137,11 @@ Then compare both circuits:
   e4m3fn_square
 ```
 
-`circt-lec` proves equivalence; AIG nodes and depth show whether the
-specialization survived synthesis.
-
-**Pinned reference:** 57 → 50 AIG nodes; 14 → 13 logic levels.
+| Lowering checkpoint | AIG nodes | Levels |
+|---|---:|---:|
+| generic Exercise 7 multiplier | 57 | 14 |
+| supplied square intermediate | 51 | 14 |
+| dedicated significand squarer | **50** | **13** |
 
 ## Match more intent; build better datapaths {#arithmetic-specialization-opening}
 
