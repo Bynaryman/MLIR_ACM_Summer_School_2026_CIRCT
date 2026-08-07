@@ -296,7 +296,7 @@ $\rightarrow$ **balance** stages.
 ::: {.callout-note appearance="simple" icon=false}
 ## Question
 
-Software calls a **function**. What does hardware instantiate?
+Software calls a **function**. What is the equivalent mechanism in hardware?
 :::
 
 ::: {.fragment data-fragment-index="0"}
