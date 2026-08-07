@@ -89,13 +89,13 @@
   \draw[wire=normalizecolor] (normalize.south) -- (round.north);
   \draw[wire=roundcolor] (round.south) -- ($(select.north)+(0.75,0)$);
 
-  \draw[wire=signcolor] (sign.south) -- ++(0,-3.70)
-    -| ($(select.north)+(-3.75,0)$);
-  \node[signal=signcolor, anchor=west] at (-4.37,-0.72) {result sign};
+  \draw[wire=signcolor] (sign.south) -- ($(select.north)+(-4.45,0)$);
+  \node[signal=signcolor, anchor=west] at (-4.32,-0.72) {result sign};
 
   \draw[control=lightneutral] (decode.east) -- ++(0.48,0)
-    |- ($(select.north)+(3.75,0)$);
-  \node[signal=lightneutral, rotate=90] at (5.98,-0.25) {class flags};
+    -- (6.03,-2.20) -- (4.45,-2.20)
+    -- ($(select.north)+(4.45,0)$);
+  \node[signal=lightneutral, anchor=east] at (5.88,-1.30) {class flags};
 
   \draw[wire=neutral] (select.south) -- (result.north);
 \end{tikzpicture}
