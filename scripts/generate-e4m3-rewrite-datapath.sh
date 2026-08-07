@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE="$ROOT/figures/arithmetic/e4m3-rewrite-datapath.tex"
+COMPLETE_SOURCE="$ROOT/figures/arithmetic/e4m3-complete-multiplier.tex"
 OUTPUT_DIR="$ROOT/assets/images/arithmetic"
 BUILD_DIR="$(mktemp -d)"
 LAYERS=(base question sign significand-question significand normalize exponent pack)
@@ -29,4 +30,16 @@ for index in "${!LAYERS[@]}"; do
     "$OUTPUT_DIR/$job.svg"
 done
 
-printf '%s\n' "$OUTPUT_DIR"/e4m3-rewrite-*.svg
+complete_job="e4m3-complete-multiplier"
+pdflatex -interaction=nonstopmode -halt-on-error \
+  -jobname="$complete_job" \
+  -output-directory="$BUILD_DIR" \
+  "$COMPLETE_SOURCE" >/dev/null
+
+pdftocairo -svg -f 1 -l 1 \
+  "$BUILD_DIR/$complete_job.pdf" \
+  "$OUTPUT_DIR/$complete_job.svg"
+
+printf '%s\n' \
+  "$OUTPUT_DIR"/e4m3-rewrite-*.svg \
+  "$OUTPUT_DIR/$complete_job.svg"

@@ -872,9 +872,15 @@ patterns.add(arith.BitcastOp, lower_e4m3_mul)
 :::
 ::::
 
-## Check the scope you implemented {#arithmetic-special-cases}
+## What did we implement? {#arithmetic-special-cases}
 
-The normal-path checker selects exact products covered by the exercise:
+:::: {.columns}
+::: {.column width="47%"}
+| Scope | Input pairs |
+|---|---:|
+| every E4M3 bit pattern | **65,536** |
+| normal $\times$ normal | **56,644** |
+| exact simplified path | **11,892** |
 
 ```bash
 ./scripts/test-e4m3-all.py --pass --normal-path
@@ -883,88 +889,47 @@ The normal-path checker selects exact products covered by the exercise:
 ```text
 PASS: all 11892 E4M3 products match MLIR
 ```
-
-| Excluded case | Hardware still required |
-|---|---|
-| discarded product bits | round to nearest, ties to even |
-| zero or subnormal input | the hidden bit is not always `1` |
-| subnormal result | gradual-underflow shift and rounding |
-| exponent overflow | E4M3FN overflow behavior |
-| NaN input | detect and return the NaN encoding |
-
-The exhaustive checker deliberately exposes those missing cases:
-
-```bash
-./scripts/test-e4m3-all.py --pass
-```
-
-The complete reference is `examples/ex7_e4m3fn_mul_reference.sv`.
-
-## You chose the circuit {#arithmetic-multiplier-recap}
-
-:::: {.columns}
-::: {.column width="44%"}
-<div class="r-stack e4m3-vertical-stack">
-  <img src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier">
-  <img src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true">
-  <img src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true">
-</div>
 :::
 
-::: {.column width="56%"}
-::: {.incremental}
-- You recognized one semantic island: `arith.mulf` on `f8E4M3FN`.
+::: {.column width="53%"}
+The checker keeps products that:
 
-- You chose the field extraction, widths, operators, and normalization path.
+- use normal finite operands;
+- stay in the normal exponent range;
+- need no rounding.
 
-- You replaced a floating-point contract with explicit `hw` and `comb` IR.
+It excludes zero, subnormals, overflow, NaN, and inexact products.
 
-- The resulting circuit reflects **your architecture**, not an opaque
-  floating-point operator.
-:::
+[Our circuit implements a useful subset, not the complete E4M3FN contract.]{.marker}
 :::
 ::::
 
-## Correctness first; cost next {#arithmetic-measure-the-circuit}
+## A complete E4M3FN multiplier {#arithmetic-complete-multiplier}
 
-Reuse the tools from Exercise 5 at each design checkpoint:
-
-| Question | Tool | Evidence |
-|---|---|---|
-| Does it implement the arithmetic contract? | exhaustive vectors | all E4M3 input pairs |
-| Is a rewrite equivalent? | `circt-lec` | `c1 == c2` |
-| What Boolean structure did it create? | `circt-synth` | AIG nodes and depth |
-
-```bash
-./scripts/test-e4m3-all.py --pass --normal-path
-./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP_MODULE
-```
-
-AIG statistics are early structural estimates. Technology mapping, placement,
-and routing are still needed for physical area, timing, and energy.
-
-## One operation, many circuits {#arithmetic-hardware-freedom}
-
-`arith.mulf` specifies a numerical operation. It does not prescribe one
-microarchitecture.
-
-::: {.incremental}
-- Use a generic IEEE-style multiplier, or exploit one small format.
-
-- Choose rounding, exception handling, latency, and target technology.
-
-- Trade a multiplier for a lookup table when the domain is tiny.
-
-- Recognize stronger intent: a square, a constant product, or a fused graph.
+:::: {.columns}
+::: {.column width="64%"}
+![](assets/images/arithmetic/e4m3-complete-multiplier.svg){fig-alt="Block-level complete E4M3FN multiplier with classification, significand multiplication, scale computation, normalization, rounding, and special-case selection" width="100%"}
 :::
 
-This **hardware freedom** is the design space studied in computer-arithmetic
-books, papers, and venues such as the
-[IEEE Symposium on Computer Arithmetic](https://www.arithsymposium.org/)
-[@dinechin2024asa, ch. 14-15].
+::: {.column width="36%"}
+The supplied reference adds:
+
+- operand classification;
+- normal and subnormal alignment;
+- round-to-nearest, ties-to-even;
+- zero, NaN, underflow, and overflow selection.
+
+```bash
+./scripts/test-e4m3-all.py
+```
+
+```text
+PASS: all 65536 E4M3 products match MLIR
+```
+
+`examples/ex7_e4m3fn_mul_reference.sv`
+:::
+::::
 
 ## Quiz: should `%x * %x` cost the same? {#arithmetic-square-quiz}
 
