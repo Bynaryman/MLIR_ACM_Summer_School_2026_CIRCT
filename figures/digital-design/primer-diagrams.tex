@@ -167,13 +167,13 @@
   \draw[datapath data] (add.east) -- (r1.west);
   \draw[datapath data] (r1.east) -- (14.95,3.55);
 
-  \node[small label, anchor=south] at (6.45,4.08) {multiply};
-  \node[small label, anchor=south] at (8.95,4.08) {add};
+  \node[label, font=\sffamily\Large, anchor=south] at (6.45,4.08) {multiply};
+  \node[label, font=\sffamily\Large, anchor=south] at (8.95,4.08) {add};
 
   \coordinate (clk0) at ($(r0.west)+(0,-0.62)$);
   \coordinate (clk1) at ($(r1.west)+(0,-0.62)$);
   \draw[datapath clock] (1.25,0.95) -- (13.20,0.95);
-  \node[mono label, anchor=east, text=accent, font=\ttfamily\normalsize]
+  \node[mono label, anchor=east, text=accent, font=\ttfamily\LARGE]
     at (1.05,0.95) {clk};
   \draw[datapath clock] (1.45,0.95) |- (clk0);
   \draw[datapath clock] (11.75,0.95) |- (clk1);
