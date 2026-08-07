@@ -210,10 +210,18 @@ Overflow therefore produces NaN instead of infinity.
 `f8E4M3FN` has bias 7, finite values up to 448, and no infinity.
 [@micikevicius2022fp8]
 
-## Normal and subnormal values {#arithmetic-e4m3-axis}
+## Why subnormal values? {#arithmetic-e4m3-axis}
 
-You may remember from class: **normal values** have an implicit leading $1$;
-**subnormal values** are tiny values near zero without it.
+You may remember binary scientific notation:
+
+- **Normal:** normalized binary scientific notation, $1.mmm_2 \times 2^e$.
+- At $e_{\min}=-6$, no smaller exponent exists; without subnormals, the next
+  representable value below $2^{-6}$ is zero.
+
+::: {.fragment data-fragment-index="0"}
+**Subnormal:** keep $e=-6$ and allow $0.mmm_2 \times 2^{-6}$; seven values fill
+the gap gradually.
+:::
 
 ::: {.r-stack}
 ![](assets/images/e4m3-binades.svg){fig-alt="Normal E4M3FN binades double in width and leave no normal values between zero and two to the minus six" width="94%"}
@@ -224,8 +232,7 @@ You may remember from class: **normal values** have an implicit leading $1$;
 ::: {.fragment data-fragment-index="1"}
 [Exercise 7: exact normal finite products only.]{.marker}
 
-A complete multiplier must also handle zero, subnormals, NaNs,
-overflow/underflow, and rounding. `f8E4M3FN` has no infinities.
+Set aside: zero, subnormals, NaNs, overflow/underflow, and rounding.
 :::
 
 ## The same format spans tiny values to 448 {#arithmetic-e4m3-values}
