@@ -996,7 +996,7 @@ We will instead exploit **structure already visible in the IR**.
 For a square, the lower triangle duplicates the upper triangle and the
 diagonal does not require an AND gate [@dinechin2024asa, sec. 14.2].
 
-## Exercise 8: use the stronger pattern first {#arithmetic-square-order}
+## Exercise 8: recognize the stronger pattern {#arithmetic-square-order}
 
 :::: {.columns}
 ::: {.column width="47%"}
@@ -1015,45 +1015,30 @@ func.func @e4m3fn_square(%x : i8) -> i8 {
 :::
 
 ::: {.column width="53%"}
-The generic multiplier pattern also matches `%x * %x`. For this exercise, run
-the dedicated square lowering first:
-
-```bash
-python scripts/lower-e4m3fn-square.py \
-  exercises/ex8_e4m3fn_square.mlir | \
-  circt-tutorial-opt --tutorial-func-to-hw \
-    --canonicalize \
-    -o exercises/ex8_square_intermediate.mlir
-```
-
-In a combined production pass, the square rewrite would receive the higher
-`PatternBenefit`.
-:::
-::::
-
-## Exercise 8: working intermediate {#arithmetic-square-intermediate}
-
-:::: {.columns}
-::: {.column width="52%"}
-The supplied script already specializes the outer floating-point structure:
+**Matcher excerpt:** `scripts/lower-e4m3fn-square.py`
 
 ```python-circt
+matched = match_e4m3_island(out_cast)
+if matched is None:
+    return True
+
 lhs, rhs = matched
 if lhs != rhs:
     return True
-
-x = lhs
-sign = hw.ConstantOp.create(i1, 0).result
-
-ex = comb.ExtractOp.create(3, i4, x).result
-ex5 = comb.ConcatOp.create(zero1, ex).result
-doubled = comb.ShlOp.create(ex5, one5).result
 ```
+
+The rewrite continues only when both operands are the **same SSA value**. A
+combined production pass would give this pattern a higher `PatternBenefit`
+than the generic multiplier.
 :::
+::::
 
-::: {.column width="48%"}
-Only the significand still uses a generic multiplier:
+## Exercise 8: build the 4-bit squarer - 12 min {#arithmetic-square-exercise}
 
+**Edit only:** `build_square4` in `scripts/lower-e4m3fn-square.py`.
+
+:::: {.columns}
+::: {.column width="50%"}
 ```python-circt
 def build_square4(value):
     i4 = IntegerType.get_signless(4)
@@ -1062,46 +1047,60 @@ def build_square4(value):
     return comb.MulOp.create(wide, wide).result
 ```
 
-The intermediate is valid and testable before students edit anything.
+This generic multiplier is the code to replace.
+:::
+
+::: {.column width="50%"}
+**Task:** return the exact 8-bit square of the 4-bit `1.mmm` significand.
+
+- Route the four diagonal bits to weights $2i$.
+- Compute the six distinct cross terms once and place them at $i+j+1$.
+- Add the ten weighted terms into one `i8` result.
+- Generate no `comb.mul`.
+
+Everything outside this helper remains unchanged.
 :::
 ::::
 
-## Exercise 8: replace one helper - 12 min {#arithmetic-square-exercise}
+## Exercise 8: generate and inspect {#arithmetic-square-run}
 
-Edit only `build_square4` in `scripts/lower-e4m3fn-square.py`:
-
-1. Route each diagonal bit $x_i$ to weight $2i$.
-2. Compute each cross product $x_ix_j$ once for $j<i$.
-3. Place it at weight $i+j+1$ and add the terms.
-
-Then regenerate the specialized circuit:
+When your helper is ready:
 
 ```bash
 python scripts/lower-e4m3fn-square.py \
   exercises/ex8_e4m3fn_square.mlir | \
   circt-tutorial-opt --tutorial-func-to-hw \
-    --canonicalize -o exercises/ex8_square_specialized.mlir
+    --canonicalize \
+    -o exercises/ex8_square_specialized.mlir
+grep -n "comb.mul" exercises/ex8_square_specialized.mlir  # no match
 ```
 
-## Exercise 8: solution {#arithmetic-square-builder}
+The generated file must be created, pass MLIR verification, and contain no
+`comb.mul`. Functional equivalence and circuit cost are checked after the
+solution.
+
+## Solution checkpoint: diagonal terms {#arithmetic-square-diagonal data-transition="none"}
 
 :::: {.columns}
-::: {.column width="39%"}
-For each input bit $x_i$:
+::: {.column width="38%"}
+For every bit $x_i$:
 
-- route $x_i$ directly to bit position $2i$;
-- compute $x_i x_j$ once for every $j<i$;
-- place that cross product at bit position $i+j+1$.
+$$x_i^2=x_i$$
 
-The loop describes the bit heap. Constant shifts become wiring, and the
-generic `comb.add` network can be compressed by synthesis.
+Its weight changes from $i$ to $2i$. Extending one bit to `i8` and shifting it
+by a constant describes that wiring.
+
+At this checkpoint, `terms` contains only the four diagonal wires.
 :::
 
-::: {.column width="61%"}
+::: {.column width="62%"}
 ```python-circt
-def build_square4(x):
+def build_square4(value):
+    i1 = IntegerType.get_signless(1)
+    i7 = IntegerType.get_signless(7)
+    i8 = IntegerType.get_signless(8)
     bits = [
-        comb.ExtractOp.create(i, i1, x).result
+        comb.ExtractOp.create(i, i1, value).result
         for i in range(4)
     ]
     zero7 = hw.ConstantOp.create(i7, 0).result
@@ -1112,11 +1111,42 @@ def build_square4(x):
         return comb.ShlOp.create(wide, shift).result
 
     terms = [at_weight(bits[i], 2 * i) for i in range(4)]
+```
+:::
+::::
+
+## Solution checkpoint: cross terms {#arithmetic-square-builder data-transition="none"}
+
+:::: {.columns}
+::: {.column width="39%"}
+For each pair $j<i$:
+
+$$2x_ix_j=x_ix_j\,2^1$$
+
+Compute one AND and place it at weight $i+j+1$. The nested loop visits the six
+distinct cross terms; `comb.add` collects all ten weighted terms.
+:::
+
+::: {.column width="61%"}
+```python-circt
+def build_square4(value):
+    i1 = IntegerType.get_signless(1)
+    i7 = IntegerType.get_signless(7)
+    i8 = IntegerType.get_signless(8)
+    bits = [
+        comb.ExtractOp.create(i, i1, value).result
+        for i in range(4)
+    ]
+    zero7 = hw.ConstantOp.create(i7, 0).result
+    def at_weight(bit, weight):
+        wide = comb.ConcatOp.create(zero7, bit).result
+        shift = hw.ConstantOp.create(i8, weight).result
+        return comb.ShlOp.create(wide, shift).result
+    terms = [at_weight(bits[i], 2 * i) for i in range(4)]
     for i in range(4):
         for j in range(i):
             cross = comb.AndOp.create(bits[i], bits[j]).result
             terms.append(at_weight(cross, i + j + 1))
-
     return comb.AddOp.create(*terms).result
 ```
 :::
