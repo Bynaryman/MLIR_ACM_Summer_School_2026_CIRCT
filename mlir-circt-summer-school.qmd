@@ -209,8 +209,9 @@ Compilation becomes hardware design...
 
 ## What we did {#course-takeaways}
 
-- **Started from the motivation:** specialization and hardware freedom require
-  crossing the layers from a problem to electron flow.
+- **Started from the motivation:** the end of free scaling and the power,
+  memory, and communication walls demand specialization all the way down to
+  hardware — calling for compiler techniques that help design the machine.
 
 - **Practised digital design with CIRCT:** represented hierarchy, combinational
   logic, and state; then transformed, verified, synthesized, and emitted the
