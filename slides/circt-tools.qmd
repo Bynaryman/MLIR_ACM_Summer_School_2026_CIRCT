@@ -24,13 +24,9 @@ This section follows the [ARITH 2026 CIRCT Tutorial](https://github.com/cowardsa
 
 [![](assets/images/circt/synthexplorer.jpg){fig-alt="Synth Explorer showing Verilog beside its synthesized gate schematic" width="100%"}](https://www.synthexplorer.dev/)
 
-RTL $\rightarrow$ Yosys or Vivado $\rightarrow$ schematic and reports
+RTL $\rightarrow$ Yosys or Vivado $\rightarrow$ schematic
 :::
 ::::
-
-::: {.fragment}
-Useful for quick experiments. For the exercises, we use a pinned container.
-:::
 
 ## Start the environment {#tools-setup}
 
