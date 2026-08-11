@@ -1,5 +1,11 @@
 ## What is CIRCT? {#circt-name}
 
+<br>
+
+TL;DR: Apply **MLIR and LLVM compiler techniques** to hardware-design tools.
+
+<br>
+
 :::: {.columns}
 ::: {.column width="38%"}
 [![](assets/images/logos/circt-logo.svg){fig-alt="CIRCT logo" width="82%"}](https://circt.llvm.org/)
@@ -8,31 +14,37 @@
 ::: {.column width="62%"}
 ### Circuit IR Compilers and Tools
 
-- Apply **MLIR and LLVM compiler techniques** to hardware-design tools.
 - Recursively: **CIRCT IR Compiler and Tools**.
 - The `T` may be *Tool, Translator, Team, Technology, Target, Tree, Type, ...*
 
-[The ambiguity is intentional.]{.marker}
+### Some other cool things:
+
+- **The CIRCT community is an open and welcoming community.**
+- [Talks and related publications](https://circt.llvm.org/talks/) for other routes
+into CIRCT, particularly from EDA.
+
 :::
 ::::
 
-**The CIRCT community is an open and welcoming community.**
 
-[Project and community](https://circt.llvm.org/) ·
-[Talks and related publications](https://circt.llvm.org/talks/) for other routes
-into CIRCT, particularly from EDA.
-
-## Can we do this with MLIR? {#circt-route}
+## CIRCT defines the concepts from the primer {#circt-route}
 
 :::: {.columns}
 ::: {.column width="42%"}
-**CIRCT defines the concepts from the primer:**
+
+<br>
+CIRCT Core:
 
 - **`hw`**: structure and hierarchy
 - **`comb`**: combinational logic
 - **`seq`**: registers and state
 
+<br>
+
 ::: {.fragment}
+But also many other dialects:
+<br>
+
 - **Upstream MLIR:** `tensor`, `linalg` &rarr; `func`, `scf`, `arith`
 - **Downstream:** SystemVerilog &rarr; simulation, FPGA, ASIC tools
 :::
