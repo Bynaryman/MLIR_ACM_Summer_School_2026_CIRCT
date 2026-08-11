@@ -1,14 +1,15 @@
 import argparse
 from pathlib import Path
 
-from mlir import rewrite
-from mlir.dialects import arith, func  # noqa: F401
-from mlir.ir import Context, Location, Module
+import circt
+from circt import rewrite
+from circt.dialects import arith, comb, func, hw  # noqa: F401
+from circt.ir import Context, Location, Module
 
 
 def lower(source, callback):
     with Context() as context, Location.unknown():
-        context.allow_unregistered_dialects = True
+        circt.register_dialects(context)
         module = Module.parse(source)
 
         patterns = rewrite.RewritePatternSet()

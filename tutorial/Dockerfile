@@ -1,3 +1,5 @@
+FROM python:3.13-slim-bookworm AS python-runtime
+
 FROM ubuntu:24.04
 
 ARG CIRCT_VERSION=1.147.0
@@ -13,8 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     less \
     nano \
     ninja-build \
-    python3 \
-    python3-venv \
     ripgrep \
     vim \
     wget \
@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
+COPY --from=python-runtime /usr/local /usr/local
+
 RUN mkdir -p /opt && \
     wget -qO /tmp/circt.tar.gz \
       "https://github.com/llvm/circt/releases/download/firtool-${CIRCT_VERSION}/circt-full-shared-linux-x64.tar.gz" && \
@@ -37,13 +39,13 @@ RUN mkdir -p /opt && \
 
 COPY requirements.txt /tmp/tutorial-requirements.txt
 
-RUN python3 -m venv /opt/mlir-python && \
-    /opt/mlir-python/bin/pip install --no-cache-dir \
+RUN python3 -m venv /opt/circt-python && \
+    /opt/circt-python/bin/pip install --no-cache-dir \
       -r /tmp/tutorial-requirements.txt && \
     rm /tmp/tutorial-requirements.txt
 
-ENV VIRTUAL_ENV="/opt/mlir-python"
-ENV PATH="/opt/mlir-python/bin:/opt/circt/bin:/workspace/build/bin:${PATH}"
+ENV VIRTUAL_ENV="/opt/circt-python"
+ENV PATH="/opt/circt-python/bin:/opt/circt/bin:/workspace/build/bin:${PATH}"
 ENV CMAKE_PREFIX_PATH="/opt/circt"
 ENV LD_LIBRARY_PATH="/opt/circt/lib"
 ENV CC=gcc
@@ -54,6 +56,7 @@ COPY . /workspace
 
 RUN ./scripts/build.sh && \
     install -m 0755 build/bin/circt-tutorial-opt \
-      /usr/local/bin/circt-tutorial-opt
+      /usr/local/bin/circt-tutorial-opt && \
+    rm -rf build
 
 CMD ["/bin/bash"]

@@ -297,7 +297,7 @@ patterns.add(
 ```
 :::
 
-**Supplied:** matcher, integer type aliases, and `comb`/`hw` builders ·
+**Supplied:** matcher and integer type aliases · **API:** official CIRCT Python bindings ·
 **Scope:** exact normal finite products; no rounding.
 :::
 ::::
@@ -596,7 +596,8 @@ normalized window, then retain it as the exponent correction.
 norm = comb.ExtractOp.create(7, i1, product).result
 direct = comb.ExtractOp.create(3, i4, product).result
 shifted = comb.ExtractOp.create(4, i4, product).result
-mant = comb.MuxOp.create(norm, shifted, direct).result
+mant = comb.MuxOp.create(
+    norm.value, shifted.value, direct.value).result
 frac = comb.ExtractOp.create(0, i3, mant).result
 ```
 :::
@@ -639,7 +640,8 @@ def lower_e4m3_mul(out_cast, rewriter):
         norm = comb.ExtractOp.create(7, i1, product).result
         direct = comb.ExtractOp.create(3, i4, product).result
         shifted = comb.ExtractOp.create(4, i4, product).result
-        mant = comb.MuxOp.create(norm, shifted, direct).result
+        mant = comb.MuxOp.create(
+            norm.value, shifted.value, direct.value).result
         frac = comb.ExtractOp.create(0, i3, mant).result
         result = comb.ConcatOp.create(sign, zero4, frac).result
     rewriter.replace_op(out_cast, [result])
@@ -758,7 +760,8 @@ def lower_e4m3_mul(out_cast, rewriter):
         norm = comb.ExtractOp.create(7, i1, product).result
         direct = comb.ExtractOp.create(3, i4, product).result
         shifted = comb.ExtractOp.create(4, i4, product).result
-        mant = comb.MuxOp.create(norm, shifted, direct).result
+        mant = comb.MuxOp.create(
+            norm.value, shifted.value, direct.value).result
         frac = comb.ExtractOp.create(0, i3, mant).result
         ea = comb.ExtractOp.create(3, i4, lhs).result
         eb = comb.ExtractOp.create(3, i4, rhs).result
@@ -853,7 +856,8 @@ def lower_e4m3_mul(out_cast, rewriter):
         norm = comb.ExtractOp.create(7, i1, product).result
         direct = comb.ExtractOp.create(3, i4, product).result
         shifted = comb.ExtractOp.create(4, i4, product).result
-        mant = comb.MuxOp.create(norm, shifted, direct).result
+        mant = comb.MuxOp.create(
+            norm.value, shifted.value, direct.value).result
         frac = comb.ExtractOp.create(0, i3, mant).result
         ea = comb.ExtractOp.create(3, i4, lhs).result
         eb = comb.ExtractOp.create(3, i4, rhs).result

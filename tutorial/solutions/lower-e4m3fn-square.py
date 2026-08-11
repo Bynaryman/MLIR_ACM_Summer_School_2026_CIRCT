@@ -7,9 +7,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "python"))
 
-from mlir.ir import IntegerType
+from circt.dialects import comb, hw
+from circt.ir import IntegerType
 
-from circt_tutorial import comb, hw, match_e4m3_island
+from circt_tutorial import match_e4m3_island
 from circt_tutorial.driver import run_cli
 
 
@@ -58,7 +59,9 @@ def lower_e4m3_square(out_cast, rewriter):
         norm = comb.ExtractOp.create(7, i1, product).result
         direct = comb.ExtractOp.create(3, i4, product).result
         shifted = comb.ExtractOp.create(4, i4, product).result
-        mantissa = comb.MuxOp.create(norm, shifted, direct).result
+        mantissa = comb.MuxOp.create(
+            norm.value, shifted.value, direct.value
+        ).result
         fraction = comb.ExtractOp.create(0, i3, mantissa).result
 
         encoded_exponent = comb.ExtractOp.create(3, i4, value).result

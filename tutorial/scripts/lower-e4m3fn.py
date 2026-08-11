@@ -7,9 +7,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "python"))
 
-from mlir.ir import IntegerType
+from circt.dialects import comb, hw
+from circt.ir import IntegerType
 
-from circt_tutorial import comb, hw, match_e4m3_island
+from circt_tutorial import match_e4m3_island
 from circt_tutorial.driver import run_cli
 
 

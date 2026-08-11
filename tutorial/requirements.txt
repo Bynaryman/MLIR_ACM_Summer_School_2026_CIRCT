@@ -1,2 +1,1 @@
---find-links https://llvm.github.io/eudsl
-mlir-python-bindings==20260801+f1ba92abe
+circt==1.147.0

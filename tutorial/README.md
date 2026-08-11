@@ -29,10 +29,11 @@ The bind mount maps the host `tutorial/` folder to `/workspace`. Use the same
 test those files inside Docker. Generated files under `exercises/` also persist
 on the host.
 
-No setup or activation is needed inside the image. Its `/opt/mlir-python`
-virtual environment is already on `PATH`; it isolates the pinned upstream MLIR
-Python bindings used by Exercises 7-8. CIRCT, CMake, Ninja, GCC, Icarus
-Verilog, Z3, and the remaining tools are installed in the same image.
+No setup or activation is needed inside the image. Its `/opt/circt-python`
+virtual environment is already on `PATH`; it contains the official CIRCT
+Python bindings pinned to the same release as the command-line tools. CIRCT,
+CMake, Ninja, GCC, Icarus Verilog, Z3, and the remaining tools are installed in
+the same image.
 
 ## Files
 
@@ -51,7 +52,7 @@ tutorial/
 |   |-- lower-e4m3fn-normal.py     # Exercise 7 normal-path reference
 |   `-- lower-e4m3fn-square.py     # Exercise 8 squarer reference
 |-- include/Tutorial/Passes.h       # Course pass registration
-|-- python/circt_tutorial/          # Supplied Python matcher and op builders
+|-- python/circt_tutorial/          # Supplied matcher and rewrite driver
 |-- lib/
 |   |-- FuncToHWModule.cpp          # Function boundary to HW module pass
 |   `-- Passes.cpp                  # Register the supplied pass
@@ -64,7 +65,7 @@ tutorial/
 |   |-- compare-aig.py              # Compare Exercise 5 implementations
 |   `-- test-e4m3-all.py            # Exhaustive E4M3 checker
 |-- test/e4m3fn-exhaustive-tb.sv
-|-- requirements.txt                # Pinned MLIR Python bindings
+|-- requirements.txt                # Pinned CIRCT Python bindings
 |-- CMakeLists.txt
 `-- Dockerfile
 ```
@@ -318,11 +319,11 @@ output `arith.bitcast` operations delimit one `f8E4M3FN` multiplication island,
 so the rewrite can replace it with an `i8 -> i8` `comb` datapath without a type
 converter.
 
-The upstream MLIR Python bindings supply `RewritePatternSet` and the greedy rewrite
-driver. `python/circt_tutorial/` supplies the pattern matcher plus small
-`comb`/`hw` builders. The starter callback also defines the integer type aliases
-used by the staged solutions. The builders emit generic MLIR operations; the
-next CIRCT invocation parses and verifies them as registered CIRCT operations.
+The official CIRCT Python bindings supply the registered `arith`, `comb`, and
+`hw` operations, plus `RewritePatternSet` and the greedy rewrite driver.
+`python/circt_tutorial/` supplies only the exercise-specific matcher and command
+line driver. The starter callback defines the integer type aliases used by the
+staged solutions.
 
 The passes run in this order:
 
